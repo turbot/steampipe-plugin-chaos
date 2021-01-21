@@ -15,9 +15,11 @@ Chaos Plugin for testing Steampipe with the craziest edge cases we can think of.
 It's important, but not particularly interesting for most Steampipe users.
 
 ### Installation
+
 To download and install the latest chaos plugin:
+
 ```bash
-$ ./steampipe plugin install chaos
+$ steampipe plugin install chaos
 Installing plugin chaos...
 $
 ```
