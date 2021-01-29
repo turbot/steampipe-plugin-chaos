@@ -3,6 +3,7 @@ package chaos
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -35,25 +36,27 @@ var regions = []string{
 	"us-gov-east-1",
 	"us-gov-west-1"}
 
-func ListRegions(listFunc plugin.HydrateFunc) plugin.HydrateFunc {
+// helper function to list for all regions
+func MultiRegionList(listFunc plugin.HydrateFunc) plugin.HydrateFunc {
 	return func(ctx context.Context, queryData *plugin.QueryData, hydrateData *plugin.HydrateData) (interface{}, error) {
 		// build a list of hydrate params objects - one per region
 		paramsList := make([]map[string]string, len(regions))
 		for i, region := range regions {
 			paramsList[i] = map[string]string{"region": region}
 		}
-		return plugin.ListForPartitions(ctx, queryData, hydrateData, listFunc, paramsList)
+		return plugin.ListForEach(ctx, queryData, hydrateData, listFunc, paramsList)
 	}
 }
 
-func GetRegions(getFunc plugin.HydrateFunc) plugin.HydrateFunc {
+// helper function to get for all regions
+func MultiRegionGet(getFunc plugin.HydrateFunc) plugin.HydrateFunc {
 	return func(ctx context.Context, queryData *plugin.QueryData, hydrateData *plugin.HydrateData) (interface{}, error) {
 		// build a list of hydrate params objects - one per region
 		paramsList := make([]map[string]string, len(regions))
 		for i, region := range regions {
 			paramsList[i] = map[string]string{"region": region}
 		}
-		return plugin.GetForPartitions(ctx, queryData, hydrateData, getFunc, paramsList)
+		return plugin.GetForEach(ctx, queryData, hydrateData, getFunc, paramsList)
 	}
 }
 
@@ -62,11 +65,11 @@ func multiRegionTable() *plugin.Table {
 		Name:        "chaos_multi_region",
 		Description: "Chaos table to test the multi region features",
 		List: &plugin.ListConfig{
-			Hydrate: ListRegions(multiRegionList),
+			Hydrate: MultiRegionList(regionAwareList),
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.SingleColumn("id"),
-			Hydrate:    multiRegionGet,
+			Hydrate:    MultiRegionGet(regionAwareGet),
 		},
 
 		Columns: []*plugin.Column{
@@ -76,24 +79,38 @@ func multiRegionTable() *plugin.Table {
 	}
 }
 
-func multiRegionList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Warn("multiRegionList", "params", h.Params)
+func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	plugin.Logger(ctx).Warn("regionAwareList", "params", h.Params)
 	// get region from hydrate params
 	region := h.Params["region"]
 	for i := 0; i < 5; i++ {
-		id := fmt.Sprintf("%d-%s", i, region)
+		id := buildId(i, region)
 		item := map[string]interface{}{"id": id, "region": region}
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
 }
 
-func multiRegionGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	id := d.KeyColumnQuals["id"].GetInt64Value()
-	column1 := fmt.Sprintf("column_1-%d", id)
-	column2 := fmt.Sprintf("column_2-%d", id)
-	column3 := fmt.Sprintf("column_3-%d", id)
+func regionAwareGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	id := d.KeyColumnQuals["id"].GetStringValue()
+	idRegion := regionFromId(id)
+	// get region from hydrate params
+	region := h.Params["region"]
 
-	item := map[string]interface{}{"id": id, "column_1": column1, "column_2": column2, "column_3": column3}
-	return item, nil
+	if region == idRegion {
+		plugin.Logger(ctx).Warn("regionAwareGet - match!", "id", id, "region", region, "idRegion", idRegion)
+		return map[string]interface{}{"id": id, "region": region}, nil
+	}
+	return nil, nil
+}
+
+// build an id from an index and a region
+func buildId(i int, region string) string {
+	return fmt.Sprintf("%d_%s", i, region)
+}
+
+// extract the region from the id
+func regionFromId(id string) string {
+	parts := strings.Split(id, "_")
+	return parts[1]
 }
