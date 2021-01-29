@@ -31,6 +31,7 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_transform_panic":            buildTable(&chaosTable{name: "chaos_transform_panic", description: "Chaos table to test panicking Transform function", transformError: FailPanic}),
 			"chaos_transform_delay":            buildTable(&chaosTable{name: "chaos_transform_delay", description: "Chaos table to test delay in in Transform function", transformDelay: true}),
 			"chaos_get_test":                   getTestTable(),
+			"chaos_multi_region":               multiRegionTable(),
 			"chaos_all_column_types":           allColumnsTable(),
 			"chaos_hydrate_columns_dependency": hydrateColumnsTable(),
 			"chaos_parent_child_dependency":    parentChildTable(),
