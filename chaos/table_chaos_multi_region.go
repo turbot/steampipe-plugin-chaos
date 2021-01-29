@@ -46,6 +46,17 @@ func ListRegions(listFunc plugin.HydrateFunc) plugin.HydrateFunc {
 	}
 }
 
+func GetRegions(getFunc plugin.HydrateFunc) plugin.HydrateFunc {
+	return func(ctx context.Context, queryData *plugin.QueryData, hydrateData *plugin.HydrateData) (interface{}, error) {
+		// build a list of hydrate params objects - one per region
+		paramsList := make([]map[string]string, len(regions))
+		for i, region := range regions {
+			paramsList[i] = map[string]string{"region": region}
+		}
+		return plugin.GetForPartitions(ctx, queryData, hydrateData, getFunc, paramsList)
+	}
+}
+
 func multiRegionTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_multi_region",
