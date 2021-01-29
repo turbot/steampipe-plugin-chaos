@@ -109,7 +109,7 @@ func hydrateCallTotal(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 // increment hydrate count for this name, do some work(sleep), decrement hydrate count
 // return number of instances of this hydrate function running, and total number of hydrate calls running
 func doHydrateCall(name string) (int, int) {
-	log.Println("[INFO] INSIDE DO HYDRATE")
+	log.Println("[WARN] INSIDE DO HYDRATE")
 	mutex.Lock()
 	hydrateCount[name] = hydrateCount[name] + 1
 	callsForThisHydrate := hydrateCount[name]
