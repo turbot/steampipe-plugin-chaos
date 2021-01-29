@@ -34,6 +34,7 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_parallel_hydrate_columns":   parallelHydrateColumnsTable(),
 			"chaos_all_numeric_column":         numericColumnsTable(),
 			"chaos_transform_method_test":      transformMethodTable(),
+			"chaos_parallel_hydrate_test":      getTestParallelismTable(),
 		},
 	}
 
