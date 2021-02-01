@@ -101,6 +101,18 @@ func allColumnsTable() *plugin.Table {
 				Hydrate:   epochColumnMsValue,
 				Transform: transform.FromValue().Transform(transform.UnixMsToTimestamp),
 			},
+			{
+				Name:      "string_to_array_column",
+				Type:      proto.ColumnType_JSON,
+				Hydrate:   stringToArrayColumn,
+				Transform: transform.FromValue().Transform(transform.EnsureStringArray),
+			},
+			{
+				Name:      "array_to_maps_column",
+				Type:      proto.ColumnType_JSON,
+				Hydrate:   stringArrayToMapColumn,
+				Transform: transform.FromValue().Transform(transform.StringArrayToMap),
+			},
 		},
 	}
 
@@ -210,4 +222,25 @@ func epochColumnMsValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	item := dates[id%len(dates)]
 
 	return item, nil
+}
+
+func stringToArrayColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[TRACE] Ensure string to array column value")
+	key := h.Item.(map[string]interface{})
+	item := key["string_column"]
+
+	log.Println("[TRACE] value of string column", item)
+
+	return item, nil
+
+}
+
+func stringArrayToMapColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[TRACE] Labels to Tags Map column value")
+	key := h.Item.(map[string]interface{})
+	var item []string
+	item = append(item, key["string_column"].(string))
+
+	return item, nil
+
 }
