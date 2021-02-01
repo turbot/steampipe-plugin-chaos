@@ -35,6 +35,7 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_all_numeric_column":         numericColumnsTable(),
 			"chaos_transform_method_test":      transformMethodTable(),
 			"chaos_parallel_hydrate_test":      getTestParallelismTable(),
+			"chaos_concurrency_limit_test":     getConcurrencyLimitTable(),
 		},
 	}
 
