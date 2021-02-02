@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
+
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
@@ -36,28 +38,15 @@ var regions = []string{
 	"us-gov-east-1",
 	"us-gov-west-1"}
 
-// helper function to list for all regions
-func MultiRegionList(listFunc plugin.HydrateFunc) plugin.HydrateFunc {
-	return func(ctx context.Context, queryData *plugin.QueryData, hydrateData *plugin.HydrateData) (interface{}, error) {
-		// build a list of hydrate params objects - one per region
-		paramsList := make([]map[string]string, len(regions))
-		for i, region := range regions {
-			paramsList[i] = map[string]string{"region": region}
-		}
-		return plugin.ListForEach(ctx, queryData, hydrateData, listFunc, paramsList)
-	}
-}
+const fetchMetdataKeyRegion = "region"
 
-// helper function to get for all regions
-func MultiRegionGet(getFunc plugin.HydrateFunc) plugin.HydrateFunc {
-	return func(ctx context.Context, queryData *plugin.QueryData, hydrateData *plugin.HydrateData) (interface{}, error) {
-		// build a list of hydrate params objects - one per region
-		paramsList := make([]map[string]string, len(regions))
-		for i, region := range regions {
-			paramsList[i] = map[string]string{"region": region}
-		}
-		return plugin.GetForEach(ctx, queryData, hydrateData, getFunc, paramsList)
+func BuildFetchMetadataList() []map[string]interface{} {
+	// build a list of fetchMetadata - one per region
+	fetchMetadataList := make([]map[string]interface{}, len(regions))
+	for i, region := range regions {
+		fetchMetadataList[i] = map[string]interface{}{fetchMetdataKeyRegion: region}
 	}
+	return fetchMetadataList
 }
 
 func multiRegionTable() *plugin.Table {
@@ -65,27 +54,30 @@ func multiRegionTable() *plugin.Table {
 		Name:        "chaos_multi_region",
 		Description: "Chaos table to test the multi region features",
 		List: &plugin.ListConfig{
-			Hydrate: MultiRegionList(regionAwareList),
+			Hydrate: regionAwareList,
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.SingleColumn("id"),
-			Hydrate:    MultiRegionGet(regionAwareGet),
+			Hydrate:    regionAwareGet,
 		},
+		FetchMetadata: BuildFetchMetadataList(),
 
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_STRING},
-			{Name: "region", Type: proto.ColumnType_STRING},
+			{Name: "region", Type: proto.ColumnType_STRING, Transform: transform.FromFetchMetadata(fetchMetdataKeyRegion)},
 		},
 	}
 }
 
 func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	plugin.Logger(ctx).Warn("regionAwareList", "params", h.Params)
+	region := plugin.GetFetchMetadata(ctx)[fetchMetdataKeyRegion].(string)
+	plugin.Logger(ctx).Warn("regionAwareList", "region", region)
 	// get region from hydrate params
-	region := h.Params["region"]
+
 	for i := 0; i < 5; i++ {
 		id := buildId(i, region)
-		item := map[string]interface{}{"id": id, "region": region}
+		item := map[string]interface{}{"id": id}
+		plugin.Logger(ctx).Warn("regionAwareList", "item", item)
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
@@ -94,12 +86,13 @@ func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 func regionAwareGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.KeyColumnQuals["id"].GetStringValue()
 	idRegion := regionFromId(id)
-	// get region from hydrate params
-	region := h.Params["region"]
+	// get region from context
+	region := plugin.GetFetchMetadata(ctx)[fetchMetdataKeyRegion].(string)
+	//plugin.Logger(ctx).Warn("regionAwareGet", "region", region)
 
 	if region == idRegion {
-		plugin.Logger(ctx).Warn("regionAwareGet - match!", "id", id, "region", region, "idRegion", idRegion)
-		return map[string]interface{}{"id": id, "region": region}, nil
+		plugin.Logger(ctx).Warn("****************** regionAwareGet - match!", "id", id, "region", region, "idRegion", idRegion)
+		return map[string]interface{}{"id": id, "matching_region": region}, nil
 	}
 	return nil, nil
 }
