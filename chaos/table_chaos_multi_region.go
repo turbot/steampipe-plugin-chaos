@@ -10,36 +10,11 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
-var regions = []string{
-	"us-east-2",
-	"us-east-1",
-	"us-west-1",
-	"us-west-2",
-	"af-south-1",
-	"ap-east-1",
-	"ap-south-1",
-	"ap-northeast-3",
-	"ap-northeast-2",
-	"ap-southeast-1",
-	"ap-southeast-2",
-	"ap-northeast-1",
-	"ca-central-1",
-	"cn-north-1",
-	"cn-northwest-1",
-	"eu-central-1",
-	"eu-west-1",
-	"eu-west-2",
-	"eu-south-1",
-	"eu-west-3",
-	"eu-north-1",
-	"me-south-1",
-	"sa-east-1",
-	"us-gov-east-1",
-	"us-gov-west-1"}
-
 const fetchMetdataKeyRegion = "region"
 
-func BuildFetchMetadataList() []map[string]interface{} {
+func GetRegions(_ context.Context, config interface{}) []map[string]interface{} {
+	chaosConfig := config.(chaosConfig)
+	regions := chaosConfig.Regions
 	// build a list of fetchMetadata - one per region
 	fetchMetadataList := make([]map[string]interface{}, len(regions))
 	for i, region := range regions {
@@ -59,7 +34,7 @@ func multiRegionTable() *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    regionAwareGet,
 		},
-		FetchMetadata: BuildFetchMetadataList(),
+		FetchMetadata: GetRegions,
 
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_STRING},
@@ -69,9 +44,12 @@ func multiRegionTable() *plugin.Table {
 }
 
 func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	region := plugin.GetFetchMetadata(ctx)[fetchMetdataKeyRegion].(string)
+	region := regionFromFetchMetadata(ctx)
+	if region == "" {
+		return nil, nil
+	}
+
 	plugin.Logger(ctx).Warn("regionAwareList", "region", region)
-	// get region from hydrate params
 
 	for i := 0; i < 5; i++ {
 		id := buildId(i, region)
@@ -82,11 +60,22 @@ func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	return nil, nil
 }
 
+func regionFromFetchMetadata(ctx context.Context) string {
+	fetchMetadata := plugin.GetFetchMetadata(ctx)
+	if fetchMetadata == nil {
+		return ""
+	}
+	return fetchMetadata[fetchMetdataKeyRegion].(string)
+}
+
 func regionAwareGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.KeyColumnQuals["id"].GetStringValue()
 	idRegion := regionFromId(id)
-	// get region from context
-	region := plugin.GetFetchMetadata(ctx)[fetchMetdataKeyRegion].(string)
+	region := regionFromFetchMetadata(ctx)
+	if region == "" {
+		return nil, nil
+	}
+
 	//plugin.Logger(ctx).Warn("regionAwareGet", "region", region)
 
 	if region == idRegion {

@@ -3,12 +3,14 @@ package chaos
 import (
 	"context"
 
+	"github.com/turbot/steampipe-plugin-sdk/plugin/schema"
+
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
 
 const pluginName = "steampipe-provider-chaos"
 
-func Plugin(context.Context) *plugin.Plugin {
+func Plugin(ctx context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
 		Name: pluginName,
 		DefaultConcurrency: &plugin.DefaultConcurrencyConfig{
@@ -42,6 +44,16 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_parallel_hydrate_test":      getTestParallelismTable(),
 			"chaos_concurrency_limit":          getConcurrencyLimitTable(),
 			"chaos_concurrency_no_limit":       getConcurrencyNoLimitTable(),
+		},
+		ConnectionConfig: &plugin.ConnectionConfig{
+			NewInstance: func() interface{} { return &chaosConfig{} },
+			Schema: map[string]*schema.Attribute{
+				"regions": {
+					Type:     schema.TypeList,
+					Elem:     &schema.Attribute{Type: schema.TypeString},
+					Optional: true,
+				},
+			},
 		},
 	}
 

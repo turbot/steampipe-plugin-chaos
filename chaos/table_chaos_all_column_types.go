@@ -118,13 +118,10 @@ func allColumnsTable() *plugin.Table {
 
 }
 
-func buildAllColumnsInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	quals := d.KeyColumnQuals
-	item := quals["id"].GetInt64Value()
-	return item, nil
-}
-
 func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	config := d.Config.(chaosConfig)
+
+	plugin.Logger(ctx).Warn("allColumnsList", "getConnectionConfig", config)
 	log.Println("[TRACE] All columns list function")
 
 	for i := 0; i < rowCount; i++ {
