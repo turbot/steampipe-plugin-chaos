@@ -11,6 +11,10 @@ const pluginName = "steampipe-provider-chaos"
 func Plugin(context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
 		Name: pluginName,
+		DefaultHydrateConfig: &plugin.DefaultHydrateConfig{
+			MaxConcurrency:               60,
+			DefaultMaxConcurrencyPerCall: 10,
+		},
 		TableMap: map[string]*plugin.Table{
 			"chaos_high_row_count":             buildTable(&chaosTable{name: "chaos_high_row_count", description: "Chaos table to test steampipe with high row count", rowCount: 10}),
 			"chaos_high_column_count":          buildTable(&chaosTable{name: "chaos_high_column_count", description: "Chaos table to test steampipe with high column count", columnCount: 100}),
@@ -38,9 +42,6 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_concurrency_limit_test":     getConcurrencyLimitTable(),
 		},
 	}
-
-	// TODO think about implementing a plugin configure - who calls it?
-	//p.ConfigureFunc = pluginConfigure(p)
 
 	return p
 }

@@ -19,16 +19,14 @@ func getConcurrencyLimitTable() *plugin.Table {
 		HydrateConfig: []plugin.HydrateConfig{
 			{
 				Func:           hydrateCallColumn1,
-				MaxConcurrency: 5,
+				MaxConcurrency: 40,
 			},
 			{
 				Func:           hydrateCallColumn2,
 				MaxConcurrency: 5,
 			},
 			{
-				Func:           totalHydrateCallsColumn,
-				MaxConcurrency: 5,
-				Depends:        []plugin.HydrateFunc{hydrateCallColumn1, hydrateCallColumn2},
+				Func: totalHydrateCallsColumn,
 			},
 		},
 

@@ -23,4 +23,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/turbot/steampipe-plugin-sdk  => /Users/parth/turbotio/turbot/steampipe-plugin-sdk
+replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk v0.0.0-20210205114546-6bf5570bb7ca
