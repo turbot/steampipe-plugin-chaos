@@ -65,6 +65,10 @@ func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	mut.Lock()
 	defer mut.Unlock()
 
+	// reset counters
+	listCalls = 0
+	hydrateCalls = 0
+
 	region := regionFromFetchMetadata(ctx)
 	plugin.Logger(ctx).Warn("regionAwareList", "region", region)
 	if region == "" {
