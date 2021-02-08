@@ -17,14 +17,19 @@ var listCalls int
 var hydrateCalls int
 var mut sync.Mutex
 
-func GetRegions(_ context.Context, config interface{}) []map[string]interface{} {
-	chaosConfig := config.(chaosConfig)
-	regions := chaosConfig.Regions
+func GetRegions(ctx context.Context, connection *plugin.Connection) []map[string]interface{} {
+	// reset counters
+	listCalls = 0
+	hydrateCalls = 0
+
+	// retrieve regions from connection config
+	regions := GetConfig(connection).Regions
 	// build a list of fetchMetadata - one per region
 	fetchMetadataList := make([]map[string]interface{}, len(regions))
 	for i, region := range regions {
 		fetchMetadataList[i] = map[string]interface{}{fetchMetdataKeyRegion: region}
 	}
+
 	return fetchMetadataList
 }
 
@@ -39,8 +44,7 @@ func multiRegionTable() *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    regionAwareGet,
 		},
-		FetchMetadata: GetRegions,
-
+		GetFetchMetadata: GetRegions,
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_STRING},
 			{Name: "region", Type: proto.ColumnType_STRING, Transform: transform.FromFetchMetadata(fetchMetdataKeyRegion)},
@@ -65,10 +69,6 @@ func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	mut.Lock()
 	defer mut.Unlock()
 
-	// reset counters
-	listCalls = 0
-	hydrateCalls = 0
-
 	region := regionFromFetchMetadata(ctx)
 	plugin.Logger(ctx).Warn("regionAwareList", "region", region)
 	if region == "" {
@@ -85,7 +85,7 @@ func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 		d.StreamListItem(ctx, item)
 	}
 	// update counter
-	listCalls += itemsPerRegion
+	listCalls++
 	return nil, nil
 }
 
@@ -105,10 +105,7 @@ func regionAwareGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateD
 		return nil, nil
 	}
 
-	//plugin.Logger(ctx).Warn("regionAwareGet", "region", region)
-
 	if region == idRegion {
-		plugin.Logger(ctx).Warn("****************** regionAwareGet - match!", "id", id, "region", region, "idRegion", idRegion)
 		return map[string]interface{}{"id": id, "matching_region": region}, nil
 	}
 	return nil, nil

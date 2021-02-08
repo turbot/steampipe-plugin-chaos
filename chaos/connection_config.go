@@ -1,5 +1,18 @@
 package chaos
 
+import (
+	"github.com/turbot/steampipe-plugin-sdk/plugin"
+)
+
 type chaosConfig struct {
 	Regions []string `cty:"regions"`
+}
+
+// GetConfig :: retrieve and cast connection config from query data
+func GetConfig(connection *plugin.Connection) chaosConfig {
+	if connection == nil || connection.Config == nil {
+		return chaosConfig{}
+	}
+	config, _ := connection.Config.(chaosConfig)
+	return config
 }
