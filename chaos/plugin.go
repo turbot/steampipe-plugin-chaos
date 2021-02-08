@@ -12,8 +12,8 @@ func Plugin(context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
 		Name: pluginName,
 		DefaultHydrateConfig: &plugin.DefaultHydrateConfig{
-			MaxConcurrency:               60,
-			DefaultMaxConcurrencyPerCall: 10,
+			MaxConcurrency:               500,
+			DefaultMaxConcurrencyPerCall: 150,
 		},
 		TableMap: map[string]*plugin.Table{
 			"chaos_high_row_count":             buildTable(&chaosTable{name: "chaos_high_row_count", description: "Chaos table to test steampipe with high row count", rowCount: 10}),
@@ -39,7 +39,8 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_all_numeric_column":         numericColumnsTable(),
 			"chaos_transform_method_test":      transformMethodTable(),
 			"chaos_parallel_hydrate_test":      getTestParallelismTable(),
-			"chaos_concurrency_limit_test":     getConcurrencyLimitTable(),
+			"chaos_concurrency_limit":          getConcurrencyLimitTable(),
+			"chaos_concurrency_no_limit":       getConcurrencyNoLimitTable(),
 		},
 	}
 
