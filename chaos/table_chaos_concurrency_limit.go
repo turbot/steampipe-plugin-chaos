@@ -1,6 +1,9 @@
 package chaos
 
 import (
+	"context"
+	"log"
+
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
@@ -27,7 +30,6 @@ func getConcurrencyLimitTable() *plugin.Table {
 				MaxConcurrency: 5,
 			},
 		},
-
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
 			{
@@ -50,4 +52,34 @@ func getConcurrencyLimitTable() *plugin.Table {
 			},
 		},
 	}
+}
+
+func getConcurrencyList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[INFO] INSIDE LIST CALL")
+	for i := 0; i < 100; i++ {
+		item := map[string]interface{}{"id": i}
+		d.StreamListItem(ctx, item)
+	}
+	return nil, nil
+}
+
+func hydrateCallColumn1(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[INFO] INSIDE CALL hydrateCallColumn1")
+	count, _ := doHydrateCall("hydrateCallColumn1")
+
+	return count, nil
+}
+
+func hydrateCallColumn2(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[INFO] INSIDE CALL hydrateCallColumn2")
+	count, _ := doHydrateCall("hydrateCallColumn2")
+
+	return count, nil
+}
+
+func totalHydrateCallsColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[INFO] INSIDE CALL totalHydrateCallsColumn")
+	_, totalCount := doHydrateCall("totalCalls")
+
+	return totalCount, nil
 }
