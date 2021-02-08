@@ -22,3 +22,5 @@ require (
 	google.golang.org/grpc v1.35.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk v0.0.0-20210205114546-6bf5570bb7ca
