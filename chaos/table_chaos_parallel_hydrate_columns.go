@@ -74,7 +74,7 @@ type s20 struct {
 func parallelHydrateColumnsTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_parallel_hydrate_columns",
-		Description: "Chaos table to test the execution of multiple hydrate functions and transform functions asynchronously",
+		Description: "Chaos table to test the execution of multiple hydrate functions and transform functions asynchronously\n The main intention o fthis table is to verify the correct transform data is passed to each transform function",
 		List: &plugin.ListConfig{
 			Hydrate: hydList,
 		},
