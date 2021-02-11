@@ -3,8 +3,6 @@ package chaos
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/plugin/schema"
-
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
 
@@ -45,15 +43,9 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_concurrency_limit":          getConcurrencyLimitTable(),
 			"chaos_concurrency_no_limit":       getConcurrencyNoLimitTable(),
 		},
-		ConnectionConfig: &plugin.ConnectionConfig{
-			NewInstance: func() interface{} { return &chaosConfig{} },
-			Schema: map[string]*schema.Attribute{
-				"regions": {
-					Type:     schema.TypeList,
-					Elem:     &schema.Attribute{Type: schema.TypeString},
-					Optional: true,
-				},
-			},
+		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
+			NewInstance: ConfigInstance,
+			Schema:      ConfigSchema,
 		},
 	}
 

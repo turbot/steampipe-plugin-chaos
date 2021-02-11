@@ -11,12 +11,13 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
-const fetchMetdataKeyRegion = "region"
+const matrixKeyRegion = "region"
 
 var listCalls int
 var hydrateCalls int
 var mut sync.Mutex
 
+// build a list of matrix items, one per region
 func GetRegions(ctx context.Context, connection *plugin.Connection) []map[string]interface{} {
 	// reset counters
 	listCalls = 0
@@ -24,13 +25,13 @@ func GetRegions(ctx context.Context, connection *plugin.Connection) []map[string
 
 	// retrieve regions from connection config
 	regions := GetConfig(connection).Regions
-	// build a list of fetchMetadata - one per region
-	fetchMetadataList := make([]map[string]interface{}, len(regions))
+
+	matrix := make([]map[string]interface{}, len(regions))
 	for i, region := range regions {
-		fetchMetadataList[i] = map[string]interface{}{fetchMetdataKeyRegion: region}
+		matrix[i] = map[string]interface{}{matrixKeyRegion: region}
 	}
 
-	return fetchMetadataList
+	return matrix
 }
 
 func multiRegionTable() *plugin.Table {
@@ -44,10 +45,10 @@ func multiRegionTable() *plugin.Table {
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    regionAwareGet,
 		},
-		GetFetchMetadata: GetRegions,
+		GetMatrixItem: GetRegions,
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_STRING},
-			{Name: "region", Type: proto.ColumnType_STRING, Transform: transform.FromFetchMetadata(fetchMetdataKeyRegion)},
+			{Name: "region", Type: proto.ColumnType_STRING, Transform: transform.FromMatrixItem(matrixKeyRegion)},
 			{Name: "list_calls", Type: proto.ColumnType_INT, Hydrate: getListCalls, Transform: transform.FromValue()},
 			{Name: "hydrate_calls", Type: proto.ColumnType_INT, Hydrate: getHydrateCalls, Transform: transform.FromValue()},
 			{Name: "c1", Type: proto.ColumnType_STRING, Hydrate: doHydrate1},
@@ -69,7 +70,7 @@ func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	mut.Lock()
 	defer mut.Unlock()
 
-	region := regionFromFetchMetadata(ctx)
+	region := regionFromMatrixItem(ctx)
 	plugin.Logger(ctx).Warn("regionAwareList", "region", region)
 	if region == "" {
 		return nil, nil
@@ -89,18 +90,18 @@ func regionAwareList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	return nil, nil
 }
 
-func regionFromFetchMetadata(ctx context.Context) string {
-	fetchMetadata := plugin.GetFetchMetadata(ctx)
-	if fetchMetadata == nil {
+func regionFromMatrixItem(ctx context.Context) string {
+	matrixItem := plugin.GetMatrixItem(ctx)
+	if matrixItem == nil {
 		return ""
 	}
-	return fetchMetadata[fetchMetdataKeyRegion].(string)
+	return matrixItem[matrixKeyRegion].(string)
 }
 
 func regionAwareGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.KeyColumnQuals["id"].GetStringValue()
 	idRegion := regionFromId(id)
-	region := regionFromFetchMetadata(ctx)
+	region := regionFromMatrixItem(ctx)
 	if region == "" {
 		return nil, nil
 	}
