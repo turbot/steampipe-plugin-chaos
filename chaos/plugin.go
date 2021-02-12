@@ -11,9 +11,12 @@ const pluginName = "steampipe-provider-chaos"
 func Plugin(context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
 		Name: pluginName,
-		DefaultHydrateConfig: &plugin.DefaultHydrateConfig{
+		DefaultConcurrencyConfig: &plugin.DefaultConcurrencyConfig{
 			MaxConcurrency:               500,
 			DefaultMaxConcurrencyPerCall: 150,
+		},
+		DefaultRetryConfig: &plugin.RetryConfig{
+			ShouldRetryError: shouldRetryError([]string{errorString}),
 		},
 		TableMap: map[string]*plugin.Table{
 			"chaos_high_row_count":             buildTable(&chaosTable{name: "chaos_high_row_count", description: "Chaos table to test steampipe with high row count", rowCount: 10}),
@@ -41,6 +44,8 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_parallel_hydrate_test":      getTestParallelismTable(),
 			"chaos_concurrency_limit":          getConcurrencyLimitTable(),
 			"chaos_concurrency_no_limit":       getConcurrencyNoLimitTable(),
+			"chaos_retry_config":               getRetryConfigTable(),
+			"chaos_retry_no_config":            getRetryNoConfigTable(),
 		},
 	}
 
