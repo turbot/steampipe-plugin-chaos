@@ -11,9 +11,9 @@ const pluginName = "steampipe-provider-chaos"
 func Plugin(context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
 		Name: pluginName,
-		DefaultHydrateConfig: &plugin.DefaultHydrateConfig{
-			MaxConcurrency:               500,
-			DefaultMaxConcurrencyPerCall: 150,
+		DefaultConcurrency: &plugin.DefaultConcurrencyConfig{
+			TotalMaxConcurrency:   500,
+			DefaultMaxConcurrency: 150,
 		},
 		TableMap: map[string]*plugin.Table{
 			"chaos_high_row_count":             buildTable(&chaosTable{name: "chaos_high_row_count", description: "Chaos table to test steampipe with high row count", rowCount: 10}),
