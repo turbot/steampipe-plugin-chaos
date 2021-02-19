@@ -119,10 +119,6 @@ func allColumnsTable() *plugin.Table {
 }
 
 func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	// retrieve connection config
-	config := GetConfig(d.Connection)
-
-	plugin.Logger(ctx).Warn("allColumnsList", "getConnectionConfig", config)
 	log.Println("[TRACE] All columns list function")
 
 	for i := 0; i < rowCount; i++ {
