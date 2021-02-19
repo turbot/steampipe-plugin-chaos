@@ -11,9 +11,8 @@ type chaosConfig struct {
 
 var ConfigSchema = map[string]*schema.Attribute{
 	"regions": {
-		Type:     schema.TypeList,
-		Elem:     &schema.Attribute{Type: schema.TypeString},
-		Optional: true,
+		Type: schema.TypeList,
+		Elem: &schema.Attribute{Type: schema.TypeString},
 	},
 }
 
