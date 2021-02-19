@@ -8,7 +8,7 @@ import (
 
 const pluginName = "steampipe-provider-chaos"
 
-func Plugin(context.Context) *plugin.Plugin {
+func Plugin(ctx context.Context) *plugin.Plugin {
 	p := &plugin.Plugin{
 		Name: pluginName,
 		DefaultConcurrency: &plugin.DefaultConcurrencyConfig{
@@ -31,6 +31,7 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_transform_panic":            buildTable(&chaosTable{name: "chaos_transform_panic", description: "Chaos table to test panicking Transform function", transformError: FailPanic}),
 			"chaos_transform_delay":            buildTable(&chaosTable{name: "chaos_transform_delay", description: "Chaos table to test delay in in Transform function", transformDelay: true}),
 			"chaos_get_test":                   getTestTable(),
+			"chaos_multi_region":               multiRegionTable(),
 			"chaos_all_column_types":           allColumnsTable(),
 			"chaos_hydrate_columns_dependency": hydrateColumnsTable(),
 			"chaos_parent_child_dependency":    parentChildTable(),
@@ -41,6 +42,10 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_parallel_hydrate_test":      getTestParallelismTable(),
 			"chaos_concurrency_limit":          getConcurrencyLimitTable(),
 			"chaos_concurrency_no_limit":       getConcurrencyNoLimitTable(),
+		},
+		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
+			NewInstance: ConfigInstance,
+			Schema:      ConfigSchema,
 		},
 	}
 
