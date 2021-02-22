@@ -12,7 +12,7 @@ import (
 
 func populateItem(rowNumber int, table *plugin.Table) map[string]interface{} {
 	row := make(map[string]interface{})
-
+	row["id"] = rowNumber
 	for _, column := range table.Columns {
 		var columnVal interface{}
 		switch column.Type {
