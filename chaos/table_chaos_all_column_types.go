@@ -45,7 +45,6 @@ func allColumnsTable() *plugin.Table {
 				Hydrate:     emptyHydrate,
 				Description: "This column tests both a hydrate function returning no results, and the column default mechanism",
 			},
-
 			{Name: "string_column", Type: proto.ColumnType_STRING},
 			{
 				Name:      "boolean_column",
@@ -84,6 +83,12 @@ func allColumnsTable() *plugin.Table {
 				Transform: transform.FromValue(),
 			},
 			{
+				Name:      "inet_column",
+				Type:      proto.ColumnType_INET,
+				Hydrate:   inetColumnValue,
+				Transform: transform.FromValue(),
+			},
+			{
 				Name:        "array_element",
 				Description: "This column test the functionality of array lookup in Transform function",
 				Type:        proto.ColumnType_JSON,
@@ -115,7 +120,6 @@ func allColumnsTable() *plugin.Table {
 			},
 		},
 	}
-
 }
 
 func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
@@ -185,6 +189,15 @@ func jsonColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 func cidrColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[TRACE] CIDR Column Value")
 	cidr := []string{"10.0.0.0/24", "10.0.0.1/32", "10.84.0.0/24", "172.31.0.0/16", "192.168.0.0/22", "172.16.0.0/16", "10.1.0.0/16", "175.0.0.0/16"}
+	key := h.Item.(map[string]interface{})
+	id := key["id"].(int)
+	columnVal := cidr[id%len(cidr)]
+	return columnVal, nil
+}
+
+func inetColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[TRACE] CIDR Column Value")
+	cidr := []string{"10.0.0.0/24", "10.0.0.1", "10.84.0.0/24", "172.31.0.0", "192.168.0.0/22", "172.16.0.0", "10.1.0.0/16", "175.0.0.0"}
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 	columnVal := cidr[id%len(cidr)]
