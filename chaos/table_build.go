@@ -23,12 +23,14 @@ const (
 )
 
 type chaosTable struct {
-	name             string
-	description      string
-	columnCount      int
-	getError         FailType
-	getDelay         bool
-	listError        FailType
+	name        string
+	description string
+	columnCount int
+	getError    FailType
+	getDelay    bool
+	listError   FailType
+	// the number of rows returned before a list error/hydrate error is raised
+	listErrorRows    int
 	listDelay        bool
 	rowCount         int
 	hydrateError     FailType
@@ -61,7 +63,10 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 }
 
 func getColumns(tableDef *chaosTable) []*plugin.Column {
-	var columnVal []*plugin.Column
+	var columns []*plugin.Column = []*plugin.Column{{
+		Name: "id",
+		Type: proto.ColumnType_INT,
+	}}
 	columnCount := tableDef.columnCount
 	if columnCount == 0 {
 		columnCount = defaultColumnCount
@@ -72,7 +77,7 @@ func getColumns(tableDef *chaosTable) []*plugin.Column {
 			Name: columnName,
 			Type: proto.ColumnType_STRING,
 		}
-		columnVal = append(columnVal, item)
+		columns = append(columns, item)
 	}
 	hydrateColumn := &plugin.Column{
 		Name:    "hydrate_column",
@@ -84,12 +89,11 @@ func getColumns(tableDef *chaosTable) []*plugin.Column {
 		Type:      proto.ColumnType_STRING,
 		Transform: t.From(getTransform(tableDef)),
 	}
-	columnVal = append(columnVal, transformColumn)
+	columns = append(columns, transformColumn)
 	if tableDef.hydrateDelay || tableDef.hydrateError == FailError || tableDef.hydrateError == FailPanic {
-		columnVal = append(columnVal, hydrateColumn)
-
+		columns = append(columns, hydrateColumn)
 	}
-	return columnVal
+	return columns
 }
 
 //// item from key ////
@@ -104,14 +108,9 @@ func buildInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 //// list function ////
 
 func getList(tableDef *chaosTable) plugin.HydrateFunc {
+
 	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 		log.Printf("[DEBUG] INSIDE LIST CALL")
-		if tableDef.listError == FailError {
-			return nil, errors.New("LIST ERROR")
-		}
-		if tableDef.listError == FailPanic {
-			panic("LIST PANIC")
-		}
 		if tableDef.listDelay {
 			time.Sleep(delayValue)
 		}
@@ -120,10 +119,27 @@ func getList(tableDef *chaosTable) plugin.HydrateFunc {
 		if rowCount == 0 {
 			rowCount = defaultRowCount
 		}
+		rowsStreamed := 0
 
 		for i := 0; i < rowCount; i++ {
+
+			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", rowsStreamed, tableDef.listErrorRows)
+			if rowsStreamed >= tableDef.listErrorRows {
+				if tableDef.listError == FailError {
+					log.Printf("[DEBUG] LIST ERROR ")
+					return nil, errors.New("LIST ERROR")
+				}
+				if tableDef.listError == FailPanic {
+					panic("LIST PANIC")
+				}
+			}
+
+			log.Printf("[DEBUG] STREAM LIST ITEM")
+
 			item := populateItem(i, d.Table)
 			d.StreamListItem(ctx, item)
+			rowsStreamed++
+
 		}
 		return nil, nil
 	}
@@ -163,8 +179,23 @@ func getHydrate(tableDef *chaosTable) plugin.HydrateFunc {
 	return hydrateColumn
 }
 
+//func hydrateError(rowCount int) func(context.Context, *plugin.QueryData, *plugin.HydrateData) (interface{}, error) {
+//	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+//		panic("NO")
+//		log.Printf("[WARN] hydrateError func rowCount %d row %v", rowCount, h.Item.(map[string]interface{})["id"])
+//		if h.Item.(map[string]interface{})["id"] == rowCount {
+//			return nil, errors.New("HYDRATE ERROR")
+//		}
+//		return map[string]interface{}{}, nil
+//	}
+//}
+
 func hydrateError(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	return nil, errors.New("HYDRATE ERROR")
+	id := h.Item.(map[string]interface{})["id"].(int)
+	if id > 10 {
+		return nil, fmt.Errorf("HYDRATE ERROR %d", id)
+	}
+	return nil, nil
 }
 
 func hydratePanic(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
