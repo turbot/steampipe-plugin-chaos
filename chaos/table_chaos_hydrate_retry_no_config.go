@@ -10,26 +10,26 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
-func getRetryNoConfigTable() *plugin.Table {
+func hydrateRetryNoConfigTable() *plugin.Table {
 	return &plugin.Table{
-		Name:        "chaos_retry_no_config",
-		Description: "Chaos table to test the Hydrate function with Default Retry config in case of non fatal error",
+		Name:        "chaos_hydrate_retry_no_config",
+		Description: "Chaos table to test the Hydrate function with Default Retry config defined at plugin level in case of non fatal error",
 		List: &plugin.ListConfig{
-			Hydrate: getRetryErrorList,
+			Hydrate: hydrateRetryNoConfigErrorList,
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
 			{
 				Name:      "retriable_errors",
 				Type:      proto.ColumnType_STRING,
-				Hydrate:   retryHydrate,
+				Hydrate:   retryHydrateNoConfig,
 				Transform: transform.FromValue(),
 			},
 		},
 	}
 }
 
-func getRetryErrorNoConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func hydrateRetryNoConfigErrorList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[INFO] INSIDE LIST CALL")
 	for i := 0; i < 1; i++ {
 		item := map[string]interface{}{"id": i}
@@ -40,19 +40,19 @@ func getRetryErrorNoConfigList(ctx context.Context, d *plugin.QueryData, h *plug
 
 func retryHydrateNoConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[INFO] INSIDE HYDRATE CALL")
-	var failureCount = 4
+	var failureCount = 2
 
-	mut.Lock()
-	retryError[errorString]++
-	mut.Unlock()
+	hydrateMutex.Lock()
+	retryHydrateError[hydrateErrorString]++
+	hydrateMutex.Unlock()
 
-	errorCount := retryError[errorString]
+	errorCount := retryHydrateError[hydrateErrorString]
 	if errorCount == failureCount {
-		mut.Lock()
-		retryError[errorString] = 0
-		mut.Unlock()
+		hydrateMutex.Lock()
+		retryHydrateError[hydrateErrorString] = 0
+		hydrateMutex.Unlock()
 		return "SUCCESS", nil
 	}
 
-	return nil, errors.New(errorString)
+	return nil, errors.New(hydrateErrorString)
 }
