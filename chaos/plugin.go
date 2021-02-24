@@ -58,6 +58,9 @@ func Plugin(context.Context) *plugin.Plugin {
 			"chaos_get_retry_no_config":          getRetryNoConfigTable(),
 			"chaos_get_should_ignore_config":     getShouldIgnoreConfigTable(),
 			"chaos_get_should_ignore_no_config":  getShouldIgnoreNoConfigTable(),
+			"chaos_list_retry_config":            listRetryConfigTable(),
+			"chaos_list_retry_no_config":         listRetryNoConfigTable(),
+			"chaos_list_should_ignore_config":    listShouldIgnoreConfigTable(),
 		},
 	}
 

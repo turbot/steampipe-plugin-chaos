@@ -55,7 +55,6 @@ func retryGetFunc(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 
 	errorCount := retryGetError[getErrorString]
 	if errorCount == failureCount {
-		log.Printf("[ERROR] IT SHOULD NOT FAIL NOW AS THE ERROR COUNT IS", errorCount)
 		getMutex.Lock()
 		retryGetError[getErrorString] = 0
 		getMutex.Unlock()
