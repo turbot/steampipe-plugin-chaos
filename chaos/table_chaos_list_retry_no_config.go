@@ -3,6 +3,7 @@ package chaos
 import (
 	"context"
 	"errors"
+	"fmt"
 	log "log"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -17,7 +18,7 @@ func listRetryNoConfigTable() *plugin.Table {
 			Hydrate: listRetryNoConfigList,
 		},
 		Columns: []*plugin.Column{
-			{Name: "id", Type: proto.ColumnType_INT},
+			{Name: "retry_column", Type: proto.ColumnType_STRING},
 		},
 	}
 }
@@ -25,22 +26,22 @@ func listRetryNoConfigTable() *plugin.Table {
 func listRetryNoConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[INFO] INSIDE LIST CALL")
 
-	var failureCount = 200
-	for i := 0; i < 5; i++ {
-		listMutex.Lock()
-		retryListError[listErrorString]++
-		listMutex.Unlock()
+	var failureCount = 2
+	listMutex.Lock()
+	errorCount := retryListError[listErrorString]
+	retryListError[listErrorString] = errorCount + 1
+	listMutex.Unlock()
 
-		errorCount := retryListError[listErrorString]
-		if errorCount == failureCount {
-			listMutex.Lock()
-			retryListError[listErrorString] = 0
-			listMutex.Unlock()
-			item := map[string]interface{}{"id": i}
-			d.StreamListItem(ctx, item)
-		}
+	if errorCount < failureCount {
 		return nil, errors.New(listErrorString)
-
+	}
+	listMutex.Lock()
+	retryListError[listErrorString] = 0
+	listMutex.Unlock()
+	for i := 0; i < 5; i++ {
+		columnValue := fmt.Sprintf("%s-%v", "columnValue", i)
+		item := map[string]interface{}{"retry_column": columnValue}
+		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
 }

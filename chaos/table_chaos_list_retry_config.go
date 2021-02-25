@@ -3,6 +3,7 @@ package chaos
 import (
 	"context"
 	"errors"
+	"fmt"
 	log "log"
 	"sync"
 
@@ -25,7 +26,7 @@ func listRetryConfigTable() *plugin.Table {
 			},
 		},
 		Columns: []*plugin.Column{
-			{Name: "id", Type: proto.ColumnType_INT},
+			{Name: "retry_column", Type: proto.ColumnType_STRING},
 		},
 	}
 }
@@ -34,20 +35,22 @@ func listRetryConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 	log.Println("[INFO] INSIDE LIST CALL")
 
 	var failureCount = 2
-	for i := 0; i < 5; i++ {
-		listMutex.Lock()
-		retryListError[listErrorString]++
-		listMutex.Unlock()
-		errorCount := retryListError[listErrorString]
-		if errorCount == failureCount {
-			listMutex.Lock()
-			retryListError[listErrorString] = 0
-			listMutex.Unlock()
-			item := map[string]interface{}{"id": i}
-			d.StreamListItem(ctx, item)
-		}
-		return nil, errors.New(listErrorString)
 
+	listMutex.Lock()
+	errorCount := retryListError[listErrorString]
+	retryListError[listErrorString] = errorCount + 1
+	listMutex.Unlock()
+
+	if errorCount < failureCount {
+		return nil, errors.New(listErrorString)
+	}
+	listMutex.Lock()
+	retryListError[listErrorString] = 0
+	listMutex.Unlock()
+	for i := 0; i < 5; i++ {
+		columnValue := fmt.Sprintf("%s-%v", "columnValue", i)
+		item := map[string]interface{}{"retry_column": columnValue}
+		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
 }
