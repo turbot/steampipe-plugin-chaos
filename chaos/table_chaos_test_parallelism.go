@@ -2,7 +2,6 @@ package chaos
 
 import (
 	"context"
-	"log"
 	"sync"
 	"time"
 
@@ -65,7 +64,6 @@ func getTestParallelismTable() *plugin.Table {
 }
 
 func getParallelList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE LIST CALL")
 	for i := 0; i < 100; i++ {
 		item := map[string]interface{}{"id": i}
 		d.StreamListItem(ctx, item)
@@ -74,22 +72,17 @@ func getParallelList(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 }
 
 func hydrateCallA(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE CALL A")
 	count, _ := doHydrateCall("a")
-
 	return count, nil
 }
 
 func hydrateCallB(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE CALL B")
 	count, _ := doHydrateCall("b")
-
 	return count, nil
 }
 
 func hydrateCallC(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	count, _ := doHydrateCall("c")
-
 	return count, nil
 }
 
@@ -100,7 +93,6 @@ func hydrateCallD(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 }
 
 func hydrateCallTotal(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE CALL C")
 	_, totalCount := doHydrateCall("hydrate calls total")
 
 	return totalCount, nil
@@ -109,7 +101,6 @@ func hydrateCallTotal(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 // increment hydrate count for this name, do some work(sleep), decrement hydrate count
 // return number of instances of this hydrate function running, and total number of hydrate calls running
 func doHydrateCall(name string) (int, int) {
-	log.Println("[WARN] INSIDE DO HYDRATE")
 	mutex.Lock()
 	hydrateCount[name] = hydrateCount[name] + 1
 	callsForThisHydrate := hydrateCount[name]
