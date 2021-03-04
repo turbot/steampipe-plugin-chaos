@@ -17,9 +17,12 @@ import (
 type FailType string
 
 const (
-	FailNone  FailType = "None"
-	FailError          = "Error"
-	FailPanic          = "Panic"
+	FailNone       FailType = "None"
+	FailError               = "Error"
+	FailPanic               = "Panic"
+	FatalError              = "Fatal"
+	RetryableError          = "retriableError"
+	IgnorableError          = "ResourceNotFound"
 )
 
 type chaosTable struct {
@@ -38,6 +41,7 @@ type chaosTable struct {
 	itemFromKeyError FailType
 	transformError   FailType
 	transformDelay   bool
+	errorType        FailType
 }
 
 const columnPrefix = "column_"

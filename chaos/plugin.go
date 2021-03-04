@@ -41,7 +41,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_transform_panic":              buildTable(&chaosTable{name: "chaos_transform_panic", description: "Chaos table to test panicking Transform function", transformError: FailPanic}),
 			"chaos_transform_delay":              buildTable(&chaosTable{name: "chaos_transform_delay", description: "Chaos table to test delay in in Transform function", transformDelay: true}),
 			"chaos_get_test":                     getTestTable(),
-      "chaos_multi_region":                 multiRegionTable(),
+			"chaos_multi_region":                 multiRegionTable(),
 			"chaos_all_column_types":             allColumnsTable(),
 			"chaos_hydrate_columns_dependency":   hydrateColumnsTable(),
 			"chaos_parent_child_dependency":      parentChildTable(),
@@ -63,6 +63,8 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_list_retry_no_config":         listRetryNoConfigTable(),
 			"chaos_list_should_ignore_config":    listShouldIgnoreConfigTable(),
 			"chaos_list_retry_partial":           listRetryPartialTable(),
+			"chaos_list_parent_retry_config":     listParentRetryTable(),
+			"chaos_list_child_retry_config":      listChildRetryTable(),
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,

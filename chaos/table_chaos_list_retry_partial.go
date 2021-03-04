@@ -12,7 +12,7 @@ import (
 func listRetryPartialTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_list_retry_partial",
-		Description: "Chaos table to test the List function with Retry config in case of non fatal error",
+		Description: "Chaos table to test the retry error handling in List function where list function throws an error after streaming object partially",
 		List: &plugin.ListConfig{
 			Hydrate: listRetryPartialList,
 		},
@@ -25,14 +25,6 @@ func listRetryPartialTable() *plugin.Table {
 func listRetryPartialList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 
 	var successfulItemCount = 2
-	listMutex.Lock()
-	errorCount := retryListError[listErrorString]
-	retryListError[listErrorString] = errorCount + 1
-	listMutex.Unlock()
-
-	listMutex.Lock()
-	retryListError[listErrorString] = 0
-	listMutex.Unlock()
 	for i := 0; i < successfulItemCount; i++ {
 		columnValue := fmt.Sprintf("%s-%v", "columnValue", i)
 		item := map[string]interface{}{"retry_column": columnValue}

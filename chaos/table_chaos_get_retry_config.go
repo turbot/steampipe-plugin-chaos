@@ -46,8 +46,7 @@ func getRetryList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 
 func retryGetFunc(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.KeyColumnQuals["id"].GetInt64Value()
-	log.Println("[INFO] INSIDE GET CALL")
-	var failureCount = 2
+	var failureCount = 200
 
 	getMutex.Lock()
 	retryGetError[getErrorString]++

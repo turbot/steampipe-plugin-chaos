@@ -13,7 +13,7 @@ import (
 func listRetryNoConfigTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_list_retry_no_config",
-		Description: "Chaos table to test the List function with Retry config in case of non fatal error",
+		Description: "Chaos table to test the List function with the default retry config at plugin level in case of non fatal error",
 		List: &plugin.ListConfig{
 			Hydrate: listRetryNoConfigList,
 		},
@@ -26,7 +26,7 @@ func listRetryNoConfigTable() *plugin.Table {
 func listRetryNoConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[INFO] INSIDE LIST CALL")
 
-	var failureCount = 2
+	var failureCount = 200
 	listMutex.Lock()
 	errorCount := retryListError[listErrorString]
 	retryListError[listErrorString] = errorCount + 1

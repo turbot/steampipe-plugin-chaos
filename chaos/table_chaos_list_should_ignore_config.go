@@ -14,7 +14,7 @@ func listShouldIgnoreConfigTable() *plugin.Table {
 		Name:        "chaos_list_should_ignore_config",
 		Description: "Chaos table to test the List function with Should Ignore Error defined in the Hydrate config",
 		List: &plugin.ListConfig{
-			Hydrate:           listShouldIgnoreConfigList,
+			Hydrate: listShouldIgnoreConfigList,
 			ShouldIgnoreError: shouldIgnoreError,
 		},
 		Columns: []*plugin.Column{
