@@ -15,33 +15,45 @@ import (
 )
 
 type FailType string
+type FailureLevel string
 
 const (
 	FailNone       FailType = "None"
 	FailError               = "Error"
 	FailPanic               = "Panic"
-	FatalError              = "Fatal"
+	FatalError              = "fatalError"
 	RetryableError          = "retriableError"
 	IgnorableError          = "ResourceNotFound"
 )
 
 type chaosTable struct {
-	name        string
-	description string
-	columnCount int
-	getError    FailType
-	getDelay    bool
-	listError   FailType
-	// the number of rows returned before a list error/hydrate error is raised
-	listErrorRows    int
-	listDelay        bool
-	rowCount         int
+	listConfig       *listConfig
+	getConfig        *getConfig
+	name             string
+	description      string
+	columnCount      int
 	hydrateError     FailType
 	hydrateDelay     bool
 	itemFromKeyError FailType
 	transformError   FailType
 	transformDelay   bool
 	errorType        FailType
+}
+
+type listConfig struct {
+	listError FailType
+	// the number of rows returned before a list error/hydrate error is raised
+	listErrorRows int
+	listDelay     bool
+	rowCount      int
+	failureLevel  FailureLevel
+	retryCount    int
+}
+
+type getConfig struct {
+	getError  FailType
+	getDelay  bool
+	errorType FailType
 }
 
 const columnPrefix = "column_"
@@ -54,12 +66,12 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 		Name:        tableDef.name,
 		Description: tableDef.description,
 		List: &plugin.ListConfig{
-			Hydrate: getList(tableDef),
+			Hydrate: getList(tableDef.listConfig),
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns:  plugin.SingleColumn(columnPrefix + "0"),
 			ItemFromKey: buildInputKey,
-			Hydrate:     getGet(tableDef),
+			Hydrate:     getGet(tableDef.getConfig),
 		},
 		Columns: getColumns(tableDef),
 	}
@@ -111,15 +123,15 @@ func buildInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateDa
 
 //// list function ////
 
-func getList(tableDef *chaosTable) plugin.HydrateFunc {
+func getList(listConfig *listConfig) plugin.HydrateFunc {
 
 	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 		log.Printf("[DEBUG] INSIDE LIST CALL")
-		if tableDef.listDelay {
+		if listConfig.listDelay {
 			time.Sleep(delayValue)
 		}
 
-		rowCount := tableDef.rowCount
+		rowCount := listConfig.rowCount
 		if rowCount == 0 {
 			rowCount = defaultRowCount
 		}
@@ -127,14 +139,33 @@ func getList(tableDef *chaosTable) plugin.HydrateFunc {
 
 		for i := 0; i < rowCount; i++ {
 
-			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", rowsStreamed, tableDef.listErrorRows)
-			if rowsStreamed >= tableDef.listErrorRows {
-				if tableDef.listError == FailError {
-					log.Printf("[DEBUG] LIST ERROR ")
-					return nil, errors.New("LIST ERROR")
+			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", rowsStreamed, listConfig.listErrorRows)
+			if rowsStreamed >= listConfig.listErrorRows {
+				if listConfig.listError == RetryableError {
+
+					listMutex.Lock()
+					errorCount := retryListError[listErrorString]
+					retryListError[listErrorString] = errorCount + 1
+					listMutex.Unlock()
+
+					log.Printf("[WARN] VALUE OF ERROR COUNT ======> %v", errorCount)
+					if errorCount < listConfig.retryCount {
+						log.Printf("[WARN] TRYING FOR THE %v TIME", errorCount)
+						return nil, errors.New(RetryableError)
+					}
+					log.Printf("[WARN] NOT THROWING ERROR NOW")
+					item := populateItem(i, d.Table)
+					d.StreamListItem(ctx, item)
 				}
-				if tableDef.listError == FailPanic {
-					panic("LIST PANIC")
+				if listConfig.listError == IgnorableError {
+					return nil, errors.New(IgnorableError)
+				}
+				if listConfig.listError == FailError {
+					log.Printf("[DEBUG] LIST ERROR ")
+					return nil, errors.New(FatalError)
+				}
+				if listConfig.listError == FailPanic {
+					panic(FailPanic)
 				}
 			}
 
@@ -150,16 +181,19 @@ func getList(tableDef *chaosTable) plugin.HydrateFunc {
 }
 
 /// get the 'Get' hydrate function ///
-func getGet(tableDef *chaosTable) plugin.HydrateFunc {
+func getGet(getConfig *getConfig) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 		log.Printf("[DEBUG] INSIDE GET CALL")
-		if tableDef.getError == FailError {
-			return nil, errors.New("GET ERROR")
+		if getConfig.getError == RetryableError {
+			return nil, errors.New(RetryableError)
 		}
-		if tableDef.getError == FailPanic {
+		if getConfig.getError == FailError {
+			return nil, errors.New(FatalError)
+		}
+		if getConfig.getError == FailPanic {
 			panic("GET PANIC")
 		}
-		if tableDef.getDelay {
+		if getConfig.getDelay {
 			time.Sleep(delayValue)
 		}
 		item := h.Item.(string)
