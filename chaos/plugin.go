@@ -42,6 +42,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_parallel_hydrate_test":      getTestParallelismTable(),
 			"chaos_concurrency_limit":          getConcurrencyLimitTable(),
 			"chaos_concurrency_no_limit":       getConcurrencyNoLimitTable(),
+			"chaos_list_paging":                listPagingTable(),
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
