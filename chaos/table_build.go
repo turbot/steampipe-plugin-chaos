@@ -7,6 +7,7 @@ import (
 	log "log"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -16,6 +17,10 @@ import (
 
 type FailType string
 type FailureLevel string
+
+var retryListError = map[string]int{}
+var listErrorString = "retriableError"
+var listMutex = &sync.Mutex{}
 
 const (
 	FailNone       FailType = "None"
@@ -142,34 +147,31 @@ func getList(listConfig *listConfig) plugin.HydrateFunc {
 			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", rowsStreamed, listConfig.listErrorRows)
 			if rowsStreamed >= listConfig.listErrorRows {
 				if listConfig.listError == RetryableError {
-
 					listMutex.Lock()
-					errorCount := retryListError[listErrorString]
-					retryListError[listErrorString] = errorCount + 1
+					errorCount := 0
+					errorCount++
 					listMutex.Unlock()
+					log.Printf("[ERROR] ERROR COUNT=========%v", errorCount)
 
-					log.Printf("[WARN] VALUE OF ERROR COUNT ======> %v", errorCount)
 					if errorCount < listConfig.retryCount {
-						log.Printf("[WARN] TRYING FOR THE %v TIME", errorCount)
+						log.Printf("[ERROR] ERROR COUNT is %v SO IT SHOULD FAIL", errorCount)
 						return nil, errors.New(RetryableError)
 					}
-					log.Printf("[WARN] NOT THROWING ERROR NOW")
-					item := populateItem(i, d.Table)
-					d.StreamListItem(ctx, item)
+					listMutex.Lock()
+					errorCount = 0
+					listMutex.Unlock()
 				}
+
 				if listConfig.listError == IgnorableError {
 					return nil, errors.New(IgnorableError)
 				}
 				if listConfig.listError == FailError {
-					log.Printf("[DEBUG] LIST ERROR ")
 					return nil, errors.New(FatalError)
 				}
 				if listConfig.listError == FailPanic {
 					panic(FailPanic)
 				}
 			}
-
-			log.Printf("[DEBUG] STREAM LIST ITEM")
 
 			item := populateItem(i, d.Table)
 			d.StreamListItem(ctx, item)
