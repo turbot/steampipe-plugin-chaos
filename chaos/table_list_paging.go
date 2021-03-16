@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"sync"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -26,16 +25,13 @@ type ListResponse struct {
 }
 
 // paging is 0 based, ranging from 0 to 4
-var MaxPage = 5
+var maxPages = 5
 var noMorePages = -1
 
 // the number of times the function should fail/retry
-var failureCount = 200
-
+var failureCount = 5
+var errorCount = 0
 var errorAfterPages = 3
-var retryListError = map[string]int{}
-var listErrorString = "retriableError"
-var listMutex = &sync.Mutex{}
 
 func listPagingTable() *plugin.Table {
 	return &plugin.Table{
@@ -56,6 +52,7 @@ func listPagingTable() *plugin.Table {
 func listPagingFunction(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	nextPage := 0
 
+	// define function to fetch a page of data - we will pass this to the sdk RetryHydrate call
 	listPage := func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 		items, resp, err := getPage(nextPage)
 		return ListResponse{
@@ -65,9 +62,10 @@ func listPagingFunction(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	}
 
 	for {
-		listResponse, err := plugin.RetryHydrate(ctx, d, h, listPage, &plugin.RetryConfig{shouldRetryError})
-		items := listResponse.(ListResponse).Items
-		resp := listResponse.(ListResponse).Resp
+		retryResp, err := plugin.RetryHydrate(ctx, d, h, listPage, &plugin.RetryConfig{shouldRetryError})
+		listResponse := retryResp.(ListResponse)
+		items := listResponse.Items
+		resp := listResponse.Resp
 
 		if err != nil {
 			return nil, err
@@ -85,30 +83,23 @@ func listPagingFunction(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 
 // This is a proxy of the API function to fetch the results
 func getPage(pageNumber int) ([]Item, *PagingResponse, error) {
-	listMutex.Lock()
-	errorCount := retryListError[listErrorString]
-	retryListError[listErrorString] = errorCount + 1
-	listMutex.Unlock()
 
-	if errorCount < failureCount {
-		if pageNumber == errorAfterPages {
-			return nil, nil, errors.New(listErrorString)
-		}
-	}
-
-	listMutex.Lock()
-	retryListError[listErrorString] = 0
-	listMutex.Unlock()
-
-	if pageNumber == MaxPage {
+	if pageNumber == maxPages {
 		return nil, nil, errors.New("invalid page")
 	}
+
+	// after returning 3 pages, fail 5 times to return the next page before succeeding on the 6th attempt
+	if pageNumber == errorAfterPages && errorCount < failureCount {
+		errorCount++
+		return nil, nil, errors.New(retriableError)
+	}
+
 	var items []Item
 	for i := 0; i < 10; i++ {
 		items = append(items, Item{Id: fmt.Sprintf("%d_%d", pageNumber, i), Page: pageNumber})
 	}
 	nextPage := pageNumber + 1
-	if nextPage == MaxPage {
+	if nextPage == maxPages {
 		nextPage = noMorePages
 	}
 	response := PagingResponse{NextPage: nextPage}
