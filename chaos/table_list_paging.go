@@ -4,34 +4,44 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"log"
+	"sync"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
-type APIResult struct {
-	Item     *[]Item
-	response *pagingResponse
-}
-
 type Item struct {
-	id   string
-	page int
+	Id   string
+	Page int
 }
 
-type pagingResponse struct {
+type PagingResponse struct {
 	NextPage int
+}
+
+type ListResponse struct {
+	Items []Item
+	Resp  *PagingResponse
 }
 
 // paging is 0 based, ranging from 0 to 4
 var MaxPage = 5
 var noMorePages = -1
 
+// the number of times the function should fail/retry
+var failureCount = 200
+
+var errorAfterPages = 3
+var retryListError = map[string]int{}
+var listErrorString = "retriableError"
+var listMutex = &sync.Mutex{}
+
 func listPagingTable() *plugin.Table {
 	return &plugin.Table{
-		Name:        "chaos_list_paging",
-		Description: "Chaos table to test the default transform functionality from specified json tags",
+		Name:             "chaos_list_paging",
+		Description:      "Chaos table to test the list function supporting pagination fails to send results after some pages with a non fatal error",
+		DefaultTransform: transform.FromCamel(),
 		List: &plugin.ListConfig{
 			Hydrate: listPagingFunction,
 		},
@@ -45,14 +55,25 @@ func listPagingTable() *plugin.Table {
 
 func listPagingFunction(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	nextPage := 0
-	for {
+
+	listPage := func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 		items, resp, err := getPage(nextPage)
+		return ListResponse{
+			Items: items,
+			Resp:  resp,
+		}, err
+	}
+
+	for {
+		listResponse, err := plugin.RetryHydrate(ctx, d, h, listPage, &plugin.RetryConfig{shouldRetryError})
+		items := listResponse.(ListResponse).Items
+		resp := listResponse.(ListResponse).Resp
+
 		if err != nil {
 			return nil, err
 		}
 
 		for _, i := range items {
-			log.Printf("[ERROR] ITEM VALUES======> %v", i)
 			d.StreamListItem(ctx, i)
 		}
 		if nextPage = resp.NextPage; nextPage == noMorePages {
@@ -63,19 +84,34 @@ func listPagingFunction(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 }
 
 // This is a proxy of the API function to fetch the results
-func getPage(pageNumber int) ([]Item, *pagingResponse, error) {
+func getPage(pageNumber int) ([]Item, *PagingResponse, error) {
+	listMutex.Lock()
+	errorCount := retryListError[listErrorString]
+	retryListError[listErrorString] = errorCount + 1
+	listMutex.Unlock()
+
+	if errorCount < failureCount {
+		if pageNumber == errorAfterPages {
+			return nil, nil, errors.New(listErrorString)
+		}
+	}
+
+	listMutex.Lock()
+	retryListError[listErrorString] = 0
+	listMutex.Unlock()
+
 	if pageNumber == MaxPage {
 		return nil, nil, errors.New("invalid page")
 	}
 	var items []Item
-	for i := 0; i < 100; i++ {
-		items = append(items, Item{id: fmt.Sprintf("%d_%d", pageNumber, i), page: pageNumber})
+	for i := 0; i < 10; i++ {
+		items = append(items, Item{Id: fmt.Sprintf("%d_%d", pageNumber, i), Page: pageNumber})
 	}
 	nextPage := pageNumber + 1
 	if nextPage == MaxPage {
 		nextPage = noMorePages
 	}
-	response := pagingResponse{NextPage: nextPage}
+	response := PagingResponse{NextPage: nextPage}
 
 	return items, &response, nil
 
