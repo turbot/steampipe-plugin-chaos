@@ -2,12 +2,26 @@ package chaos
 
 import (
 	"context"
+	"errors"
+	log "log"
+	"time"
 
 	"github.com/turbot/go-kit/helpers"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
+
+type listConfig struct {
+	listError FailType
+	// the number of rows returned before a list error/hydrate error is raised
+	listErrorRows int
+	listDelay     bool
+	rowCount      int
+	failureCount  int
+}
+
+var listTableErrorCount = 0
 
 func buildChaosListTable(tableDef *chaosTable) *plugin.Table {
 	return &plugin.Table{
@@ -73,4 +87,55 @@ func chaosListList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 		return getList(listConfig)(ctx, d, h)
 	}
 	return nil, nil
+}
+
+//// list function ////
+
+func getList(listConfig *listConfig) plugin.HydrateFunc {
+
+	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+		log.Printf("[DEBUG] INSIDE LIST CALL")
+		// if listDelay is specified, sleep
+		if listConfig.listDelay {
+			time.Sleep(delayValue)
+		}
+
+		// rowCount is the number of rows to return
+		rowCount := listConfig.rowCount
+		if rowCount == 0 {
+			rowCount = defaultRowCount
+		}
+		log.Printf("[WARN] THE NUMBER OF ROWS ====>%v", rowCount)
+
+		for i := 0; i < rowCount; i++ {
+
+			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", i, listConfig.listErrorRows)
+			// listErrorRows is the number of rows to return successfully before raising an error
+			// if we stream that many rows, let's raise an error
+			if i == listConfig.listErrorRows {
+				switch listConfig.listError {
+				case RetryableError:
+					// failureCount is the number of times the error occurs before we succeed
+					if listTableErrorCount <= listConfig.failureCount {
+						listTableErrorCount++
+						return nil, errors.New(RetryableError)
+					}
+					// if we have failed 'failureCount' times, reset listTableErrorCount and fall through to return item
+					listTableErrorCount = 0
+				case IgnorableError:
+					return nil, errors.New(IgnorableError)
+				case FailError:
+					return nil, errors.New(FatalError)
+				case FailPanic:
+					panic(FailPanic)
+
+				}
+
+			}
+			item := populateItem(i, d.Table)
+			d.StreamListItem(ctx, item)
+
+		}
+		return nil, nil
+	}
 }

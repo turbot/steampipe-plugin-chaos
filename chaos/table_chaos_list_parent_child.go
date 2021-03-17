@@ -11,6 +11,8 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
 
+var parentChildListTableErrorCount = 0
+
 func listRetryTableBuild(tableDef *chaosTable) *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_list_parent_child",
@@ -54,11 +56,11 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return getList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_retryable_error") {
-		listConfig := &listConfig{listError: RetryableError}
+		listConfig := &listConfig{listError: RetryableError, rowCount: 10, failureCount: 5}
 		return getList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_retryable_error_after_streaming") {
-		listConfig := &listConfig{listError: RetryableError, rowCount: 15, listErrorRows: 5}
+		listConfig := &listConfig{listError: RetryableError, rowCount: 15, listErrorRows: 5, failureCount: 200}
 		return getList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_should_ignore_error") {
@@ -86,11 +88,11 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return getChildList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_retryable_error") {
-		listConfig := &listConfig{listError: RetryableError}
+		listConfig := &listConfig{listError: RetryableError, rowCount: 10, failureCount: 200}
 		return getChildList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_retryable_error_after_streaming") {
-		listConfig := &listConfig{listError: RetryableError, rowCount: 15, listErrorRows: 5}
+		listConfig := &listConfig{listError: RetryableError, rowCount: 10, failureCount: 5}
 		return getChildList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_should_ignore_error") {
@@ -114,40 +116,48 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 
 func getChildList(listConfig *listConfig) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+		log.Printf("[DEBUG] INSIDE LIST CALL")
+		// if listDelay is specified, sleep
 		if listConfig.listDelay {
 			time.Sleep(delayValue)
 		}
 
+		// rowCount is the number of rows to return
 		rowCount := listConfig.rowCount
 		if rowCount == 0 {
 			rowCount = defaultRowCount
 		}
-		rowsStreamed := 0
+		log.Printf("[WARN] THE NUMBER OF ROWS ====>%v", rowCount)
 
 		for i := 0; i < rowCount; i++ {
 
-			log.Printf("[WARN] ROW LOOP streamed %d error limit %d", rowsStreamed, listConfig.listErrorRows)
-			if rowsStreamed >= listConfig.listErrorRows {
-				if listConfig.listError == RetryableError {
-					return nil, errors.New(RetryableError)
-				}
-				if listConfig.listError == IgnorableError {
+			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", i, listConfig.listErrorRows)
+			// listErrorRows is the number of rows to return successfully before raising an error
+			// if we stream that many rows, let's raise an error
+			if i == listConfig.listErrorRows {
+				switch listConfig.listError {
+				case RetryableError:
+					// failureCount is the number of times the error occurs before we succeed
+					if parentChildListTableErrorCount <= listConfig.failureCount {
+						parentChildListTableErrorCount++
+						return nil, errors.New(RetryableError)
+					}
+					// if we have failed 'failureCount' times, reset listTableErrorCount and fall through to return item
+					listTableErrorCount = 0
+				case IgnorableError:
 					return nil, errors.New(IgnorableError)
-				}
-				if listConfig.listError == FailError {
+				case FailError:
 					return nil, errors.New(FatalError)
-				}
-				if listConfig.listError == FailPanic {
+				case FailPanic:
 					panic(FailPanic)
-				}
-			}
 
+				}
+
+			}
 			item := populateItem(i, d.Table)
 			d.StreamLeafListItem(ctx, item)
-			rowsStreamed++
 
 		}
 		return nil, nil
 	}
 }
-
