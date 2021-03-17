@@ -45,11 +45,11 @@ func chaosListList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 		return getList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error") {
-		listConfig := &listConfig{listError: RetryableError, rowCount: 5, retryCount: 5}
+		listConfig := &listConfig{listError: RetryableError, rowCount: 10, failureCount: 5}
 		return getList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error_after_streaming") {
-		listConfig := &listConfig{listError: RetryableError, rowCount: 5, listErrorRows: 5, retryCount: 200}
+		listConfig := &listConfig{listError: RetryableError, rowCount: 10, listErrorRows: 5, failureCount: 200}
 		return getList(listConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "should_ignore_error") {

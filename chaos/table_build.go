@@ -7,7 +7,6 @@ import (
 	log "log"
 	"strconv"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -16,11 +15,6 @@ import (
 )
 
 type FailType string
-type FailureLevel string
-
-var retryListError = map[string]int{}
-var listErrorString = "retriableError"
-var listMutex = &sync.Mutex{}
 
 const (
 	FailNone       FailType = "None"
@@ -51,8 +45,7 @@ type listConfig struct {
 	listErrorRows int
 	listDelay     bool
 	rowCount      int
-	failureLevel  FailureLevel
-	retryCount    int
+	failureCount  int
 }
 
 type getConfig struct {
@@ -65,6 +58,8 @@ const columnPrefix = "column_"
 const defaultColumnCount = 10
 const defaultRowCount = 10
 const delayValue = 5 * time.Second
+
+var errorCount = 0
 
 func buildTable(tableDef *chaosTable) *plugin.Table {
 	return &plugin.Table{
@@ -140,26 +135,15 @@ func getList(listConfig *listConfig) plugin.HydrateFunc {
 		if rowCount == 0 {
 			rowCount = defaultRowCount
 		}
-		rowsStreamed := 0
 
 		for i := 0; i < rowCount; i++ {
 
-			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", rowsStreamed, listConfig.listErrorRows)
-			if rowsStreamed >= listConfig.listErrorRows {
-				if listConfig.listError == RetryableError {
-					listMutex.Lock()
-					errorCount := 0
-					errorCount++
-					listMutex.Unlock()
-					log.Printf("[ERROR] ERROR COUNT=========%v", errorCount)
+			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", i, listConfig.listErrorRows)
+			if i == listConfig.listErrorRows {
 
-					if errorCount < listConfig.retryCount {
-						log.Printf("[ERROR] ERROR COUNT is %v SO IT SHOULD FAIL", errorCount)
-						return nil, errors.New(RetryableError)
-					}
-					listMutex.Lock()
-					errorCount = 0
-					listMutex.Unlock()
+				if listConfig.listError == RetryableError && errorCount <= listConfig.failureCount {
+					errorCount++
+					return nil, errors.New(RetryableError)
 				}
 
 				if listConfig.listError == IgnorableError {
@@ -175,7 +159,6 @@ func getList(listConfig *listConfig) plugin.HydrateFunc {
 
 			item := populateItem(i, d.Table)
 			d.StreamListItem(ctx, item)
-			rowsStreamed++
 
 		}
 		return nil, nil
