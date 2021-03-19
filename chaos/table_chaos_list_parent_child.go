@@ -3,7 +3,7 @@ package chaos
 import (
 	"context"
 	"errors"
-	log "log"
+	"log"
 	"time"
 
 	"github.com/turbot/go-kit/helpers"
@@ -116,7 +116,6 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 
 func getChildList(listConfig *listConfig) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-		log.Printf("[DEBUG] INSIDE LIST CALL")
 		// if listDelay is specified, sleep
 		if listConfig.listDelay {
 			time.Sleep(delayValue)
@@ -127,7 +126,6 @@ func getChildList(listConfig *listConfig) plugin.HydrateFunc {
 		if rowCount == 0 {
 			rowCount = defaultRowCount
 		}
-		log.Printf("[WARN] THE NUMBER OF ROWS ====>%v", rowCount)
 
 		for i := 0; i < rowCount; i++ {
 

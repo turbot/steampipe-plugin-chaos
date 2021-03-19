@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	log "log"
 	"strconv"
 	"strings"
 	"time"
@@ -58,9 +57,8 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 			Hydrate: getList(tableDef.listConfig),
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns:  plugin.SingleColumn(columnPrefix + "0"),
-			ItemFromKey: buildInputKey,
-			Hydrate:     getGet(tableDef.getConfig),
+			KeyColumns: plugin.SingleColumn(columnPrefix + "0"),
+			Hydrate:    getGet(tableDef.getConfig),
 		},
 		Columns: getColumns(tableDef),
 	}
@@ -101,19 +99,9 @@ func getColumns(tableDef *chaosTable) []*plugin.Column {
 	return columns
 }
 
-//// item from key ////
-
-func buildInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	quals := d.KeyColumnQuals
-	keyInput := quals["column_0"].GetStringValue()
-	item := keyInput
-	return item, nil
-}
-
 /// get the 'Get' hydrate function ///
 func getGet(getConfig *getConfig) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-		log.Printf("[DEBUG] INSIDE GET CALL")
 		if getConfig.getError == RetryableError {
 			return nil, errors.New(RetryableError)
 		}
@@ -146,17 +134,6 @@ func getHydrate(tableDef *chaosTable) plugin.HydrateFunc {
 	}
 	return hydrateColumn
 }
-
-//func hydrateError(rowCount int) func(context.Context, *plugin.QueryData, *plugin.HydrateData) (interface{}, error) {
-//	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-//		panic("NO")
-//		log.Printf("[WARN] hydrateError func rowCount %d row %v", rowCount, h.Item.(map[string]interface{})["id"])
-//		if h.Item.(map[string]interface{})["id"] == rowCount {
-//			return nil, errors.New("HYDRATE ERROR")
-//		}
-//		return map[string]interface{}{}, nil
-//	}
-//}
 
 func hydrateError(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := h.Item.(map[string]interface{})["id"].(int)

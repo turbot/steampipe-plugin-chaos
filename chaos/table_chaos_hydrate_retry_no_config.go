@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"errors"
-	log "log"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -30,7 +29,6 @@ func hydrateRetryNoConfigTable() *plugin.Table {
 }
 
 func hydrateRetryNoConfigErrorList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE LIST CALL")
 	for i := 0; i < 1; i++ {
 		item := map[string]interface{}{"id": i}
 		d.StreamListItem(ctx, item)
@@ -39,7 +37,6 @@ func hydrateRetryNoConfigErrorList(ctx context.Context, d *plugin.QueryData, h *
 }
 
 func retryHydrateNoConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE HYDRATE CALL")
 	var failureCount = 2
 
 	hydrateMutex.Lock()

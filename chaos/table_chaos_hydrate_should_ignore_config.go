@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"errors"
-	log "log"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -43,7 +42,6 @@ func hydrateShouldIgnoreConfigTable() *plugin.Table {
 }
 
 func hydrateShouldIgnoreConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE LIST CALL")
 	for i := 0; i < 1; i++ {
 		item := map[string]interface{}{"id": i}
 		d.StreamListItem(ctx, item)
@@ -52,13 +50,11 @@ func hydrateShouldIgnoreConfigList(ctx context.Context, d *plugin.QueryData, h *
 }
 
 func shouldIgnoreConfigHydrateA(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE HYDRATE CALL")
 
 	return nil, errors.New(notFoundError)
 }
 
 func shouldIgnoreConfigHydrateB(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE HYDRATE CALL")
 
 	return nil, errors.New(notFoundError)
 }

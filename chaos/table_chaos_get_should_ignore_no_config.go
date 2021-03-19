@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"errors"
-	log "log"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -28,7 +27,6 @@ func getShouldIgnoreNoConfigTable() *plugin.Table {
 }
 
 func shouldIgnoreListNoConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE LIST CALL")
 	for i := 0; i < 5; i++ {
 		item := map[string]interface{}{"id": i, "should_ignore_error": "SUCCESS"}
 		d.StreamListItem(ctx, item)
@@ -37,7 +35,5 @@ func shouldIgnoreListNoConfig(ctx context.Context, d *plugin.QueryData, h *plugi
 }
 
 func shouldIgnoreGetNoConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE GET CALL")
-
 	return nil, errors.New(notFoundError)
 }

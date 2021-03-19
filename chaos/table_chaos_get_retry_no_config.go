@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"errors"
-	log "log"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -28,7 +27,6 @@ func getRetryNoConfigTable() *plugin.Table {
 }
 
 func getRetryNoConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[INFO] INSIDE LIST CALL")
 	for i := 0; i < 5; i++ {
 		item := map[string]interface{}{"id": i, "retriable_error": "SUCCESS"}
 		d.StreamListItem(ctx, item)
@@ -38,7 +36,6 @@ func getRetryNoConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 
 func getRetryNoConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.KeyColumnQuals["id"].GetInt64Value()
-	log.Println("[INFO] INSIDE GET CALL")
 	var failureCount = 2
 
 	getMutex.Lock()
