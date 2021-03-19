@@ -40,5 +40,5 @@ func shouldIgnoreListConfig(ctx context.Context, d *plugin.QueryData, h *plugin.
 func shouldIgnoreGetConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[INFO] INSIDE GET CALL")
 
-	return nil, errors.New("ResourceNotFound")
+	return nil, errors.New(notFoundError)
 }

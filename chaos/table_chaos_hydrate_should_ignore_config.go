@@ -54,11 +54,11 @@ func hydrateShouldIgnoreConfigList(ctx context.Context, d *plugin.QueryData, h *
 func shouldIgnoreConfigHydrateA(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[INFO] INSIDE HYDRATE CALL")
 
-	return nil, errors.New("ResourceNotFound")
+	return nil, errors.New(notFoundError)
 }
 
 func shouldIgnoreConfigHydrateB(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Println("[INFO] INSIDE HYDRATE CALL")
 
-	return nil, errors.New("ResourceNotFound")
+	return nil, errors.New(notFoundError)
 }

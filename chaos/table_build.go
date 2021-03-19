@@ -22,7 +22,7 @@ const (
 	FailPanic               = "Panic"
 	FatalError              = "fatalError"
 	RetryableError          = "retriableError"
-	IgnorableError          = "ResourceNotFound"
+	IgnorableError          = "resourceNotFound"
 )
 
 type chaosTable struct {
