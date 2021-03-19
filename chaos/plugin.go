@@ -58,6 +58,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_get_retry_no_config":          getRetryNoConfigTable(),
 			"chaos_get_should_ignore_config":     getShouldIgnoreConfigTable(),
 			"chaos_get_should_ignore_no_config":  getShouldIgnoreNoConfigTable(),
+			"chaos_list_paging":                  listPagingTable(),
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,

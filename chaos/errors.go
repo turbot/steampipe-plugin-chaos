@@ -1,7 +1,7 @@
 package chaos
 
 var retriableError = "retriableError"
-var notFoundError = "ResourceNotFound"
+var notFoundError = "resourceNotFound"
 
 func shouldRetryError(err error) bool {
 	return err.Error() == retriableError
