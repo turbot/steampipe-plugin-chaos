@@ -13,7 +13,7 @@ require (
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/turbot/steampipe-plugin-sdk v0.2.1
+	github.com/turbot/steampipe-plugin-sdk v0.2.0-rc.1.0.20210316221405-d53fd9191bf4
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	golang.org/x/text v0.3.5 // indirect
