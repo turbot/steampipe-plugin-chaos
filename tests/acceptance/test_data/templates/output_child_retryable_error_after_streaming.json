@@ -1,0 +1,32 @@
+[
+ {
+  "child_retryable_error_after_streaming": true
+ },
+ {
+  "child_retryable_error_after_streaming": false
+ },
+ {
+  "child_retryable_error_after_streaming": true
+ },
+ {
+  "child_retryable_error_after_streaming": false
+ },
+ {
+  "child_retryable_error_after_streaming": true
+ },
+ {
+  "child_retryable_error_after_streaming": false
+ },
+ {
+  "child_retryable_error_after_streaming": true
+ },
+ {
+  "child_retryable_error_after_streaming": false
+ },
+ {
+  "child_retryable_error_after_streaming": true
+ },
+ {
+  "child_retryable_error_after_streaming": false
+ }
+]

@@ -4,6 +4,9 @@
    "Key": "stringValuesomething-0",
    "Value": "value"
   },
+  "array_to_maps_column": {
+   "stringValuesomething-0": true
+  },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
   "date_time_column": "2001-02-20 01:28:00",
@@ -21,12 +24,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-0"
+  "string_column": "stringValuesomething-0",
+  "string_to_array_column": [
+   "stringValuesomething-0"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-1",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-1": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -45,12 +54,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-1"
+  "string_column": "stringValuesomething-1",
+  "string_to_array_column": [
+   "stringValuesomething-1"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-2",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-2": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -69,12 +84,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-2"
+  "string_column": "stringValuesomething-2",
+  "string_to_array_column": [
+   "stringValuesomething-2"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-3",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-3": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -93,12 +114,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-3"
+  "string_column": "stringValuesomething-3",
+  "string_to_array_column": [
+   "stringValuesomething-3"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-4",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-4": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -117,12 +144,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-4"
+  "string_column": "stringValuesomething-4",
+  "string_to_array_column": [
+   "stringValuesomething-4"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-5",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-5": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -141,12 +174,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-5"
+  "string_column": "stringValuesomething-5",
+  "string_to_array_column": [
+   "stringValuesomething-5"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-6",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-6": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -165,12 +204,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-6"
+  "string_column": "stringValuesomething-6",
+  "string_to_array_column": [
+   "stringValuesomething-6"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-7",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-7": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -189,12 +234,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-7"
+  "string_column": "stringValuesomething-7",
+  "string_to_array_column": [
+   "stringValuesomething-7"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-8",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-8": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -213,12 +264,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-8"
+  "string_column": "stringValuesomething-8",
+  "string_to_array_column": [
+   "stringValuesomething-8"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-9",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-9": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -237,12 +294,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-9"
+  "string_column": "stringValuesomething-9",
+  "string_to_array_column": [
+   "stringValuesomething-9"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-10",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-10": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -261,12 +324,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-10"
+  "string_column": "stringValuesomething-10",
+  "string_to_array_column": [
+   "stringValuesomething-10"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-11",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-11": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -285,12 +354,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-11"
+  "string_column": "stringValuesomething-11",
+  "string_to_array_column": [
+   "stringValuesomething-11"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-12",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-12": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -309,12 +384,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-12"
+  "string_column": "stringValuesomething-12",
+  "string_to_array_column": [
+   "stringValuesomething-12"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-13",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-13": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -333,12 +414,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-13"
+  "string_column": "stringValuesomething-13",
+  "string_to_array_column": [
+   "stringValuesomething-13"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-14",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-14": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -357,12 +444,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-14"
+  "string_column": "stringValuesomething-14",
+  "string_to_array_column": [
+   "stringValuesomething-14"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-15",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-15": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -381,12 +474,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-15"
+  "string_column": "stringValuesomething-15",
+  "string_to_array_column": [
+   "stringValuesomething-15"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-16",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-16": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -405,12 +504,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-16"
+  "string_column": "stringValuesomething-16",
+  "string_to_array_column": [
+   "stringValuesomething-16"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-17",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-17": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -429,12 +534,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-17"
+  "string_column": "stringValuesomething-17",
+  "string_to_array_column": [
+   "stringValuesomething-17"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-18",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-18": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -453,12 +564,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-18"
+  "string_column": "stringValuesomething-18",
+  "string_to_array_column": [
+   "stringValuesomething-18"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-19",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-19": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -477,12 +594,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-19"
+  "string_column": "stringValuesomething-19",
+  "string_to_array_column": [
+   "stringValuesomething-19"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-20",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-20": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -501,12 +624,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-20"
+  "string_column": "stringValuesomething-20",
+  "string_to_array_column": [
+   "stringValuesomething-20"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-21",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-21": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -525,12 +654,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-21"
+  "string_column": "stringValuesomething-21",
+  "string_to_array_column": [
+   "stringValuesomething-21"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-22",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-22": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -549,12 +684,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-22"
+  "string_column": "stringValuesomething-22",
+  "string_to_array_column": [
+   "stringValuesomething-22"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-23",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-23": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -573,12 +714,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-23"
+  "string_column": "stringValuesomething-23",
+  "string_to_array_column": [
+   "stringValuesomething-23"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-24",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-24": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -597,12 +744,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-24"
+  "string_column": "stringValuesomething-24",
+  "string_to_array_column": [
+   "stringValuesomething-24"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-25",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-25": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -621,12 +774,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-25"
+  "string_column": "stringValuesomething-25",
+  "string_to_array_column": [
+   "stringValuesomething-25"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-26",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-26": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -645,12 +804,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-26"
+  "string_column": "stringValuesomething-26",
+  "string_to_array_column": [
+   "stringValuesomething-26"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-27",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-27": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -669,12 +834,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-27"
+  "string_column": "stringValuesomething-27",
+  "string_to_array_column": [
+   "stringValuesomething-27"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-28",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-28": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -693,12 +864,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-28"
+  "string_column": "stringValuesomething-28",
+  "string_to_array_column": [
+   "stringValuesomething-28"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-29",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-29": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -717,12 +894,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-29"
+  "string_column": "stringValuesomething-29",
+  "string_to_array_column": [
+   "stringValuesomething-29"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-30",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-30": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -741,12 +924,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-30"
+  "string_column": "stringValuesomething-30",
+  "string_to_array_column": [
+   "stringValuesomething-30"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-31",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-31": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -765,12 +954,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-31"
+  "string_column": "stringValuesomething-31",
+  "string_to_array_column": [
+   "stringValuesomething-31"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-32",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-32": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -789,12 +984,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-32"
+  "string_column": "stringValuesomething-32",
+  "string_to_array_column": [
+   "stringValuesomething-32"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-33",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-33": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -813,12 +1014,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-33"
+  "string_column": "stringValuesomething-33",
+  "string_to_array_column": [
+   "stringValuesomething-33"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-34",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-34": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -837,12 +1044,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-34"
+  "string_column": "stringValuesomething-34",
+  "string_to_array_column": [
+   "stringValuesomething-34"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-35",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-35": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -861,12 +1074,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-35"
+  "string_column": "stringValuesomething-35",
+  "string_to_array_column": [
+   "stringValuesomething-35"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-36",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-36": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -885,12 +1104,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-36"
+  "string_column": "stringValuesomething-36",
+  "string_to_array_column": [
+   "stringValuesomething-36"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-37",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-37": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -909,12 +1134,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-37"
+  "string_column": "stringValuesomething-37",
+  "string_to_array_column": [
+   "stringValuesomething-37"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-38",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-38": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -933,12 +1164,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-38"
+  "string_column": "stringValuesomething-38",
+  "string_to_array_column": [
+   "stringValuesomething-38"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-39",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-39": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -957,12 +1194,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-39"
+  "string_column": "stringValuesomething-39",
+  "string_to_array_column": [
+   "stringValuesomething-39"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-40",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-40": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -981,12 +1224,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-40"
+  "string_column": "stringValuesomething-40",
+  "string_to_array_column": [
+   "stringValuesomething-40"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-41",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-41": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -1005,12 +1254,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-41"
+  "string_column": "stringValuesomething-41",
+  "string_to_array_column": [
+   "stringValuesomething-41"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-42",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-42": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -1029,12 +1284,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-42"
+  "string_column": "stringValuesomething-42",
+  "string_to_array_column": [
+   "stringValuesomething-42"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-43",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-43": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -1053,12 +1314,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-43"
+  "string_column": "stringValuesomething-43",
+  "string_to_array_column": [
+   "stringValuesomething-43"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-44",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-44": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -1077,12 +1344,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-44"
+  "string_column": "stringValuesomething-44",
+  "string_to_array_column": [
+   "stringValuesomething-44"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-45",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-45": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -1101,12 +1374,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-45"
+  "string_column": "stringValuesomething-45",
+  "string_to_array_column": [
+   "stringValuesomething-45"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-46",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-46": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -1125,12 +1404,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-46"
+  "string_column": "stringValuesomething-46",
+  "string_to_array_column": [
+   "stringValuesomething-46"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-47",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-47": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -1149,12 +1434,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-47"
+  "string_column": "stringValuesomething-47",
+  "string_to_array_column": [
+   "stringValuesomething-47"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-48",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-48": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -1173,12 +1464,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-48"
+  "string_column": "stringValuesomething-48",
+  "string_to_array_column": [
+   "stringValuesomething-48"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-49",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-49": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -1197,12 +1494,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-49"
+  "string_column": "stringValuesomething-49",
+  "string_to_array_column": [
+   "stringValuesomething-49"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-50",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-50": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -1221,12 +1524,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-50"
+  "string_column": "stringValuesomething-50",
+  "string_to_array_column": [
+   "stringValuesomething-50"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-51",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-51": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -1245,12 +1554,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-51"
+  "string_column": "stringValuesomething-51",
+  "string_to_array_column": [
+   "stringValuesomething-51"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-52",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-52": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -1269,12 +1584,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-52"
+  "string_column": "stringValuesomething-52",
+  "string_to_array_column": [
+   "stringValuesomething-52"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-53",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-53": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -1293,12 +1614,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-53"
+  "string_column": "stringValuesomething-53",
+  "string_to_array_column": [
+   "stringValuesomething-53"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-54",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-54": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -1317,12 +1644,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-54"
+  "string_column": "stringValuesomething-54",
+  "string_to_array_column": [
+   "stringValuesomething-54"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-55",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-55": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -1341,12 +1674,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-55"
+  "string_column": "stringValuesomething-55",
+  "string_to_array_column": [
+   "stringValuesomething-55"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-56",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-56": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -1365,12 +1704,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-56"
+  "string_column": "stringValuesomething-56",
+  "string_to_array_column": [
+   "stringValuesomething-56"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-57",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-57": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -1389,12 +1734,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-57"
+  "string_column": "stringValuesomething-57",
+  "string_to_array_column": [
+   "stringValuesomething-57"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-58",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-58": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -1413,12 +1764,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-58"
+  "string_column": "stringValuesomething-58",
+  "string_to_array_column": [
+   "stringValuesomething-58"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-59",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-59": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -1437,12 +1794,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-59"
+  "string_column": "stringValuesomething-59",
+  "string_to_array_column": [
+   "stringValuesomething-59"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-60",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-60": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -1461,12 +1824,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-60"
+  "string_column": "stringValuesomething-60",
+  "string_to_array_column": [
+   "stringValuesomething-60"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-61",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-61": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -1485,12 +1854,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-61"
+  "string_column": "stringValuesomething-61",
+  "string_to_array_column": [
+   "stringValuesomething-61"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-62",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-62": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -1509,12 +1884,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-62"
+  "string_column": "stringValuesomething-62",
+  "string_to_array_column": [
+   "stringValuesomething-62"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-63",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-63": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -1533,12 +1914,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-63"
+  "string_column": "stringValuesomething-63",
+  "string_to_array_column": [
+   "stringValuesomething-63"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-64",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-64": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -1557,12 +1944,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-64"
+  "string_column": "stringValuesomething-64",
+  "string_to_array_column": [
+   "stringValuesomething-64"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-65",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-65": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -1581,12 +1974,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-65"
+  "string_column": "stringValuesomething-65",
+  "string_to_array_column": [
+   "stringValuesomething-65"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-66",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-66": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -1605,12 +2004,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-66"
+  "string_column": "stringValuesomething-66",
+  "string_to_array_column": [
+   "stringValuesomething-66"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-67",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-67": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -1629,12 +2034,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-67"
+  "string_column": "stringValuesomething-67",
+  "string_to_array_column": [
+   "stringValuesomething-67"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-68",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-68": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -1653,12 +2064,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-68"
+  "string_column": "stringValuesomething-68",
+  "string_to_array_column": [
+   "stringValuesomething-68"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-69",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-69": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -1677,12 +2094,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-69"
+  "string_column": "stringValuesomething-69",
+  "string_to_array_column": [
+   "stringValuesomething-69"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-70",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-70": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -1701,12 +2124,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-70"
+  "string_column": "stringValuesomething-70",
+  "string_to_array_column": [
+   "stringValuesomething-70"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-71",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-71": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -1725,12 +2154,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-71"
+  "string_column": "stringValuesomething-71",
+  "string_to_array_column": [
+   "stringValuesomething-71"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-72",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-72": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -1749,12 +2184,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-72"
+  "string_column": "stringValuesomething-72",
+  "string_to_array_column": [
+   "stringValuesomething-72"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-73",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-73": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -1773,12 +2214,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-73"
+  "string_column": "stringValuesomething-73",
+  "string_to_array_column": [
+   "stringValuesomething-73"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-74",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-74": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -1797,12 +2244,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-74"
+  "string_column": "stringValuesomething-74",
+  "string_to_array_column": [
+   "stringValuesomething-74"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-75",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-75": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -1821,12 +2274,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-75"
+  "string_column": "stringValuesomething-75",
+  "string_to_array_column": [
+   "stringValuesomething-75"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-76",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-76": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -1845,12 +2304,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-76"
+  "string_column": "stringValuesomething-76",
+  "string_to_array_column": [
+   "stringValuesomething-76"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-77",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-77": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -1869,12 +2334,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-77"
+  "string_column": "stringValuesomething-77",
+  "string_to_array_column": [
+   "stringValuesomething-77"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-78",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-78": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -1893,12 +2364,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-78"
+  "string_column": "stringValuesomething-78",
+  "string_to_array_column": [
+   "stringValuesomething-78"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-79",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-79": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -1917,12 +2394,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-79"
+  "string_column": "stringValuesomething-79",
+  "string_to_array_column": [
+   "stringValuesomething-79"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-80",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-80": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -1941,12 +2424,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-80"
+  "string_column": "stringValuesomething-80",
+  "string_to_array_column": [
+   "stringValuesomething-80"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-81",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-81": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -1965,12 +2454,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-81"
+  "string_column": "stringValuesomething-81",
+  "string_to_array_column": [
+   "stringValuesomething-81"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-82",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-82": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -1989,12 +2484,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-82"
+  "string_column": "stringValuesomething-82",
+  "string_to_array_column": [
+   "stringValuesomething-82"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-83",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-83": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -2013,12 +2514,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-83"
+  "string_column": "stringValuesomething-83",
+  "string_to_array_column": [
+   "stringValuesomething-83"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-84",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-84": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -2037,12 +2544,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-84"
+  "string_column": "stringValuesomething-84",
+  "string_to_array_column": [
+   "stringValuesomething-84"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-85",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-85": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -2061,12 +2574,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-85"
+  "string_column": "stringValuesomething-85",
+  "string_to_array_column": [
+   "stringValuesomething-85"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-86",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-86": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -2085,12 +2604,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-86"
+  "string_column": "stringValuesomething-86",
+  "string_to_array_column": [
+   "stringValuesomething-86"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-87",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-87": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -2109,12 +2634,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-87"
+  "string_column": "stringValuesomething-87",
+  "string_to_array_column": [
+   "stringValuesomething-87"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-88",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-88": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -2133,12 +2664,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-88"
+  "string_column": "stringValuesomething-88",
+  "string_to_array_column": [
+   "stringValuesomething-88"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-89",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-89": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -2157,12 +2694,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-89"
+  "string_column": "stringValuesomething-89",
+  "string_to_array_column": [
+   "stringValuesomething-89"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-90",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-90": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -2181,12 +2724,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-90"
+  "string_column": "stringValuesomething-90",
+  "string_to_array_column": [
+   "stringValuesomething-90"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-91",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-91": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -2205,12 +2754,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-91"
+  "string_column": "stringValuesomething-91",
+  "string_to_array_column": [
+   "stringValuesomething-91"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-92",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-92": true
   },
   "boolean_column": true,
   "cidr_column": "192.168.0.0/22",
@@ -2229,12 +2784,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-92"
+  "string_column": "stringValuesomething-92",
+  "string_to_array_column": [
+   "stringValuesomething-92"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-93",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-93": true
   },
   "boolean_column": false,
   "cidr_column": "172.16.0.0/16",
@@ -2253,12 +2814,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-93"
+  "string_column": "stringValuesomething-93",
+  "string_to_array_column": [
+   "stringValuesomething-93"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-94",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-94": true
   },
   "boolean_column": true,
   "cidr_column": "10.1.0.0/16",
@@ -2277,12 +2844,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-94"
+  "string_column": "stringValuesomething-94",
+  "string_to_array_column": [
+   "stringValuesomething-94"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-95",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-95": true
   },
   "boolean_column": false,
   "cidr_column": "175.0.0.0/16",
@@ -2301,12 +2874,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-95"
+  "string_column": "stringValuesomething-95",
+  "string_to_array_column": [
+   "stringValuesomething-95"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-96",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-96": true
   },
   "boolean_column": true,
   "cidr_column": "10.0.0.0/24",
@@ -2325,12 +2904,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-96"
+  "string_column": "stringValuesomething-96",
+  "string_to_array_column": [
+   "stringValuesomething-96"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-97",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-97": true
   },
   "boolean_column": false,
   "cidr_column": "10.0.0.1/32",
@@ -2349,12 +2934,18 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-97"
+  "string_column": "stringValuesomething-97",
+  "string_to_array_column": [
+   "stringValuesomething-97"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-98",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-98": true
   },
   "boolean_column": true,
   "cidr_column": "10.84.0.0/24",
@@ -2373,12 +2964,18 @@
     "Effect": "Allow"
    }
   },
-  "string_column": "stringValuesomething-98"
+  "string_column": "stringValuesomething-98",
+  "string_to_array_column": [
+   "stringValuesomething-98"
+  ]
  },
  {
   "array_element": {
    "Key": "stringValuesomething-99",
    "Value": "value"
+  },
+  "array_to_maps_column": {
+   "stringValuesomething-99": true
   },
   "boolean_column": false,
   "cidr_column": "172.31.0.0/16",
@@ -2397,6 +2994,9 @@
     "Effect": "Deny"
    }
   },
-  "string_column": "stringValuesomething-99"
+  "string_column": "stringValuesomething-99",
+  "string_to_array_column": [
+   "stringValuesomething-99"
+  ]
  }
 ]
