@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	log "log"
+	"strings"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -81,6 +82,12 @@ func allColumnsTable() *plugin.Table {
 				Name:      "cidr_column",
 				Type:      proto.ColumnType_CIDR,
 				Hydrate:   cidrColumnValue,
+				Transform: transform.FromValue(),
+			},
+			{
+				Name:      "long_string_column",
+				Type:      proto.ColumnType_STRING,
+				Hydrate:   longStringColumnValue,
 				Transform: transform.FromValue(),
 			},
 			{
@@ -234,6 +241,16 @@ func stringArrayToMapColumn(ctx context.Context, d *plugin.QueryData, h *plugin.
 	key := h.Item.(map[string]interface{})
 	var item []string
 	item = append(item, key["string_column"].(string))
+
+	return item, nil
+
+}
+
+func longStringColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[TRACE] long string column value")
+	stringLength := 100
+	key := h.Item.(map[string]interface{})
+	item := fmt.Sprintf(strings.Repeat(key["string_column"].(string), stringLength))
 
 	return item, nil
 
