@@ -4,7 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	log "log"
 	"strconv"
 	"strings"
 	"time"
@@ -75,7 +74,6 @@ func getColumns(tableDef *chaosTable) []*plugin.Column {
 	if columnCount == 0 {
 		columnCount = defaultColumnCount
 	}
-	log.Printf("[ERROR] COLUMN COUNT=====> %v", columnCount)
 	for i := 0; i < columnCount; i++ {
 		columnName := fmt.Sprintf("%s_%d", "column", i)
 		item := &plugin.Column{

@@ -7,7 +7,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "steampipe query 2" {
-  run steampipe query --output json  "select * from chaos.chaos_all_column_types order by id"
+  run steampipe query --output json  "select * from chaos.chaos_all_column_types order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_column_types.json)"
 }
 
@@ -32,8 +32,8 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "steampipe query 7" {
-  run steampipe query "select * from chaos.chaos_hydrate_error"
-  assert_output --partial 'HYDRATE ERROR'
+  run steampipe query --output json "select * from chaos.chaos_get_test order by id"
+  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_chaos_get_test.json)"
 }
 
 @test "steampipe query 8" {

@@ -25,7 +25,6 @@ func getTestTable() *plugin.Table {
 			{Name: "column_1", Type: proto.ColumnType_STRING},
 			{Name: "column_2", Type: proto.ColumnType_STRING},
 			{Name: "column_3", Type: proto.ColumnType_STRING},
-			{Name: "column_4", Type: proto.ColumnType_STRING},
 		},
 	}
 }
