@@ -4,8 +4,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"strconv"
-	"strings"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -25,8 +23,8 @@ const (
 )
 
 type chaosTable struct {
-	listConfig       *listConfig
-	getConfig        *getConfig
+	listBuildConfig  *listBuildConfig
+	getBuildConfig   *getBuildConfig
 	name             string
 	description      string
 	columnCount      int
@@ -36,12 +34,6 @@ type chaosTable struct {
 	transformError   FailType
 	transformDelay   bool
 	errorType        FailType
-}
-
-type getConfig struct {
-	getError  FailType
-	getDelay  bool
-	errorType FailType
 }
 
 const columnPrefix = "column_"
@@ -54,18 +46,18 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 		Name:        tableDef.name,
 		Description: tableDef.description,
 		List: &plugin.ListConfig{
-			Hydrate: getList(tableDef.listConfig),
+			Hydrate: buildListHydrate(tableDef.listBuildConfig),
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns: plugin.SingleColumn(columnPrefix + "0"),
-			Hydrate:    getGet(tableDef.getConfig),
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    buildGetHydrate(tableDef.getBuildConfig),
 		},
-		Columns: getColumns(tableDef),
+		Columns: buildColumns(tableDef),
 	}
 
 }
 
-func getColumns(tableDef *chaosTable) []*plugin.Column {
+func buildColumns(tableDef *chaosTable) []*plugin.Column {
 	var columns []*plugin.Column = []*plugin.Column{{
 		Name: "id",
 		Type: proto.ColumnType_INT,
@@ -85,12 +77,12 @@ func getColumns(tableDef *chaosTable) []*plugin.Column {
 	hydrateColumn := &plugin.Column{
 		Name:    "hydrate_column",
 		Type:    proto.ColumnType_STRING,
-		Hydrate: getHydrate(tableDef),
+		Hydrate: buildHydrate(tableDef),
 	}
 	transformColumn := &plugin.Column{
 		Name:      "transform_column",
 		Type:      proto.ColumnType_STRING,
-		Transform: t.From(getTransform(tableDef)),
+		Transform: t.From(buildTransform(tableDef)),
 	}
 	columns = append(columns, transformColumn)
 	if tableDef.hydrateDelay || tableDef.hydrateError == FailError || tableDef.hydrateError == FailPanic {
@@ -99,30 +91,8 @@ func getColumns(tableDef *chaosTable) []*plugin.Column {
 	return columns
 }
 
-/// get the 'Get' hydrate function ///
-func getGet(getConfig *getConfig) plugin.HydrateFunc {
-	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-		if getConfig.getError == RetryableError {
-			return nil, errors.New(RetryableError)
-		}
-		if getConfig.getError == FailError {
-			return nil, errors.New(FatalError)
-		}
-		if getConfig.getError == FailPanic {
-			panic("GET PANIC")
-		}
-		if getConfig.getDelay {
-			time.Sleep(delayValue)
-		}
-		item := h.Item.(string)
-		rowNumber, _ := strconv.Atoi(item[strings.LastIndex(item, "-")+1:])
-		column := populateItem(rowNumber, d.Table)
-		return column, nil
-	}
-}
-
 /// get a hydrate function based on the table def ///
-func getHydrate(tableDef *chaosTable) plugin.HydrateFunc {
+func buildHydrate(tableDef *chaosTable) plugin.HydrateFunc {
 	if tableDef.hydrateError == FailError {
 		return hydrateError
 	}
@@ -156,7 +126,7 @@ func hydrateColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 }
 
 //// Transform functions ////
-func getTransform(tableDef *chaosTable) t.TransformFunc {
+func buildTransform(tableDef *chaosTable) t.TransformFunc {
 	return func(_ context.Context, d *t.TransformData) (interface{}, error) {
 		if tableDef.transformError == FailError {
 			return nil, errors.New("TRANSFORM ERROR")

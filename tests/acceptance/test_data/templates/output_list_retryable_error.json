@@ -13,20 +13,6 @@
  },
  {
   "retryable_error": true
- },
- {
-  "retryable_error": false
- },
- {
-  "retryable_error": true
- },
- {
-  "retryable_error": false
- },
- {
-  "retryable_error": true
- },
- {
-  "retryable_error": false
  }
 ]
+
