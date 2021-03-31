@@ -57,15 +57,15 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 
-@test "steampipe query 12" {
-  run steampipe query "select * from chaos.chaos_hydrate_error"
-  assert_output --partial 'HYDRATE ERROR'
-}
+#@test "steampipe query 12" {
+#  run steampipe query "select * from chaos.chaos_hydrate_error"
+#  assert_output --partial 'HYDRATE ERROR'
+#}
 
-@test "steampipe query 13" {
-  run steampipe query "select * from chaos.chaos_hydrate_panic" 
-  assert_output --partial 'HYDRATE PANIC'
-}
+#@test "steampipe query 13" {
+#  run steampipe query "select * from chaos.chaos_hydrate_panic" 
+#  assert_output --partial 'HYDRATE PANIC'
+#}
 
 @test "steampipe query 14" {
   run steampipe query "select * from chaos.chaos_list_delay" 
