@@ -2,7 +2,7 @@ load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "steampipe query 1" {
-  run steampipe query --output json  "select * from chaos.chaos_high_row_count order by column_0"
+  run steampipe query --output json  "select * from chaos.chaos_high_row_count order by column_0 limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output001.json)"
 }
 
@@ -12,17 +12,17 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "steampipe query 3" {
-  run steampipe query --output json  "select * from chaos.chaos_high_column_count order by column_0" 
+  run steampipe query --output json  "select * from chaos.chaos_high_column_count order by column_0 limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output003.json)"
 }
 
 @test "steampipe query 4" {
-  run steampipe query --output json "select * from chaos.chaos_parent_child_dependency order by column_1"
+  run steampipe query --output json "select * from chaos.chaos_parent_child_dependency order by column_1 limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output004.json)"
 }
 
 @test "steampipe query 5" {
-  run steampipe query --output json "select * from chaos.chaos_hydrate_columns_dependency order by id"
+  run steampipe query --output json "select * from chaos.chaos_hydrate_columns_dependency order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output005.json)"
 }
 
@@ -88,22 +88,22 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "steampipe query 18" {
-  run steampipe query --output json "select * from chaos.chaos_parallel_hydrate_columns order by id"
+  run steampipe query --output json "select * from chaos.chaos_parallel_hydrate_columns order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output007.json)"
 }
 
 @test "steampipe query 19" {
-  run steampipe query --output json "select * from chaos.chaos_all_numeric_column order by id"
+  run steampipe query --output json "select * from chaos.chaos_all_numeric_column order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output008.json)"
 }
 
 @test "steampipe query 20" {
-  run steampipe query --output json "select * from chaos.chaos_get_test order by id"
+  run steampipe query --output json "select * from chaos.chaos_get_test order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output009.json)"
 }
 
 @test "steampipe query 21" {
-  run steampipe query --output json "select * from chaos.chaos_default_transform order by id"
+  run steampipe query --output json "select * from chaos.chaos_default_transform order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output010.json)"
 }
 
@@ -116,6 +116,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "steampipe query 23" {
-  run steampipe query --output json "select * from chaos.chaos_transform_method_test order by id"
+  run steampipe query --output json "select * from chaos.chaos_transform_method_test order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output011.json)"
 }
