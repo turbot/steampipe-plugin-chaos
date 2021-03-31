@@ -9,25 +9,20 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
-type structWithMethod struct {
-	Id      int
-	Column1 string
-	Column2 string
-	Column3 string
-	Column4 string
+type testStruct struct {
+	Id      int    `json:"id,omitempty"`
+	Column1 string `json:"column_1,omitempty"`
+	Column2 string `json:"column_2,omitempty"`
+	Column3 string `json:"column_3,omitempty"`
 }
 
-func (t structWithMethod) TransformMethod() (string, error) {
-	return "column_4", nil
-}
-
-func transformMethodTable() *plugin.Table {
+func jsonTagTransformTable() *plugin.Table {
 	return &plugin.Table{
-		Name:             "chaos_transform_method_test",
+		Name:             "chaos_json_tag_transform",
 		Description:      "Chaos table to test the default transform functionality from specified json tags",
-		DefaultTransform: transform.FromCamel(),
+		DefaultTransform: transform.FromJSONTag(),
 		List: &plugin.ListConfig{
-			Hydrate: transformMethodList,
+			Hydrate: transformList,
 		},
 
 		Columns: []*plugin.Column{
@@ -35,23 +30,18 @@ func transformMethodTable() *plugin.Table {
 			{Name: "column_1", Type: proto.ColumnType_STRING},
 			{Name: "column_2", Type: proto.ColumnType_STRING},
 			{Name: "column_3", Type: proto.ColumnType_STRING},
-			{
-				Name:      "column_4",
-				Type:      proto.ColumnType_STRING,
-				Transform: transform.FromMethod("TransformMethod"),
-			},
 		},
 	}
 }
 
-func transformMethodList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func transformList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	for i := 0; i < 5; i++ {
 		id := i
 		column1 := fmt.Sprintf("column_1-%d", id)
 		column2 := fmt.Sprintf("column_2-%d", id)
 		column3 := fmt.Sprintf("column_3-%d", id)
 
-		item := structWithMethod{Id: id, Column1: column1, Column2: column2, Column3: column3}
+		item := testStruct{Id: id, Column1: column1, Column2: column2, Column3: column3}
 		d.StreamLeafListItem(ctx, item)
 	}
 	return nil, nil
