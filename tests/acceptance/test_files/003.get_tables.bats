@@ -27,11 +27,11 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "steampipe query get 6" {
-  run steampipe query "select retryable_error from chaos.chaos_get_errors_default_config where id=0"
+  run steampipe query "select retryable_error_default_config from chaos.chaos_get_errors_default_config where id=0"
   assert_success
 }
 
 @test "steampipe query get 7" {
-  run steampipe query "select ignorable_error from chaos.chaos_get_errors_default_config where id=0"
+  run steampipe query "select ignorable_error_default_config from chaos.chaos_get_errors_default_config where id=0"
   assert_success
 }

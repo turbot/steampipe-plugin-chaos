@@ -47,7 +47,7 @@ func chaosListParentChildTable() *plugin.Table {
 
 func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_fatal_error") {
-		listBuildConfig := &listBuildConfig{listError: FailError}
+		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_fatal_error_after_streaming") {
@@ -71,15 +71,15 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_delay") {
-		listBuildConfig := &listBuildConfig{listDelay: true}
+		listBuildConfig := &listBuildConfig{listDelay: true, rowCount: 15}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_panic") {
-		listBuildConfig := &listBuildConfig{listError: FailPanic}
+		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 15}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_fatal_error") {
-		listBuildConfig := &listBuildConfig{listError: FailError}
+		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_fatal_error_after_streaming") {
@@ -103,11 +103,11 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_delay") {
-		listBuildConfig := &listBuildConfig{listDelay: true}
+		listBuildConfig := &listBuildConfig{listDelay: true, rowCount: 10}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_panic") {
-		listBuildConfig := &listBuildConfig{listError: FailPanic}
+		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 15}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	return nil, nil
