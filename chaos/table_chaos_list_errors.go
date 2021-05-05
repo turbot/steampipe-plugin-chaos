@@ -48,7 +48,7 @@ func chaosListTable() *plugin.Table {
 
 func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	if helpers.StringSliceContains(d.QueryContext.Columns, "fatal_error") {
-		listBuildConfig := &listBuildConfig{listError: FailError}
+		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "fatal_error_after_streaming") {
@@ -72,11 +72,11 @@ func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "delay") {
-		listBuildConfig := &listBuildConfig{listDelay: true}
+		listBuildConfig := &listBuildConfig{listDelay: true, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "panic") {
-		listBuildConfig := &listBuildConfig{listError: FailPanic}
+		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "panic_after_streaming") {

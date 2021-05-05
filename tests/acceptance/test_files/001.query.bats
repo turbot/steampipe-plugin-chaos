@@ -1,20 +1,20 @@
 load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
-@test "steampipe query 1" {
-  run steampipe query --output json  "select * from chaos.chaos_high_row_count order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_high_row_count.json)"
-}
+#@test "steampipe query 1" {
+#  run steampipe query --output json  "select * from chaos.chaos_high_row_count order by id"
+#  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_high_row_count.json)"
+#}
 
 @test "steampipe query 2" {
   run steampipe query --output json  "select * from chaos.chaos_all_column_types order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_column_types.json)"
 }
 
-@test "steampipe query 3" {
-  run steampipe query --output json  "select * from chaos.chaos_high_column_count order by id" 
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_high_column_count.json)"
-}
+#@test "steampipe query 3" {
+#  run steampipe query --output json  "select * from chaos.chaos_high_column_count order by id" 
+#  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_high_column_count.json)"
+#}
 
 @test "steampipe query 4" {
   run steampipe query --output json "select * from chaos.chaos_hydrate_columns_dependency order by id"
