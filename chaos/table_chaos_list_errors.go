@@ -2,9 +2,6 @@ package chaos
 
 import (
 	"context"
-	"errors"
-	"log"
-	"time"
 
 	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -87,53 +84,4 @@ func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	return nil, nil
-}
-
-// factory function which returns a list call with the behaviour determined by the list config
-func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
-
-	if buildConfig == nil {
-		buildConfig = &listBuildConfig{
-			rowCount:    defaultRowCount,
-			columnCount: defaultColumnCount,
-		}
-	}
-
-	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-		// if listDelay is specified, sleep
-		if buildConfig.listDelay {
-			time.Sleep(delayValue)
-		}
-
-		for i := 0; i < rowCount; i++ {
-
-			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", i, buildConfig.listErrorRows)
-			// listErrorRows is the number of rows to return successfully before raising an error
-			// if we stream that many rows, let's raise an error
-			if i == buildConfig.listErrorRows {
-				switch buildConfig.listError {
-				case RetryableError:
-					// failureCount is the number of times the error occurs before we succeed
-					if listTableErrorCount <= buildConfig.failureCount {
-						listTableErrorCount++
-						return nil, errors.New(RetryableError)
-					}
-					// if we have failed 'failureCount' times, reset listTableErrorCount and fall through to return item
-					listTableErrorCount = 0
-				case IgnorableError:
-					return nil, errors.New(IgnorableError)
-				case FailError:
-					return nil, errors.New(FatalError)
-				case FailPanic:
-					panic(FailPanic)
-
-				}
-
-			}
-			item := populateItem(i, d.Table)
-			d.StreamListItem(ctx, item)
-
-		}
-		return nil, nil
-	}
 }

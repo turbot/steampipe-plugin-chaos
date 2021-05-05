@@ -12,7 +12,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
-const rowCount = 100
+const allColumnsRowCount = 100
 
 type JSONPolicy struct {
 	Name      string
@@ -128,7 +128,7 @@ func allColumnsTable() *plugin.Table {
 func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	log.Println("[TRACE] All columns list function")
 
-	for i := 0; i < rowCount; i++ {
+	for i := 0; i < allColumnsRowCount; i++ {
 		id := i
 		columnVal := fmt.Sprintf("%s-%v", "stringValuesomething", i)
 		columnAttributes := TransformColumnAttributes{Key: columnVal, Value: "value"}

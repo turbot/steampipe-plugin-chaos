@@ -28,7 +28,7 @@ func getErrorsDefaultConfigTable() *plugin.Table {
 }
 
 func listGetErrorsDefaultConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < rowCount; i++ {
+	for i := 0; i < getErrorsRowCount; i++ {
 		item := populateItem(i, d.Table)
 		d.StreamListItem(ctx, item)
 	}

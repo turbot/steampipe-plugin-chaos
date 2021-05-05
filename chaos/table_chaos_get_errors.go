@@ -10,6 +10,8 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
 
+const getErrorsRowCount = 100
+
 type getBuildConfig struct {
 	getError     FailType
 	getDelay     bool
@@ -47,7 +49,7 @@ func chaosGetTable() *plugin.Table {
 }
 
 func listGetErrors(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < rowCount; i++ {
+	for i := 0; i < getErrorsRowCount; i++ {
 		item := populateItem(i, d.Table)
 		d.StreamListItem(ctx, item)
 	}
