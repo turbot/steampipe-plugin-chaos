@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"fmt"
-	log "log"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -54,7 +53,6 @@ func transformFromFieldsTable() *plugin.Table {
 }
 
 func transformFromFieldList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[ERROR] INSIDE LIST CALL")
 	for i := 0; i < 5; i++ {
 		columnA := fmt.Sprintf("column-%d", i)
 		column := "THIS IS COMING FROM LIST CALL"
@@ -66,7 +64,6 @@ func transformFromFieldList(ctx context.Context, d *plugin.QueryData, h *plugin.
 }
 
 func transformFromFieldGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[ERROR] INSIDE GET CALL")
 	i := d.KeyColumnQuals["id"].GetInt64Value()
 	columnA := fmt.Sprintf("column-%d", i)
 	column := "THIS IS COMING FROM GET CALL"
