@@ -51,6 +51,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_hydrate_should_ignore_config": hydrateShouldIgnoreConfigTable(), // test the Hydrate function with Should Ignore Error defined in the Hydrate config
 			"chaos_get_errors_default_config":    getErrorsDefaultConfigTable(),    // test the Get function with Default Retry config defined at plugin level in case of non fatal error
 			"chaos_list_paging":                  listPagingTable(),                // test the list function supporting pagination fails to send results after some pages with a non fatal error
+			"chaos_transform_from_fields":        transformFromFieldsTable(),
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
