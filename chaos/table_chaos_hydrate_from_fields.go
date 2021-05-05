@@ -47,7 +47,7 @@ func transformFromFieldsTable() *plugin.Table {
 			{
 				Name:      "from_field_column_multiple",
 				Type:      proto.ColumnType_STRING,
-				Transform: transform.FromField("KKKDHDLKDHDKDHDHDHHD", "JVDKJGDGDK"),
+				Transform: transform.FromField("FromFieldColumn", "ColumnC"),
 			},
 		},
 	}
