@@ -28,9 +28,9 @@ jobs:
           path: steampipe
 
       - name: Update go.mod and build Steampipe
-          run: |
-            echo "PATH=$PATH:$HOME/build:/home/runner" >> $GITHUB_ENV
-            go build -o /home/runner/steampipe
+        run: |
+          echo "PATH=$PATH:$HOME/build:/home/runner" >> $GITHUB_ENV
+          go build -o /home/runner/steampipe
 
       - name: Install DB
         run: |
