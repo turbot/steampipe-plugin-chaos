@@ -37,10 +37,7 @@ jobs:
 
       - name: Build Chaos plugin
         run: |
-          pwd
-          ls -a
           make
-          steampipe --version
 
       - name: Setup BATS
         uses: mig4/setup-bats@v1
