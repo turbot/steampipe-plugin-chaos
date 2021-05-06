@@ -36,18 +36,17 @@ jobs:
         run: |
           pwd
           ls -a
+          make
+          steampipe --version
 
       - name: Setup BATS
         uses: mig4/setup-bats@v1
         with:
           bats-version: 1.2.1
 
-      - name: Stop steampipe service
-        run: |
-          steampipe service stop --force
-
       - name: Start steampipe service
         run: |
+          steampipe service stop --force
           steampipe service start
 
       - name: Run Test Suite
