@@ -32,10 +32,23 @@ jobs:
           echo "PATH=$PATH:$HOME/build:/home/runner" >> $GITHUB_ENV
           go build -o /home/runner/steampipe
 
-      - name: Install DB
+      - name: Build Chaos plugin
+        run: |
+          pwd
+          ls -a
+
+      - name: Setup BATS
+        uses: mig4/setup-bats@v1
+        with:
+          bats-version: 1.2.1
+
+      - name: Stop steampipe service
+        run: |
+          steampipe service stop --force
+
+      - name: Start steampipe service
         run: |
           steampipe service start
-          steampipe service stop --force
 
       - name: Run Test Suite
         timeout-minutes: 5
