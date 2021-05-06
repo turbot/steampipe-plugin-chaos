@@ -27,14 +27,13 @@ jobs:
           repository: turbot/steampipe
           path: steampipe
 
-      - name: Update go.mod and build Steampipe
+      - name: Build Steampipe
         run: |
           echo "PATH=$PATH:$HOME/build:/home/runner" >> $GITHUB_ENV
           go build -o /home/runner/steampipe
 
       - name: Install DB
         run: |
-          make
           steampipe service start
           steampipe service stop --force
 
