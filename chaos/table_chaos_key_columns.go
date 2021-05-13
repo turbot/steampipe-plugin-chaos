@@ -2,7 +2,6 @@ package chaos
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
@@ -31,13 +30,13 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 		Name:        def.name,
 		Description: def.description,
 		List: &plugin.ListConfig{
-			Hydrate:    listKeyColumns,
+			Hydrate:    buildListKeyColumns(def),
 			KeyColumns: calculateListKeyColumns(def),
 		},
-		Get: &plugin.GetConfig{
-			KeyColumns: calculateGetKeyColumns(def),
-			Hydrate:    getKeyColumns,
-		},
+		// Get: &plugin.GetConfig{
+		// 	KeyColumns: calculateGetKeyColumns(def),
+		// 	Hydrate:    buildGetKeyColumns(def),
+		// },
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
 			{Name: "column_a", Type: proto.ColumnType_STRING},
@@ -48,25 +47,34 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 
 }
 
-func listKeyColumns(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < 5; i++ {
-		columnA := fmt.Sprintf("column-%d", i)
-		columnB := "RANDOM STRING"
-		columnC := "RANDOM STRING"
-		item := map[string]interface{}{"id": i, "column_a": columnA, "column_b": columnB, "column_c": columnC}
-		d.StreamLeafListItem(ctx, item)
+func buildListKeyColumns(def *keyColumnTableDefinitions) plugin.HydrateFunc {
+	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+		item := map[string]interface{}{}
+		if def.keyColumnSetType == singleColumn || def.keyColumnSetType == anyColumn {
+			id := d.KeyColumnQuals["id"].GetInt64Value()
+			item = map[string]interface{}{"id": id, "column_a": "columnA", "column_b": "columnB", "column_c": "columnC"}
+		}
+		if def.keyColumnSetType == allColumns {
+			id := d.KeyColumnQuals["id"].GetInt64Value()
+			columnA := d.KeyColumnQuals["column_a"].GetStringValue()
+			item = map[string]interface{}{"id": id, "column_a": columnA, "column_b": "columnB", "column_c": "columnC"}
+		}
+		d.StreamListItem(ctx, item)
+		return nil, nil
 	}
-	return nil, nil
 }
 
-func getKeyColumns(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	i := d.KeyColumnQuals["id"].GetInt64Value()
-	columnA := d.KeyColumnQuals["column_a"].GetStringValue()
-	columnB := "RANDOM STRING"
-	columnC := "RANDOM STRING"
-	item := map[string]interface{}{"id": i, "column_a": columnA, "column_b": columnB, "column_c": columnC}
-	return item, nil
-}
+// func buildGetKeyColumns(def *keyColumnTableDefinitions) plugin.HydrateFunc {
+// 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+// 		i := d.KeyColumnQuals["id"].GetInt64Value()
+// 		columnA := d.KeyColumnQuals["column_a"].GetStringValue()
+// 		columnB := "RANDOM STRING"
+// 		columnC := "RANDOM STRING"
+// 		item := map[string]interface{}{"id": i, "column_a": columnA, "column_b": columnB, "column_c": columnC}
+// 		return item, nil
+
+// 	}
+// }
 
 func calculateListKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
 	if def.call == listCall {
@@ -84,18 +92,18 @@ func calculateListKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSe
 	return nil
 }
 
-func calculateGetKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
-	if def.call == getCall {
-		if def.keyColumnSetType == singleColumn {
-			return plugin.SingleColumn("id")
-		}
-		if def.keyColumnSetType == anyColumn {
-			return plugin.AnyColumn([]string{"id", "column_a"})
-		}
+// func calculateGetKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
+// 	if def.call == getCall {
+// 		if def.keyColumnSetType == singleColumn {
+// 			return plugin.SingleColumn("id")
+// 		}
+// 		if def.keyColumnSetType == anyColumn {
+// 			return plugin.AnyColumn([]string{"id", "column_a"})
+// 		}
 
-		if def.keyColumnSetType == allColumns {
-			return plugin.AllColumns([]string{"id", "column_a"})
-		}
-	}
-	return plugin.SingleColumn("id")
-}
+// 		if def.keyColumnSetType == allColumns {
+// 			return plugin.AllColumns([]string{"id", "column_a"})
+// 		}
+// 	}
+// 	return plugin.SingleColumn("id")
+// }
