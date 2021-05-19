@@ -52,12 +52,12 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_get_errors_default_config":    getErrorsDefaultConfigTable(),    // test the Get function with Default Retry config defined at plugin level in case of non fatal error
 			"chaos_list_paging":                  listPagingTable(),                // test the list function supporting pagination fails to send results after some pages with a non fatal error
 			"chaos_transform_from_fields":        transformFromFieldsTable(),
-			"chaos_list_single_key_columns":      KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_single_key_columns", description: "", call: listCall, keyColumnSetType: "single"}),
-			"chaos_list_all_key_columns":         KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_all_key_columns", description: "", call: listCall, keyColumnSetType: "all"}),
-			"chaos_list_any_key_columns":         KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_any_key_columns", description: "", call: listCall, keyColumnSetType: "any"}),
-			"chaos_get_single_key_columns":       KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_single_key_columns", description: "", call: getCall, keyColumnSetType: "single"}),
-			"chaos_get_all_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_all_key_columns", description: "", call: getCall, keyColumnSetType: "all"}),
-			"chaos_get_any_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_any_key_columns", description: "", call: getCall, keyColumnSetType: "any"}),
+			"chaos_list_single_key_columns":      KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_single_key_columns", description: "Chaos table to test the list call with single key column", call: listCall, keyColumnSetType: "single"}),
+			"chaos_list_all_key_columns":         KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_all_key_columns", description: "Chaos table to test the list call with all key columns", call: listCall, keyColumnSetType: "all"}),
+			"chaos_list_any_key_columns":         KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_any_key_columns", description: "Chaos table to test the list call with any of the specified key columns", call: listCall, keyColumnSetType: "any"}),
+			"chaos_get_single_key_columns":       KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_single_key_columns", description: "Chaos table to test the get call with single key column", call: getCall, keyColumnSetType: "single"}),
+			"chaos_get_all_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_all_key_columns", description: "Chaos table to test the get call with all key columns", call: getCall, keyColumnSetType: "all"}),
+			"chaos_get_any_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_any_key_columns", description: "Chaos table to test the get call with any of the specified key columns", call: getCall, keyColumnSetType: "any"}),
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
