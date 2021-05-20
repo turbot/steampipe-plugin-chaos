@@ -2,7 +2,6 @@ package chaos
 
 import (
 	"context"
-	"log"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -29,6 +28,9 @@ func streamList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 	startTime := time.Now()
 	ticker := time.NewTicker(1 * time.Second)
 	blocksSent := 0
+	// wait before sending out the first block
+	time.Sleep(5 * time.Second)
+
 	for t := range ticker.C {
 		if t.Sub(startTime) > (10 * time.Second) {
 			ticker.Stop()
@@ -46,7 +48,6 @@ func streamList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData)
 func rowData(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
-	log.Println("[WARN] getting rowData", id)
 	columnVal := id * 3
 	return columnVal, nil
 }
