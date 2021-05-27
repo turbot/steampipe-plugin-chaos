@@ -58,6 +58,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_get_single_key_columns":       KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_single_key_columns", description: "Chaos table to test the get call with single key column", call: getCall, keyColumnSetType: "single"}),
 			"chaos_get_all_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_all_key_columns", description: "Chaos table to test the get call with all key columns", call: getCall, keyColumnSetType: "all"}),
 			"chaos_get_any_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_any_key_columns", description: "Chaos table to test the get call with any of the specified key columns", call: getCall, keyColumnSetType: "any"}),
+			"chaos_list_get_any_key_columns":     KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_any_key_columns", description: "Chaos table to test the get call with any of the specified key columns", call: getCall, keyColumnSetType: "any"}),
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
