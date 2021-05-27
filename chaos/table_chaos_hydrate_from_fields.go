@@ -48,6 +48,11 @@ func transformFromFieldsTable() *plugin.Table {
 				Type:      proto.ColumnType_STRING,
 				Transform: transform.FromField("FromFieldColumn", "ColumnC"),
 			},
+			{
+				Name:      "from_qual_column",
+				Type:      proto.ColumnType_STRING,
+				Transform: transform.FromQual("id"),
+			},
 		},
 	}
 }
