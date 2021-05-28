@@ -8,22 +8,19 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
 
-type callType string
 type keyColumnType string
 
 const (
-	listCall     callType      = "list"
-	getCall      callType      = "get"
 	singleColumn keyColumnType = "single"
 	anyColumn    keyColumnType = "any"
 	allColumns   keyColumnType = "all"
 )
 
 type keyColumnTableDefinitions struct {
-	name             string
-	description      string
-	call             callType
-	keyColumnSetType keyColumnType
+	listKeyColumnSetType keyColumnType
+	getKeyColumnSetType  keyColumnType
+	name                 string
+	description          string
 }
 
 func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
@@ -32,10 +29,10 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 		Description: def.description,
 		List: &plugin.ListConfig{
 			Hydrate:    buildKeyColumns(def),
-			KeyColumns: calculateKeyColumns(def),
+			KeyColumns: calculateListKeyColumns(def),
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns: calculateKeyColumns(def),
+			KeyColumns: calculateGetKeyColumns(def),
 			Hydrate:    buildKeyColumns(def),
 		},
 		Columns: []*plugin.Column{
@@ -50,11 +47,10 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 func buildKeyColumns(def *keyColumnTableDefinitions) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 		item := map[string]interface{}{}
-		if def.keyColumnSetType == singleColumn {
+		if def.listKeyColumnSetType == singleColumn || def.getKeyColumnSetType == singleColumn {
 			id := d.KeyColumnQuals["id"].GetInt64Value()
 			item = map[string]interface{}{"id": id}
-		}
-		if def.keyColumnSetType == anyColumn || def.keyColumnSetType == allColumns {
+		} else {
 			id := d.KeyColumnQuals["id"].GetInt64Value()
 			columnA := d.KeyColumnQuals["column_a"].GetStringValue()
 			combinedColumn := fmt.Sprintf("%d-%s", id, columnA)
@@ -65,21 +61,25 @@ func buildKeyColumns(def *keyColumnTableDefinitions) plugin.HydrateFunc {
 	}
 }
 
-func calculateKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
-	if def.call == listCall || def.call == getCall {
-		if def.keyColumnSetType == singleColumn {
-			return plugin.SingleColumn("id")
-		}
-		if def.keyColumnSetType == anyColumn {
-			return plugin.AnyColumn([]string{"id", "column_a"})
-		}
-
-		if def.keyColumnSetType == allColumns {
-			return plugin.AllColumns([]string{"id", "column_a"})
-		}
-	}
-	if def.call != getCall {
+func calculateListKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
+	if def.listKeyColumnSetType == singleColumn {
 		return plugin.SingleColumn("id")
 	}
+	if def.listKeyColumnSetType == anyColumn {
+		return plugin.AnyColumn([]string{"id", "column_a"})
+	}
+	if def.listKeyColumnSetType == allColumns {
+		return plugin.AllColumns([]string{"id", "column_a"})
+	}
 	return nil
+}
+
+func calculateGetKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
+	if def.getKeyColumnSetType == anyColumn {
+		return plugin.AnyColumn([]string{"id", "column_a"})
+	}
+	if def.getKeyColumnSetType == allColumns {
+		return plugin.AllColumns([]string{"id", "column_a"})
+	}
+	return plugin.SingleColumn("id")
 }
