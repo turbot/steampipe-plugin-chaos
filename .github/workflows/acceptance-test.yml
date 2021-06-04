@@ -38,8 +38,9 @@ jobs:
       - name: Build Chaos plugin
         run: |
           steampipe --version
-          steampipe plugin list        
+          steampipe plugin install chaos
           make
+          steampipe plugin list    
 
       - name: Setup BATS
         uses: mig4/setup-bats@v1
