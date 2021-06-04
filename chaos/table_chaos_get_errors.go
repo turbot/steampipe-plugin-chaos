@@ -102,6 +102,7 @@ func buildGetHydrate(buildConfig *getBuildConfig) plugin.HydrateFunc {
 			return nil, errors.New(FatalError)
 		case FailPanic:
 			panic(FailPanic)
+
 		}
 		column := populateItem(int(id), d.Table)
 		return column, nil

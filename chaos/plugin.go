@@ -30,6 +30,9 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_high_column_count":            buildTable(&chaosTable{name: "chaos_high_column_count", description: "Chaos table to test steampipe with high column count", listBuildConfig: &listBuildConfig{columnCount: 100}}),
 			"chaos_list_errors":                  chaosListTable(),            // test the List calls with all the possible scenarios like errors, panics and delays
 			"chaos_list_parent_child":            chaosListParentChildTable(), // test the List calls having parent-child dependencies with all the possible scenarios like errors, panics and delays at both parent and child levels
+			"chaos_hydrate_error":                buildTable(&chaosTable{name: "chaos_hydrate_error", description: "Chaos table to test error handling in Hydrate function", hydrateError: FailError, listBuildConfig: &listBuildConfig{rowCount: 15, listErrorRows: 2}}),
+			"chaos_hydrate_panic":                buildTable(&chaosTable{name: "chaos_hydrate_panic", description: "Chaos table to test panicking Hydrate function", hydrateError: FailPanic}),
+			"chaos_hydrate_delay":                buildTable(&chaosTable{name: "chaos_hydrate_delay", description: "Chaos table to test delay in in Hydrate function", hydrateDelay: true}),
 			"chaos_transform_error":              buildTable(&chaosTable{name: "chaos_transform_error", description: "Chaos table to test error handling in Transform function", transformError: FailError}),
 			"chaos_transform_panic":              buildTable(&chaosTable{name: "chaos_transform_panic", description: "Chaos table to test panicking Transform function", transformError: FailPanic}),
 			"chaos_transform_delay":              buildTable(&chaosTable{name: "chaos_transform_delay", description: "Chaos table to test delay in in Transform function", transformDelay: true}),
@@ -55,7 +58,6 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_get_single_key_columns":       KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_single_key_columns", description: "Chaos table to test the get call with single key column", call: getCall, keyColumnSetType: "single"}),
 			"chaos_get_all_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_all_key_columns", description: "Chaos table to test the get call with all key columns", call: getCall, keyColumnSetType: "all"}),
 			"chaos_get_any_key_columns":          KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_any_key_columns", description: "Chaos table to test the get call with any of the specified key columns", call: getCall, keyColumnSetType: "any"}),
-			"chaos_hydrate_errors":               chaosHydrateTable(), // test the Hydrate call with all the possible scenarios like errors, panics and delays
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,
