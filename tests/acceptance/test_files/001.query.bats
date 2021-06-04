@@ -44,11 +44,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe query "drop table all_columns"
 }
 
-#@test "steampipe query 9" {
-#  run steampipe query "select * from chaos.chaos_hydrate_error"
-#  assert_output --partial 'HYDRATE ERROR'
-#}
-
 @test "steampipe query 10" {
   run steampipe query "select * from chaos.chaos_transform_error"
   assert_output --partial 'TRANSFORM ERROR'
@@ -57,16 +52,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 @test "steampipe query 11" {
   run steampipe query "select * from chaos.chaos_transform_panic" 
   assert_output --partial 'TRANSFORM PANIC'
-}
-
-@test "steampipe query 12" {
-  run steampipe query "select * from chaos.chaos_hydrate_panic" 
-  assert_output --partial 'HYDRATE PANIC'
-}
-
-@test "steampipe query 13" {
-  run steampipe query "select * from chaos.chaos_hydrate_delay" 
-  assert_success
 }
 
 @test "steampipe query 14" {
