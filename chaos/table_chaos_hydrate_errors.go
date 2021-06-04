@@ -109,7 +109,6 @@ func buildHydrate(buildConfig *hydrateBuildConfig) plugin.HydrateFunc {
 		time.Sleep(delayValue)
 		key := h.Item.(map[string]interface{})
 		id := key["id"].(int)
-		log.Printf("[WARN] THE ID IS %v", id)
 		if buildConfig.hydrateDelay {
 			time.Sleep(delayValue)
 		}
