@@ -21,14 +21,14 @@ func getErrorsDefaultConfigTable() *plugin.Table {
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
-			{Name: "retriable_error", Type: proto.ColumnType_BOOL, Description: "Column to test the Get function with retry config in case of non fatal error"},
-			{Name: "ignorable_error", Type: proto.ColumnType_BOOL, Description: "Column to test the  Get function with Ignorable errors"},
+			{Name: "retryable_error_default_config", Type: proto.ColumnType_BOOL, Description: "Column to test the Get function with retry config in case of non fatal error"},
+			{Name: "ignorable_error_default_config", Type: proto.ColumnType_BOOL, Description: "Column to test the  Get function with Ignorable errors"},
 		},
 	}
 }
 
 func listGetErrorsDefaultConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < rowCount; i++ {
+	for i := 0; i < getErrorsRowCount; i++ {
 		item := populateItem(i, d.Table)
 		d.StreamListItem(ctx, item)
 	}
@@ -36,11 +36,11 @@ func listGetErrorsDefaultConfig(ctx context.Context, d *plugin.QueryData, h *plu
 }
 
 func chaosGetDefaultConfigHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error") {
+	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error_default_config") {
 		buildConfig := &getBuildConfig{getError: RetryableError, failureCount: 5}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "ignorable_error") {
+	if helpers.StringSliceContains(d.QueryContext.Columns, "ignorable_error_default_config") {
 		buildConfig := &getBuildConfig{getError: IgnorableError}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}
