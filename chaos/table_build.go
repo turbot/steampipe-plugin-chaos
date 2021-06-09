@@ -25,13 +25,13 @@ const (
 )
 
 type chaosTable struct {
-	listBuildConfig  *listBuildConfig
-	getBuildConfig   *getBuildConfig
-	name             string
-	description      string
-	columnCount      int
-	hydrateError     FailType
-	hydrateDelay     bool
+	listBuildConfig    *listBuildConfig
+	getBuildConfig     *getBuildConfig
+	hydrateBuildConfig *hydrateBuildConfig
+	name               string
+	description        string
+	columnCount        int
+
 	itemFromKeyError FailType
 	transformError   FailType
 	transformDelay   bool
@@ -76,55 +76,13 @@ func buildColumns(tableDef *chaosTable) []*plugin.Column {
 		}
 		columns = append(columns, item)
 	}
-	hydrateColumn := &plugin.Column{
-		Name:    "hydrate_column",
-		Type:    proto.ColumnType_STRING,
-		Hydrate: buildHydrate(tableDef),
-	}
 	transformColumn := &plugin.Column{
 		Name:      "transform_column",
 		Type:      proto.ColumnType_STRING,
 		Transform: t.From(buildTransform(tableDef)),
 	}
 	columns = append(columns, transformColumn)
-	if tableDef.hydrateDelay || tableDef.hydrateError == FailError || tableDef.hydrateError == FailPanic {
-		columns = append(columns, hydrateColumn)
-	}
 	return columns
-}
-
-/// get a hydrate function based on the table def ///
-func buildHydrate(tableDef *chaosTable) plugin.HydrateFunc {
-	if tableDef.hydrateError == FailError {
-		return hydrateError
-	}
-	if tableDef.hydrateError == FailPanic {
-		return hydratePanic
-	}
-	if tableDef.hydrateDelay {
-		time.Sleep(delayValue)
-	}
-	return hydrateColumn
-}
-
-func hydrateError(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	id := h.Item.(map[string]interface{})["id"].(int)
-	if id > 10 {
-		return nil, fmt.Errorf("HYDRATE ERROR %d", id)
-	}
-	return nil, nil
-}
-
-func hydratePanic(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	panic("HYDRATE PANIC")
-}
-
-func hydrateColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	time.Sleep(delayValue)
-	key := h.Item.(map[string]interface{})
-	columnVal := key["hydrate_column"].(string)
-	item := map[string]interface{}{"hydrate_column": columnVal}
-	return item, nil
 }
 
 //// Transform functions ////
