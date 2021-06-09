@@ -3,12 +3,12 @@ load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "steampipe query hydrate 1" {
   run steampipe query "select fatal_error from chaos.chaos_hydrate_errors"
-  assert_output --partial 'fatalError'
+  assert_failure
 }
 
 @test "steampipe query hydrate 2" {
   run steampipe query "select retryable_error from chaos.chaos_hydrate_errors"
-  assert_output --partial 'retriableError'
+  assert_failure
 }
 
 @test "steampipe query hydrate 3" {
@@ -23,5 +23,5 @@ load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "steampipe query hydrate 5" {
   run steampipe query --output json "select panic from chaos.chaos_hydrate_errors"
-   assert_output --partial 'Panic'
+  assert_failure
 }
