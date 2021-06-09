@@ -1,0 +1,59 @@
+name: Steampipe plugin Chaos acceptance tests
+on:
+  pull_request:
+
+env:
+  STEAMPIPE_UPDATE_CHECK: false
+
+jobs:
+  goreleaser:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Unshallow
+        run: git fetch
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: 1.16
+
+      - name: Checkout Steampipe
+        uses: actions/checkout@v2
+        with:
+          repository: turbot/steampipe
+          path: steampipe
+
+      - name: Build Steampipe
+        run: |
+          echo "PATH=$PATH:$HOME/build:/home/runner" >> $GITHUB_ENV
+          cd /home/runner/work/steampipe-plugin-chaos/steampipe-plugin-chaos/steampipe
+          go build -o /home/runner/steampipe
+
+      - name: Build Chaos plugin
+        run: |
+          steampipe --version
+          steampipe plugin install chaos
+          make
+          steampipe plugin list    
+
+      - name: Setup BATS
+        uses: mig4/setup-bats@v1
+        with:
+          bats-version: 1.2.1
+
+      - name: Start steampipe service
+        run: |
+          steampipe service stop --force
+          steampipe service start
+
+      - name: Run Test Suite
+        run: |
+          chmod +x $GITHUB_WORKSPACE/tests/acceptance/run.sh
+          $GITHUB_WORKSPACE/tests/acceptance/run.sh
+          steampipe service stop --force
