@@ -13,8 +13,8 @@ require (
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
-	github.com/turbot/go-kit v0.1.0 // indirect
-	github.com/turbot/steampipe-plugin-sdk v0.0.0-20210129103342-cdf6f8e66550
+	github.com/turbot/go-kit v0.1.1
+	github.com/turbot/steampipe-plugin-sdk v0.3.0-rc.0.0.20210527131230-e8808acc76df
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	golang.org/x/text v0.3.5 // indirect
@@ -23,4 +23,4 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
 
-replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk v0.0.0-20210205114546-6bf5570bb7ca
+replace github.com/turbot/steampipe-plugin-sdk => /Users/parth/turbotio/steampipe/steampipe-plugin-sdk

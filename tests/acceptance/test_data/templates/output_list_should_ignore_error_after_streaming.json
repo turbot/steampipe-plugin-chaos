@@ -1,0 +1,17 @@
+[
+ {
+  "should_ignore_error_after_streaming": true
+ },
+ {
+  "should_ignore_error_after_streaming": false
+ },
+ {
+  "should_ignore_error_after_streaming": true
+ },
+ {
+  "should_ignore_error_after_streaming": false
+ },
+ {
+  "should_ignore_error_after_streaming": true
+ }
+]

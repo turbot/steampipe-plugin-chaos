@@ -4,9 +4,8 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	log "log"
-	"strconv"
-	"strings"
+	"log"
+	"os"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -17,25 +16,26 @@ import (
 type FailType string
 
 const (
-	FailNone  FailType = "None"
-	FailError          = "Error"
-	FailPanic          = "Panic"
+	FailNone       FailType = "None"
+	FailError               = "Error"
+	FailPanic               = "Panic"
+	FatalError              = "fatalError"
+	RetryableError          = "retriableError"
+	IgnorableError          = "resourceNotFound"
 )
 
 type chaosTable struct {
-	name             string
-	description      string
-	columnCount      int
-	getError         FailType
-	getDelay         bool
-	listError        FailType
-	listDelay        bool
-	rowCount         int
-	hydrateError     FailType
-	hydrateDelay     bool
+	listBuildConfig    *listBuildConfig
+	getBuildConfig     *getBuildConfig
+	hydrateBuildConfig *hydrateBuildConfig
+	name               string
+	description        string
+	columnCount        int
+
 	itemFromKeyError FailType
 	transformError   FailType
 	transformDelay   bool
+	errorType        FailType
 }
 
 const columnPrefix = "column_"
@@ -48,20 +48,22 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 		Name:        tableDef.name,
 		Description: tableDef.description,
 		List: &plugin.ListConfig{
-			Hydrate: getList(tableDef),
+			Hydrate: buildListHydrate(tableDef.listBuildConfig),
 		},
 		Get: &plugin.GetConfig{
-			KeyColumns:  plugin.SingleColumn(columnPrefix + "0"),
-			ItemFromKey: buildInputKey,
-			Hydrate:     getGet(tableDef),
+			KeyColumns: plugin.SingleColumn("id"),
+			Hydrate:    buildGetHydrate(tableDef.getBuildConfig),
 		},
-		Columns: getColumns(tableDef),
+		Columns: buildColumns(tableDef),
 	}
 
 }
 
-func getColumns(tableDef *chaosTable) []*plugin.Column {
-	var columnVal []*plugin.Column
+func buildColumns(tableDef *chaosTable) []*plugin.Column {
+	var columns []*plugin.Column = []*plugin.Column{{
+		Name: "id",
+		Type: proto.ColumnType_INT,
+	}}
 	columnCount := tableDef.columnCount
 	if columnCount == 0 {
 		columnCount = defaultColumnCount
@@ -72,115 +74,19 @@ func getColumns(tableDef *chaosTable) []*plugin.Column {
 			Name: columnName,
 			Type: proto.ColumnType_STRING,
 		}
-		columnVal = append(columnVal, item)
-	}
-	hydrateColumn := &plugin.Column{
-		Name:    "hydrate_column",
-		Type:    proto.ColumnType_STRING,
-		Hydrate: getHydrate(tableDef),
+		columns = append(columns, item)
 	}
 	transformColumn := &plugin.Column{
 		Name:      "transform_column",
 		Type:      proto.ColumnType_STRING,
-		Transform: t.From(getTransform(tableDef)),
+		Transform: t.From(buildTransform(tableDef)),
 	}
-	columnVal = append(columnVal, transformColumn)
-	if tableDef.hydrateDelay || tableDef.hydrateError == FailError || tableDef.hydrateError == FailPanic {
-		columnVal = append(columnVal, hydrateColumn)
-
-	}
-	return columnVal
-}
-
-//// item from key ////
-
-func buildInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	quals := d.KeyColumnQuals
-	keyInput := quals["column_0"].GetStringValue()
-	item := keyInput
-	return item, nil
-}
-
-//// list function ////
-
-func getList(tableDef *chaosTable) plugin.HydrateFunc {
-	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-		log.Printf("[DEBUG] INSIDE LIST CALL")
-		if tableDef.listError == FailError {
-			return nil, errors.New("LIST ERROR")
-		}
-		if tableDef.listError == FailPanic {
-			panic("LIST PANIC")
-		}
-		if tableDef.listDelay {
-			time.Sleep(delayValue)
-		}
-
-		rowCount := tableDef.rowCount
-		if rowCount == 0 {
-			rowCount = defaultRowCount
-		}
-
-		for i := 0; i < rowCount; i++ {
-			item := populateItem(i, d.Table)
-			d.StreamListItem(ctx, item)
-		}
-		return nil, nil
-	}
-}
-
-/// get the 'Get' hydrate function ///
-func getGet(tableDef *chaosTable) plugin.HydrateFunc {
-	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-		log.Printf("[DEBUG] INSIDE GET CALL")
-		if tableDef.getError == FailError {
-			return nil, errors.New("GET ERROR")
-		}
-		if tableDef.getError == FailPanic {
-			panic("GET PANIC")
-		}
-		if tableDef.getDelay {
-			time.Sleep(delayValue)
-		}
-		item := h.Item.(string)
-		rowNumber, _ := strconv.Atoi(item[strings.LastIndex(item, "-")+1:])
-		column := populateItem(rowNumber, d.Table)
-		return column, nil
-	}
-}
-
-/// get a hydrate function based on the table def ///
-func getHydrate(tableDef *chaosTable) plugin.HydrateFunc {
-	if tableDef.hydrateError == FailError {
-		return hydrateError
-	}
-	if tableDef.hydrateError == FailPanic {
-		return hydratePanic
-	}
-	if tableDef.hydrateDelay {
-		time.Sleep(delayValue)
-	}
-	return hydrateColumn
-}
-
-func hydrateError(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	return nil, errors.New("HYDRATE ERROR")
-}
-
-func hydratePanic(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	panic("HYDRATE PANIC")
-}
-
-func hydrateColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	time.Sleep(delayValue)
-	key := h.Item.(map[string]interface{})
-	columnVal := key["hydrate_column"].(string)
-	item := map[string]interface{}{"hydrate_column": columnVal}
-	return item, nil
+	columns = append(columns, transformColumn)
+	return columns
 }
 
 //// Transform functions ////
-func getTransform(tableDef *chaosTable) t.TransformFunc {
+func buildTransform(tableDef *chaosTable) t.TransformFunc {
 	return func(_ context.Context, d *t.TransformData) (interface{}, error) {
 		if tableDef.transformError == FailError {
 			return nil, errors.New("TRANSFORM ERROR")
@@ -194,5 +100,57 @@ func getTransform(tableDef *chaosTable) t.TransformFunc {
 		key := d.HydrateItem.(map[string]interface{})
 		columnVal := key["transform_column"].(string)
 		return columnVal, nil
+	}
+}
+
+// factory function which returns a list call with the behaviour determined by the list config
+func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
+	if buildConfig == nil {
+		buildConfig = &listBuildConfig{
+			rowCount:    defaultRowCount,
+			columnCount: defaultColumnCount,
+		}
+	}
+
+	return func(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+		// if listDelay is specified, sleep
+		if buildConfig.listDelay {
+			time.Sleep(delayValue)
+		}
+
+		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
+
+		for i := 0; i < buildConfig.rowCount; i++ {
+			//log.Printf("[WARN] ROW LOOP streamed %d.   pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
+			time.Sleep(50 * time.Millisecond)
+			// listErrorRows is the number of rows to return successfully before raising an error
+			// if we stream that many rows, let's raise an error
+			if i == buildConfig.listErrorRows {
+				switch buildConfig.listError {
+				case RetryableError:
+					// failureCount is the number of times the error occurs before we succeed
+					if listTableErrorCount <= buildConfig.failureCount {
+						listTableErrorCount++
+						return nil, errors.New(RetryableError)
+					}
+					// if we have failed 'failureCount' times, reset listTableErrorCount and fall through to return item
+					listTableErrorCount = 0
+				case IgnorableError:
+					return nil, errors.New(IgnorableError)
+				case FailError:
+					return nil, errors.New(FatalError)
+				case FailPanic:
+					panic(FailPanic)
+
+				}
+
+			}
+			item := populateItem(i, d.Table)
+			d.StreamListItem(ctx, item)
+
+		}
+
+		log.Printf("[TRACE] END  STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
+		return nil, nil
 	}
 }

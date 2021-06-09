@@ -10,10 +10,10 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
 
-func hydrateColumnsTable() *plugin.Table {
+func hydrateColumnsDependencyTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_hydrate_columns_dependency",
-		Description: "Chaos table to test multiple hydrate functions' dependencies",
+		Description: "Chaos table to test dependencies between hydrate functions",
 
 		List: &plugin.ListConfig{
 			Hydrate: hydrateList,

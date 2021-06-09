@@ -3,11 +3,16 @@ package chaos
 import (
 	"context"
 	"log"
+	"sync"
+	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
+
+var hydrateCount = map[string]int{}
+var mutex = &sync.Mutex{}
 
 func getConcurrencyLimitTable() *plugin.Table {
 	return &plugin.Table{
@@ -82,4 +87,25 @@ func totalHydrateCallsColumn(ctx context.Context, d *plugin.QueryData, h *plugin
 	_, totalCount := doHydrateCall("totalCalls")
 
 	return totalCount, nil
+}
+
+// increment hydrate count for this name, do some work(sleep), decrement hydrate count
+// return number of instances of this hydrate function running, and total number of hydrate calls running
+func doHydrateCall(name string) (int, int) {
+	mutex.Lock()
+	hydrateCount[name] = hydrateCount[name] + 1
+	callsForThisHydrate := hydrateCount[name]
+	var totalCalls = 0
+	for _, calls := range hydrateCount {
+		totalCalls += calls
+	}
+	mutex.Unlock()
+
+	time.Sleep(1 * time.Second)
+
+	mutex.Lock()
+	hydrateCount[name] = hydrateCount[name] - 1
+	mutex.Unlock()
+
+	return callsForThisHydrate, totalCalls
 }

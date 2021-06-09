@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	log "log"
+	"strings"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -11,7 +12,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
-const rowCount = 100
+const allColumnsRowCount = 100
 
 type JSONPolicy struct {
 	Name      string
@@ -84,6 +85,12 @@ func allColumnsTable() *plugin.Table {
 				Transform: transform.FromValue(),
 			},
 			{
+				Name:      "long_string_column",
+				Type:      proto.ColumnType_STRING,
+				Hydrate:   longStringColumnValue,
+				Transform: transform.FromValue(),
+			},
+			{
 				Name:        "array_element",
 				Description: "This column test the functionality of array lookup in Transform function",
 				Type:        proto.ColumnType_JSON,
@@ -118,16 +125,10 @@ func allColumnsTable() *plugin.Table {
 
 }
 
-func buildAllColumnsInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	quals := d.KeyColumnQuals
-	item := quals["id"].GetInt64Value()
-	return item, nil
-}
-
 func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	log.Println("[TRACE] All columns list function")
 
-	for i := 0; i < rowCount; i++ {
+	for i := 0; i < allColumnsRowCount; i++ {
 		id := i
 		columnVal := fmt.Sprintf("%s-%v", "stringValuesomething", i)
 		columnAttributes := TransformColumnAttributes{Key: columnVal, Value: "value"}
@@ -240,6 +241,16 @@ func stringArrayToMapColumn(ctx context.Context, d *plugin.QueryData, h *plugin.
 	key := h.Item.(map[string]interface{})
 	var item []string
 	item = append(item, key["string_column"].(string))
+
+	return item, nil
+
+}
+
+func longStringColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Println("[TRACE] long string column value")
+	stringLength := 100
+	key := h.Item.(map[string]interface{})
+	item := fmt.Sprintf(strings.Repeat(key["string_column"].(string), stringLength))
 
 	return item, nil
 
