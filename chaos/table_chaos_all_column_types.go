@@ -35,7 +35,8 @@ func allColumnsTable() *plugin.Table {
 		Name:        "chaos_all_column_types",
 		Description: "Chaos table to test all columns of different types",
 		List: &plugin.ListConfig{
-			Hydrate: allColumnsList,
+			Hydrate:            allColumnsList,
+			OptionalKeyColumns: plugin.AnyColumn([]string{"string_column"}),
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
