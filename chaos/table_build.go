@@ -121,7 +121,6 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 
 		for i := 0; i < buildConfig.rowCount; i++ {
-			//log.Printf("[WARN] ROW LOOP streamed %d.   pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 			time.Sleep(50 * time.Millisecond)
 			// listErrorRows is the number of rows to return successfully before raising an error
 			// if we stream that many rows, let's raise an error

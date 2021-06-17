@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"fmt"
-	log "log"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -52,20 +51,17 @@ func hydrateInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrate
 }
 
 func hydrateList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] All columns list function")
 
 	for i := 0; i < 2; i++ {
 		item := map[string]interface{}{"id": i}
 		d.StreamListItem(ctx, item)
 
-		log.Println("[TRACE] HYDRATE LIST FUNCTION ========>", item)
 	}
 
 	return nil, nil
 }
 
 func hydrateGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] hydrateColumnValue")
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 
@@ -83,7 +79,6 @@ func hydrate1(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (
 
 	item := map[string]interface{}{"hydrate_column_1": columnVal}
 
-	log.Println("[DEBUG] hydrate1", columnVal)
 	return item, nil
 }
 
@@ -96,7 +91,6 @@ func hydrate2(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (
 
 	item := map[string]interface{}{"hydrate_column_2": columnVal}
 
-	log.Println("[DEBUG] hydrate2", columnVal)
 	return item, nil
 }
 
@@ -109,7 +103,6 @@ func hydrate3(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (
 
 	item := map[string]interface{}{"hydrate_column_3": columnVal}
 
-	log.Println("[DEBUG] hydrate3", columnVal)
 	return item, nil
 }
 
@@ -120,7 +113,6 @@ func hydrate4(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (
 
 	item := map[string]interface{}{"hydrate_column_4": columnVal}
 
-	log.Println("[DEBUG] hydrate3", columnVal)
 	return item, nil
 }
 
@@ -134,6 +126,5 @@ func hydrate5(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (
 
 	item := map[string]interface{}{"hydrate_column_5": columnVal}
 
-	log.Println("[DEBUG] hydrate3", columnVal)
 	return item, nil
 }
