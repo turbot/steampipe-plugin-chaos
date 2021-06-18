@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"errors"
-	log "log"
 	"time"
 
 	"github.com/turbot/go-kit/helpers"
@@ -133,7 +132,6 @@ func buildHydrate(buildConfig *hydrateBuildConfig) plugin.HydrateFunc {
 		}
 
 		item := populateItem(id, d.Table)
-		log.Printf("[WARN] THE ITEM IS %v", id)
 		return item, nil
 	}
 }

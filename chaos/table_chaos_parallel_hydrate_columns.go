@@ -2,7 +2,6 @@ package chaos
 
 import (
 	"context"
-	log "log"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -212,7 +211,6 @@ func hydInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 }
 
 func hydList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] All columns list function")
 
 	for i := 0; i < 500; i++ {
 		item := map[string]interface{}{"id": i}
@@ -223,7 +221,6 @@ func hydList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 }
 
 func hydGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] hydrateColumnValue")
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 

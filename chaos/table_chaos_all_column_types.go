@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"fmt"
-	log "log"
 	"strings"
 	"time"
 
@@ -126,8 +125,6 @@ func allColumnsTable() *plugin.Table {
 }
 
 func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] All columns list function")
-
 	for i := 0; i < allColumnsRowCount; i++ {
 		id := i
 		columnVal := fmt.Sprintf("%s-%v", "stringValuesomething", i)
@@ -142,7 +139,6 @@ func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 }
 
 func booleanColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] Boolean Column Value")
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 	columnVal := id%2 == 0
@@ -151,7 +147,6 @@ func booleanColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 }
 
 func dateTimeColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] DateTime Column Value")
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 	dates := []string{"2001-02-20T01:28:00Z", "2002-05-05T09:23:00Z", "2001-08-27T05:00:00Z", "2001-12-12T06:19:00Z", "2001-07-14T18:00:34Z", "2001-09-11T07:49:00Z", "2001-06-04T22:00:32Z"}
@@ -160,7 +155,6 @@ func dateTimeColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 }
 
 func doubleColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] Double Column Value")
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 	columnVal := float64(id) / 17
@@ -168,7 +162,6 @@ func doubleColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 }
 
 func ipAddressColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] IP Address Column Value")
 	ipAddress := []string{"10.0.1.4", "10.0.0.1", "10.0.2.2", "10.0.1.1", "10.0.0.4", "10.0.0.5", "10.0.0.10", "10.0.1.3", "10.0.0.7", "10.0.0.6", "10.0.0.8", "10.0.2.9", "10.0.1.10"}
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
@@ -177,7 +170,6 @@ func ipAddressColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 }
 
 func jsonColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] JSON Column Value")
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 	name := fmt.Sprintf("%s-%v", "stringValuesomething", id)
@@ -190,7 +182,6 @@ func jsonColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 }
 
 func cidrColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] CIDR Column Value")
 	cidr := []string{"10.0.0.0/24", "10.0.0.1/32", "10.84.0.0/24", "172.31.0.0/16", "192.168.0.0/22", "172.16.0.0/16", "10.1.0.0/16", "175.0.0.0/16"}
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
@@ -204,7 +195,6 @@ func emptyHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDat
 }
 
 func epochColumnSecValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] Seconds since epoch Format Date Time Column Value")
 
 	dates := []string{"1611063579", "1611064454", "1585990763", "1612145454", "1562145454", "1555145454", "1612145454"}
 	key := h.Item.(map[string]interface{})
@@ -215,7 +205,6 @@ func epochColumnSecValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 }
 
 func epochColumnMsValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] Milliseconds since  Epoch Format Date Time Column Value")
 
 	dates := []string{"1611057198070", "1598057778070", "1432117198070", "1699851193076", "1611599593076", "1611335198070", "166657198070"}
 	key := h.Item.(map[string]interface{})
@@ -226,18 +215,14 @@ func epochColumnMsValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 }
 
 func stringToArrayColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] Ensure string to array column value")
 	key := h.Item.(map[string]interface{})
 	item := key["string_column"]
-
-	log.Println("[TRACE] value of string column", item)
 
 	return item, nil
 
 }
 
 func stringArrayToMapColumn(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] Labels to Tags Map column value")
 	key := h.Item.(map[string]interface{})
 	var item []string
 	item = append(item, key["string_column"].(string))
@@ -247,7 +232,6 @@ func stringArrayToMapColumn(ctx context.Context, d *plugin.QueryData, h *plugin.
 }
 
 func longStringColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Println("[TRACE] long string column value")
 	stringLength := 100
 	key := h.Item.(map[string]interface{})
 	item := fmt.Sprintf(strings.Repeat(key["string_column"].(string), stringLength))
