@@ -28,7 +28,8 @@ func transformFromFieldsTable() *plugin.Table {
 		Name:             "chaos_transform_from_fields",
 		DefaultTransform: transform.FromCamel(),
 		List: &plugin.ListConfig{
-			Hydrate: transformFromFieldList,
+			Hydrate:            transformFromFieldList,
+			OptionalKeyColumns: plugin.SingleColumn("column_a"),
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.SingleColumn("id"),
@@ -52,6 +53,11 @@ func transformFromFieldsTable() *plugin.Table {
 				Name:      "from_qual_column",
 				Type:      proto.ColumnType_STRING,
 				Transform: transform.FromQual("id"),
+			},
+			{
+				Name:      "from_optional_qual_column",
+				Type:      proto.ColumnType_STRING,
+				Transform: transform.FromQual("column_a"),
 			},
 		},
 	}
