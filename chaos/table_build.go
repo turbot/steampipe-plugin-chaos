@@ -10,7 +10,6 @@ import (
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
-	t "github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
 
 type FailType string
@@ -25,17 +24,13 @@ const (
 )
 
 type chaosTable struct {
-	listBuildConfig    *listBuildConfig
-	getBuildConfig     *getBuildConfig
-	hydrateBuildConfig *hydrateBuildConfig
-	name               string
-	description        string
-	columnCount        int
-
-	itemFromKeyError FailType
-	transformError   FailType
-	transformDelay   bool
-	errorType        FailType
+	listBuildConfig      *listBuildConfig
+	getBuildConfig       *getBuildConfig
+	hydrateBuildConfig   *hydrateBuildConfig
+	transformBuildConfig *transformBuildConfig
+	name                 string
+	description          string
+	columnCount          int
 }
 
 const columnPrefix = "column_"
@@ -76,31 +71,7 @@ func buildColumns(tableDef *chaosTable) []*plugin.Column {
 		}
 		columns = append(columns, item)
 	}
-	transformColumn := &plugin.Column{
-		Name:      "transform_column",
-		Type:      proto.ColumnType_STRING,
-		Transform: t.From(buildTransform(tableDef)),
-	}
-	columns = append(columns, transformColumn)
 	return columns
-}
-
-//// Transform functions ////
-func buildTransform(tableDef *chaosTable) t.TransformFunc {
-	return func(_ context.Context, d *t.TransformData) (interface{}, error) {
-		if tableDef.transformError == FailError {
-			return nil, errors.New("TRANSFORM ERROR")
-		}
-		if tableDef.transformError == FailPanic {
-			panic("TRANSFORM PANIC")
-		}
-		if tableDef.transformDelay {
-			time.Sleep(delayValue)
-		}
-		key := d.HydrateItem.(map[string]interface{})
-		columnVal := key["transform_column"].(string)
-		return columnVal, nil
-	}
 }
 
 // factory function which returns a list call with the behaviour determined by the list config
