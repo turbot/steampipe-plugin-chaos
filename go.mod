@@ -5,6 +5,7 @@ go 1.15
 require (
 	github.com/apparentlymart/go-textseg/v12 v12.0.0 // indirect
 	github.com/fatih/color v1.10.0 // indirect
+	github.com/gertd/go-pluralize v0.1.7 // indirect
 	github.com/hashicorp/go-hclog v0.15.0 // indirect
 	github.com/hashicorp/yamux v0.0.0-20200609203250-aecfd211c9ce // indirect
 	github.com/iancoleman/strcase v0.1.3 // indirect
@@ -14,7 +15,7 @@ require (
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/turbot/go-kit v0.2.2-0.20210628165333-268ba0a30be3
-	github.com/turbot/steampipe-plugin-sdk v0.3.0-rc.0.0.20210621130538-6f674aaafaac
+	github.com/turbot/steampipe-plugin-sdk v0.3.0-rc.0.0.20210630092402-6530550da889
 	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
@@ -23,3 +24,5 @@ require (
 	google.golang.org/grpc v1.35.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace github.com/turbot/steampipe-plugin-sdk => /Users/kai/Dev/github/turbot/steampipe-plugin-sdk
