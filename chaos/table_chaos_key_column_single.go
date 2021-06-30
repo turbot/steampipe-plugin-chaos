@@ -12,10 +12,10 @@ func listKeyColumnsSingleEqualsTable() *plugin.Table {
 		Name: "chaos_list_key_column_single_equal",
 		List: &plugin.ListConfig{
 			Hydrate: listKeyColumnsList,
-			KeyColumns: plugin.NewKeyColumnSet([]*plugin.KeyColumn{{
-				Column:    "id",
+			KeyColumns: []*plugin.KeyColumn{{
+				Name:      "id",
 				Operators: []string{"="},
-			}}),
+			}},
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},

@@ -3,7 +3,6 @@ package chaos
 import (
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/plugin/option"
 )
 
 func listKeyColumnsAnyMultipleOperatorTable() *plugin.Table {
@@ -11,18 +10,18 @@ func listKeyColumnsAnyMultipleOperatorTable() *plugin.Table {
 		Name: "chaos_list_key_columns_any_multiple_operator",
 		List: &plugin.ListConfig{
 			Hydrate: listKeyColumnsList,
-			KeyColumns: plugin.NewKeyColumnSet([]*plugin.KeyColumn{
+			KeyColumns: []*plugin.KeyColumn{
 				{
-					Column:    "id",
+					Name:      "id",
 					Operators: []string{"=", "<", "<=", ">", ">="},
-					Optional:  true,
+					Require:   plugin.Optional,
 				},
 				{
-					Column:    "col_1",
+					Name:      "col_1",
 					Operators: []string{"<", ">"},
-					Optional:  true,
+					Require:   plugin.Optional,
 				},
-			}, option.WithAtLeast(1)),
+			},
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},

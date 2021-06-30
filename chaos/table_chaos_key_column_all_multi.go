@@ -10,16 +10,16 @@ func listKeyColumnsAllMultipleOperatorTable() *plugin.Table {
 		Name: "chaos_list_key_columns_all_multiple_operator",
 		List: &plugin.ListConfig{
 			Hydrate: listKeyColumnsList,
-			KeyColumns: plugin.NewKeyColumnSet([]*plugin.KeyColumn{
+			KeyColumns: []*plugin.KeyColumn{
 				{
-					Column:    "id",
+					Name:      "id",
 					Operators: []string{"=", "<", "<=", ">", ">="},
 				},
 				{
-					Column:    "col_1",
+					Name:      "col_1",
 					Operators: []string{"<", ">"},
 				},
-			}),
+			},
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
