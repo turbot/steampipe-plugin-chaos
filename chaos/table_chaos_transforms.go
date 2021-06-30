@@ -39,8 +39,8 @@ func transformFromFunctionsTable() *plugin.Table {
 		Name:             "chaos_transforms",
 		DefaultTransform: transform.FromCamel(),
 		List: &plugin.ListConfig{
-			Hydrate:            transformFromFieldList,
-			OptionalKeyColumns: plugin.SingleColumn("optional_key_column"),
+			Hydrate:    transformFromFieldList,
+			KeyColumns: plugin.OptionalColumns([]string{"optional_key_column"}),
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.SingleColumn("id"),
