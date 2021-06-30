@@ -13,6 +13,7 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/turbot/go-kit v0.2.2-0.20210628165333-268ba0a30be3
 	github.com/turbot/steampipe-plugin-sdk v0.3.0-rc.0.0.20210630161256-54cd4e651d60
+	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	google.golang.org/genproto v0.0.0-20210207032614-bba0dbe2a9ea // indirect
