@@ -24,30 +24,35 @@ type keyColumnTableDefinitions struct {
 }
 
 func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
-	return &plugin.Table{
+	table := &plugin.Table{
 		Name:        def.name,
 		Description: def.description,
-		List: &plugin.ListConfig{
-			Hydrate:    buildKeyColumns(def),
-			KeyColumns: calculateListKeyColumns(def),
-		},
-		Get: &plugin.GetConfig{
-			KeyColumns: calculateGetKeyColumns(def),
-			Hydrate:    buildKeyColumns(def),
-		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
 			{Name: "column_a", Type: proto.ColumnType_STRING},
 			{Name: "combined_columns", Type: proto.ColumnType_STRING},
 		},
 	}
+	if def.listKeyColumnSetType != "" {
+		table.List = &plugin.ListConfig{
+			Hydrate:    buildFetchHydrateUsingKeyColumns(def.listKeyColumnSetType),
+			KeyColumns: calculateListKeyColumns(def.listKeyColumnSetType),
+		}
+	}
+	if def.getKeyColumnSetType != "" {
+		table.Get = &plugin.GetConfig{
+			Hydrate:    buildFetchHydrateUsingKeyColumns(def.getKeyColumnSetType),
+			KeyColumns: calculateGetKeyColumns(def.getKeyColumnSetType),
+		}
+	}
 
+	return table
 }
 
-func buildKeyColumns(def *keyColumnTableDefinitions) plugin.HydrateFunc {
+func buildFetchHydrateUsingKeyColumns(keyColumnSetType keyColumnType) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 		item := map[string]interface{}{}
-		if def.listKeyColumnSetType == singleColumn || def.getKeyColumnSetType == singleColumn {
+		if keyColumnSetType == singleColumn {
 			id := d.KeyColumnQuals["id"].GetInt64Value()
 			item = map[string]interface{}{"id": id}
 		} else {
@@ -61,24 +66,24 @@ func buildKeyColumns(def *keyColumnTableDefinitions) plugin.HydrateFunc {
 	}
 }
 
-func calculateListKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
-	if def.listKeyColumnSetType == singleColumn {
+func calculateListKeyColumns(keyColumnSetType keyColumnType) *plugin.KeyColumnSet {
+	if keyColumnSetType == singleColumn {
 		return plugin.SingleColumn("id")
 	}
-	if def.listKeyColumnSetType == anyColumn {
+	if keyColumnSetType == anyColumn {
 		return plugin.AnyColumn([]string{"id", "column_a"})
 	}
-	if def.listKeyColumnSetType == allColumns {
+	if keyColumnSetType == allColumns {
 		return plugin.AllColumns([]string{"id", "column_a"})
 	}
 	return nil
 }
 
-func calculateGetKeyColumns(def *keyColumnTableDefinitions) *plugin.KeyColumnSet {
-	if def.getKeyColumnSetType == anyColumn {
+func calculateGetKeyColumns(keyColumnSetType keyColumnType) *plugin.KeyColumnSet {
+	if keyColumnSetType == anyColumn {
 		return plugin.AnyColumn([]string{"id", "column_a"})
 	}
-	if def.getKeyColumnSetType == allColumns {
+	if keyColumnSetType == allColumns {
 		return plugin.AllColumns([]string{"id", "column_a"})
 	}
 	return plugin.SingleColumn("id")
