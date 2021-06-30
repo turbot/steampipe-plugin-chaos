@@ -66,7 +66,7 @@ func buildFetchHydrateUsingKeyColumns(keyColumnSetType keyColumnType) plugin.Hyd
 	}
 }
 
-func calculateListKeyColumns(keyColumnSetType keyColumnType) *plugin.KeyColumnSet {
+func calculateListKeyColumns(keyColumnSetType keyColumnType) plugin.KeyColumnSlice {
 	if keyColumnSetType == singleColumn {
 		return plugin.SingleColumn("id")
 	}
@@ -79,7 +79,7 @@ func calculateListKeyColumns(keyColumnSetType keyColumnType) *plugin.KeyColumnSe
 	return nil
 }
 
-func calculateGetKeyColumns(keyColumnSetType keyColumnType) *plugin.KeyColumnSet {
+func calculateGetKeyColumns(keyColumnSetType keyColumnType) plugin.KeyColumnSlice {
 	if keyColumnSetType == anyColumn {
 		return plugin.AnyColumn([]string{"id", "column_a"})
 	}
