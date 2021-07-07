@@ -55,6 +55,9 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_list_key_column_single_equal":           listKeyColumnsSingleEqualsTable(),        // test the Hydrate call with all the possible scenarios like errors, panics and delays
 			"chaos_list_key_columns_any_multiple_operator": listKeyColumnsAnyMultipleOperatorTable(), // test the Hydrate call with all the possible scenarios like errors, panics and delays
 			"chaos_list_key_columns_all_multiple_operator": listKeyColumnsAllMultipleOperatorTable(), // test the Hydrate call with all the possible scenarios like errors, panics and delays
+			"chaos_get_key_column_single_equal":            getKeyColumnsSingleEqualsTable(),  // test the Hydrate call with all the possible scenarios like errors, panics and delays
+			"chaos_get_key_columns_any_multiple_operator":  getKeyColumnsAnyMultipleOperatorTable(),  // test the Hydrate call with all the possible scenarios like errors, panics and delays
+			"chaos_get_key_columns_all_multiple_operator":  getKeyColumnsAllMultipleOperatorTable(),         // test the Hydrate call with all the possible scenarios like errors, panics and delays
 		},
 		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
 			NewInstance: ConfigInstance,

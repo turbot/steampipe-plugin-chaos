@@ -35,13 +35,13 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 	}
 	if def.listKeyColumnSetType != "" {
 		table.List = &plugin.ListConfig{
-			Hydrate:    buildFetchHydrateUsingKeyColumns(def.listKeyColumnSetType),
+			Hydrate:    buildFetchListUsingKeyColumns(def.listKeyColumnSetType),
 			KeyColumns: calculateListKeyColumns(def.listKeyColumnSetType),
 		}
 	}
 	if def.getKeyColumnSetType != "" {
 		table.Get = &plugin.GetConfig{
-			Hydrate:    buildFetchHydrateUsingKeyColumns(def.getKeyColumnSetType),
+			Hydrate:    buildFetchGetUsingKeyColumns(def.getKeyColumnSetType),
 			KeyColumns: calculateGetKeyColumns(def.getKeyColumnSetType),
 		}
 	}
@@ -49,7 +49,7 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 	return table
 }
 
-func buildFetchHydrateUsingKeyColumns(keyColumnSetType keyColumnType) plugin.HydrateFunc {
+func buildFetchListUsingKeyColumns(keyColumnSetType keyColumnType) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 		item := map[string]interface{}{}
 		if keyColumnSetType == singleColumn {
@@ -63,6 +63,22 @@ func buildFetchHydrateUsingKeyColumns(keyColumnSetType keyColumnType) plugin.Hyd
 		}
 		d.StreamListItem(ctx, item)
 		return nil, nil
+	}
+}
+
+func buildFetchGetUsingKeyColumns(keyColumnSetType keyColumnType) plugin.HydrateFunc {
+	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+		item := map[string]interface{}{}
+		if keyColumnSetType == singleColumn {
+			id := d.KeyColumnQuals["id"].GetInt64Value()
+			item = map[string]interface{}{"id": id}
+		} else {
+			id := d.KeyColumnQuals["id"].GetInt64Value()
+			columnA := d.KeyColumnQuals["column_a"].GetStringValue()
+			combinedColumn := fmt.Sprintf("%d-%s", id, columnA)
+			item = map[string]interface{}{"id": id, "column_a": columnA, "combined_columns": combinedColumn}
+		}
+		return item, nil
 	}
 }
 
