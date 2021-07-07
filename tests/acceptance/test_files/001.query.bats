@@ -1,10 +1,10 @@
 load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
-#@test "steampipe query 1" {
-#  run steampipe query --output json  "select * from chaos.chaos_high_row_count order by id"
-#  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_high_row_count.json)"
-#}
+@test "steampipe query 1" {
+  run steampipe query --output json  "select * from chaos.chaos_high_row_count limit 5"
+  assert_success
+}
 
 @test "steampipe query 2" {
   run steampipe query --output json  "select * from chaos.chaos_all_column_types order by id limit 5"
