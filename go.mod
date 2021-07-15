@@ -12,8 +12,7 @@ require (
 	github.com/oklog/run v1.1.0 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/turbot/go-kit v0.2.2-0.20210628165333-268ba0a30be3
-	github.com/turbot/steampipe-plugin-sdk v0.3.0-rc.0.0.20210630163800-53a5f6ab0052
-	golang.org/x/crypto v0.0.0-20200622213623-75b288015ac9 // indirect
+	github.com/turbot/steampipe-plugin-sdk v1.3.0
 	golang.org/x/net v0.0.0-20210119194325-5f4716e94777 // indirect
 	golang.org/x/sys v0.0.0-20210124154548-22da62e12c0c // indirect
 	google.golang.org/genproto v0.0.0-20210207032614-bba0dbe2a9ea // indirect
