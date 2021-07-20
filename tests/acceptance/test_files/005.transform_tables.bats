@@ -6,15 +6,19 @@ load "$LIB_BATS_SUPPORT/load.bash"
   assert_output --partial 'TRANSFORM ERROR'
 }
 
-@test "steampipe query transform 2" {
-  run steampipe query "select panic from chaos_transform_errors"
-  assert_output --partial 'TRANSFORM PANIC'
-}
+# does not work with sdk 1.4.0  as it now populates all columns returned by the hydrate function, and the error column fails first
+# need to refactor chaos plugin
+#@test "steampipe query transform 2" {
+#  run steampipe query "select panic from chaos_transform_errors"
+#  assert_output --partial 'TRANSFORM PANIC'
+#}
 
-@test "steampipe query transform 3" {
-  run steampipe query "select delay from chaos_transform_errors"
-  assert_success
-}
+# does not work with sdk 1.4.0  as it now populates all columns returned by the hydrate function, and the error column fails first
+# need to refactor chaos plugin
+#@test "steampipe query transform 3" {
+#  run steampipe query "select delay from chaos_transform_errors"
+#  assert_success
+#}
 
 @test "steampipe query transform 4" {
   run steampipe query --output json "select from_json_tag from chaos_transforms order by id"
