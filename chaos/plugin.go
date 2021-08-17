@@ -36,6 +36,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_hydrate_columns_dependency":             hydrateColumnsDependencyTable(),  // test dependencies between hydrate functions
 			"chaos_parallel_hydrate_columns":               parallelHydrateColumnsTable(),    // test the execution of multiple hydrate functions and transform functions asynchronously
 			"chaos_all_numeric_column":                     numericColumnsTable(),            // test all flavours of integer and float data types
+			"chaos_cache_check":                            checkCacheTable(),                // test the cache functionality
 			"chaos_concurrency_limit":                      getConcurrencyLimitTable(),       // test the concurrency limit of hydrate calls
 			"chaos_concurrency_no_limit":                   getConcurrencyNoLimitTable(),     // test high concurrency and no limit (apart from the plugin level limit)
 			"chaos_hydrate_retry_config":                   hydrateRetryConfigTable(),        // test the Hydrate function with Retry config in case of non fatal error
