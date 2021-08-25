@@ -127,7 +127,7 @@ func allColumnsTable() *plugin.Table {
 func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	for i := 0; i < allColumnsRowCount; i++ {
 		id := i
-		columnVal := fmt.Sprintf("%s-%v", "stringValuesomething", i)
+		columnVal := "\u0000"
 		columnAttributes := TransformColumnAttributes{Key: columnVal, Value: "value"}
 		var transformColumn []TransformColumnAttributes
 		transformColumn = append(transformColumn, columnAttributes)
@@ -172,7 +172,7 @@ func ipAddressColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 func jsonColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
-	name := fmt.Sprintf("%s-%v", "stringValuesomething", id)
+	name := "\u0000"
 	actions := []string{"iam:GetContextKeysForCustomPolicy", "iam:GetContextKeysForPrincipalPolicy", "iam:SimulateCustomPolicy", "iam:SimulatePrincipalPolicy"}
 	effects := []string{"Allow", "Deny"}
 	statement := Statement{Action: actions[id%len(actions)], Effect: effects[id%len(effects)]}
