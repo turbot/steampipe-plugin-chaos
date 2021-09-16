@@ -128,6 +128,9 @@ func allColumnsList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateD
 	for i := 0; i < allColumnsRowCount; i++ {
 		id := i
 		columnVal := "\u0000"
+		if i%2 == 0 {
+			columnVal = d.SteampipeMetadata.SteampipeVersion
+		}
 		columnAttributes := TransformColumnAttributes{Key: columnVal, Value: "value"}
 		var transformColumn []TransformColumnAttributes
 		transformColumn = append(transformColumn, columnAttributes)

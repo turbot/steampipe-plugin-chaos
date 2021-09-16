@@ -7,10 +7,15 @@ import (
 
 type chaosConfig struct {
 	Regions []string `cty:"regions"`
+	Tables  []string `cty:"tables"`
 }
 
 var ConfigSchema = map[string]*schema.Attribute{
 	"regions": {
+		Type: schema.TypeList,
+		Elem: &schema.Attribute{Type: schema.TypeString},
+	},
+	"tables": {
 		Type: schema.TypeList,
 		Elem: &schema.Attribute{Type: schema.TypeString},
 	},

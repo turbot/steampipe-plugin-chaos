@@ -25,7 +25,25 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		DefaultRetryConfig: &plugin.RetryConfig{
 			ShouldRetryError: shouldRetryError,
 		},
-		TableMap: map[string]*plugin.Table{
+
+
+		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
+			NewInstance: ConfigInstance,
+			Schema:      ConfigSchema,
+		},
+
+		// set create tables function - this will be called from SetConnectionConfig
+		CreateTables: createTables,
+	}
+
+	return p
+}
+
+func createTables(p *plugin.Plugin) error {
+	connectionConfig := GetConfig(p.Connection)
+	tables := connectionConfig.Tables
+
+	p.TableMap = map[string]*plugin.Table{
 			"chaos_high_row_count":                         buildTable(&chaosTable{name: "chaos_high_row_count", description: "Chaos table to test steampipe with high row count", listBuildConfig: &listBuildConfig{rowCount: 1000}}),
 			"chaos_high_column_count":                      buildTable(&chaosTable{name: "chaos_high_column_count", description: "Chaos table to test steampipe with high column count", listBuildConfig: &listBuildConfig{columnCount: 100}}),
 			"chaos_list_errors":                            chaosListTable(),                 // test the List calls with all the possible scenarios like errors, panics and delays
@@ -57,12 +75,12 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_list_key_column_single_equal":           listKeyColumnsSingleEqualsTable(),        // test the Hydrate call with all the possible scenarios like errors, panics and delays
 			"chaos_list_key_columns_any_multiple_operator": listKeyColumnsAnyMultipleOperatorTable(), // test the Hydrate call with all the possible scenarios like errors, panics and delays
 			"chaos_list_key_columns_all_multiple_operator": listKeyColumnsAllMultipleOperatorTable(), // test the Hydrate call with all the possible scenarios like errors, panics and delays
-		},
-		ConnectionConfigSchema: &plugin.ConnectionConfigSchema{
-			NewInstance: ConfigInstance,
-			Schema:      ConfigSchema,
-		},
-	}
+		}
 
-	return p
+
+	for _, t := range tables {
+		name := "chaos_" + t
+		p.TableMap[name] = buildTable(&chaosTable{name: name, description: "dynamic table " + t, listBuildConfig: &listBuildConfig{rowCount: 100}})
+	}
+	return nil
 }
