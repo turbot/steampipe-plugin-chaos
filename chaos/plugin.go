@@ -9,7 +9,7 @@ import (
 const pluginName = "steampipe-provider-chaos"
 
 func Plugin(ctx context.Context) *plugin.Plugin {
-	p := &plugin.Plugin{
+	return &plugin.Plugin{
 		Name: pluginName,
 		DefaultGetConfig: &plugin.GetConfig{
 			RetryConfig: &plugin.RetryConfig{
@@ -33,10 +33,8 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 		},
 
 		// set create tables function - this will be called from SetConnectionConfig
-		CreateTables: createTables,
+		TableMapFunc: createTables,
 	}
-
-	return p
 }
 
 func createTables(p *plugin.Plugin) (map[string]*plugin.Table, error) {
