@@ -21,4 +21,4 @@ require (
 )
 
 // create_tables
-replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210917093931-bd8e404c46bd
+replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210917153752-2b6a5f82f648
