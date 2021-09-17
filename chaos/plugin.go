@@ -39,7 +39,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 	return p
 }
 
-func createTables(p *plugin.Plugin) error {
+func createTables(p *plugin.Plugin) (map[string]*plugin.Table, error) {
 	connectionConfig := GetConfig(p.Connection)
 	tables := connectionConfig.Tables
 
@@ -82,5 +82,5 @@ func createTables(p *plugin.Plugin) error {
 		name := "chaos_" + t
 		p.TableMap[name] = buildTable(&chaosTable{name: name, description: "dynamic table " + t, listBuildConfig: &listBuildConfig{rowCount: 100}})
 	}
-	return nil
+	return tableMap, nil
 }
