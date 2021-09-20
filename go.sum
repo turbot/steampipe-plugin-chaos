@@ -162,6 +162,8 @@ github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210917153752-2b6a5f82f648 h1:J
 github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210917153752-2b6a5f82f648/go.mod h1:zM68yGM+wjkjDPz8yUTx6078GDTVWkrI26EC56XIspw=
 github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210920140631-80a4d2dce1ac h1:1Iqb/FoTWTI5mfu51BFMiD/HC9vLq2R8tpXXBRsdplw=
 github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210920140631-80a4d2dce1ac/go.mod h1:zM68yGM+wjkjDPz8yUTx6078GDTVWkrI26EC56XIspw=
+github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210920155835-18be1794d06f h1:+GeVpern3ZNH8in6CbRr2kNxMhPJ8JvLS3fqhrI+ndQ=
+github.com/turbot/steampipe-plugin-sdk v1.5.1-0.20210920155835-18be1794d06f/go.mod h1:zM68yGM+wjkjDPz8yUTx6078GDTVWkrI26EC56XIspw=
 github.com/vmihailenco/msgpack v3.3.3+incompatible h1:wapg9xDUZDzGCNFlwc5SqI1rvcciqcxEHac4CYj89xI=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/vmihailenco/msgpack/v4 v4.3.12 h1:07s4sz9IReOgdikxLTKNbBdqDMLsjPKXwvCazn8G65U=

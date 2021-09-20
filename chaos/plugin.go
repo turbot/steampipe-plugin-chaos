@@ -76,7 +76,7 @@ func createTables(p *plugin.Plugin) (map[string]*plugin.Table, error) {
 
 	for _, t := range tables {
 		name := "chaos_" + t
-		p.TableMap[name] = buildTable(&chaosTable{name: name, description: "dynamic table " + t, listBuildConfig: &listBuildConfig{rowCount: 100}})
+		tableMap[name] = buildTable(&chaosTable{name: name, description: "dynamic table " + t, listBuildConfig: &listBuildConfig{rowCount: 100}})
 	}
 	return tableMap, nil
 }
