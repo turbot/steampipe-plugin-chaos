@@ -2,6 +2,9 @@ package chaos
 
 import (
 	"context"
+	"fmt"
+
+	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
 )
@@ -36,7 +39,8 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 	}
 }
 
-func createTables(p *plugin.Plugin) (map[string]*plugin.Table, error) {
+func createTables(ctx context.Context, p *plugin.Plugin) (map[string]*plugin.Table, error) {
+
 	connectionConfig := GetConfig(p.Connection)
 	tables := connectionConfig.Tables
 
@@ -76,7 +80,24 @@ func createTables(p *plugin.Plugin) (map[string]*plugin.Table, error) {
 
 	for _, t := range tables {
 		name := "chaos_" + t
-		tableMap[name] = buildTable(&chaosTable{name: name, description: "dynamic table " + t, listBuildConfig: &listBuildConfig{rowCount: 100}})
+		//tableMap[name] = buildTable(&chaosTable{name: name, description: "dynamic table " + t, listBuildConfig: &listBuildConfig{rowCount: 100}})
+		tableMap[name] = &plugin.Table{
+			Name:        name,
+			Description: fmt.Sprintf("Dynamic table %s", t),
+			List: &plugin.ListConfig{
+				Hydrate: allColumnsList,
+			},
+			Columns: []*plugin.Column{
+				{Name: "id", Type: proto.ColumnType_INT},
+				{
+					Name:        "empty_hydrate",
+					Type:        proto.ColumnType_STRING,
+					Default:     "I AM A DEFAULT",
+					Hydrate:     emptyHydrate,
+					Description: "This column tests both a hydrate function returning no results, and the column default mechanism",
+				},
+			},
+		}
 	}
 	return tableMap, nil
 }
