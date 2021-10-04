@@ -15,9 +15,25 @@
   </a>
 </p>
 
-## Query Chaos with SQL
+# Chaos Plugin for Steampipe
 
-Use SQL to query all column types table, all numeric column type table and more to test your plugins. For example:
+Use SQL to query all column types table, all numeric column type table and more to test your plugins.
+
+- **[Get started →](https://hub.steampipe.io/plugins/turbot/chaos)**
+- Documentation: [Table definitions & examples](https://hub.steampipe.io/plugins/
+turbot/chaos/tables)
+- Community: [Slack Channel](https://join.slack.com/t/steampipe/shared_invite/zt-oij778tv-lYyRTWOTMQYBVAbtPSWs3g)
+- Get involved: [Issues](https://github.com/turbot/steampipe-plugin-chaos/issues)
+
+## Quick start
+
+Install the plugin with [Steampipe](https://steampipe.io):
+
+```shell
+steampipe plugin install chaos
+```
+
+Run a query:
 
 ```sql
 select
@@ -30,26 +46,50 @@ where
   id = '10';
 ```
 
-Learn about [Steampipe](https://steampipe.io/).
+## Developing
 
-## Get started
+Prerequisites:
 
-**[Table documentation and examples &rarr;](https://hub.steampipe.io/plugins/turbot/chaos)**
+- [Steampipe](https://steampipe.io/downloads)
+- [Golang](https://golang.org/doc/install)
 
-Install the plugin:
+Clone:
 
-```shell
-steampipe plugin install chaos
+```sh
+git clone https://github.com/turbot/steampipe-plugin-chaos.git
+cd steampipe-plugin-chaos
 ```
 
-## Get involved
+Build, which automatically installs the new version to your `~/.steampipe/plugins` directory:
 
-### Community
+```
+make
+```
 
-The Steampipe community can be found on [GitHub Discussions](https://github.com/turbot/steampipe/discussions), where you can ask questions, voice ideas, and share your projects.
+Configure the plugin:
 
-Our [Code of Conduct](https://github.com/turbot/steampipe/blob/main/CODE_OF_CONDUCT.md) applies to all Steampipe community channels.
+```
+cp config/* ~/.steampipe/config
+vi ~/.steampipe/config/chaos.spc
+```
 
-### Contributing
+Try it!
 
-Please see [CONTRIBUTING.md](https://github.com/turbot/steampipe/blob/main/CONTRIBUTING.md).
+```
+steampipe query
+> .inspect chaos
+```
+
+Further reading:
+
+- [Writing plugins](https://steampipe.io/docs/develop/writing-plugins)
+- [Writing your first table](https://steampipe.io/docs/develop/writing-your-first-table)
+
+## Contributing
+
+Please see the [contribution guidelines](https://github.com/turbot/steampipe/blob/main/CONTRIBUTING.md) and our [code of conduct](https://github.com/turbot/steampipe/blob/main/CODE_OF_CONDUCT.md). All contributions are subject to the [Apache 2.0 open source license](https://github.com/turbot/steampipe-plugin-chaos/blob/main/LICENSE).
+
+`help wanted` issues:
+
+- [Steampipe](https://github.com/turbot/steampipe/labels/help%20wanted)
+- [Chaos Plugin](https://github.com/turbot/steampipe-plugin-chaos/labels/help%20wanted)
