@@ -20,9 +20,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check limit returns null when there is a non-key column passed in query" {
-  run steampipe query "select limit_value from chaos.chaos_limit where c4=4 limit 10" --output=json
+  run steampipe query "select limit_value from chaos.chaos_limit where c6=6 limit 10" --output=json
 
-  # limit is returned as null since c4 is a not a key column 
+  # limit is returned as null since c6 is a not a key column 
   limit=$(echo $output | jq .[0].limit_value)
   assert_equal "$limit" "null"
 }
