@@ -52,6 +52,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_get_any_key_columns":                    KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_get_any_key_columns", description: "Chaos table to test the get call with any of the specified key columns", getKeyColumnSetType: "any"}),
 			"chaos_hydrate_errors":                         chaosHydrateTable(),                      // test the Hydrate call with all the possible scenarios like errors, panics and delays
 			"chaos_plugin_crash":                           pluginCrashTable(),                       // test the plugin crashing issue
+			"chaos_regions":                                regionsTable(),                           // test the connection config parsing
 			"chaos_transform_errors":                       chaosTransformTable(),                    // test the Transform functions with all the possible scenarios like errors, panics and delays
 			"chaos_transforms":                             transformFromFunctionsTable(),            // test all the From Transforms functions
 			"chaos_list_key_column_single_equal":           listKeyColumnsSingleEqualsTable(),        // test the Hydrate call with all the possible scenarios like errors, panics and delays
