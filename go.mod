@@ -30,6 +30,6 @@ require (
 )
 
 //replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk pm_test_acc
-replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk v1.7.3-0.20211105170454-7f47de7d42db
+replace github.com/turbot/steampipe-plugin-sdk => github.com/turbot/steampipe-plugin-sdk plugin_manager
 
 //replace github.com/turbot/steampipe-plugin-sdk => /Users/kai/Dev/github/turbot/steampipe-plugin-sdk
