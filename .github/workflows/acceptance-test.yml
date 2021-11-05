@@ -47,13 +47,7 @@ jobs:
         with:
           bats-version: 1.2.1
 
-      - name: Start steampipe service
-        run: |
-          steampipe service stop --force
-          steampipe service start
-
       - name: Run Test Suite
         run: |
           chmod +x $GITHUB_WORKSPACE/tests/acceptance/run.sh
           $GITHUB_WORKSPACE/tests/acceptance/run.sh
-          steampipe service stop --force
