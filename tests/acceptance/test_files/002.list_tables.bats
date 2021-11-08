@@ -1,127 +1,127 @@
 load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
-@test "steampipe query list 1" {
+@test "test the fatal_error in list call" {
   run steampipe query "select fatal_error from chaos.chaos_list_errors"
   assert_output --partial 'fatalError'
 }
 
-@test "steampipe query list 2" {
+@test "test the fatal_error(after streaming) in list call" {
   run steampipe query "select fatal_error_after_streaming from chaos.chaos_list_errors"
   assert_output --partial 'fatalError'
 }
 
-@test "steampipe query list 3" {
+@test "test the retryable_error in list call" {
   run steampipe query --output json "select retryable_error from chaos.chaos_list_errors order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_retryable_error.json)"
 }
 
-@test "steampipe query list 4" {
+@test "test the retryable_error(after streaming) in list call" {
   run steampipe query "select retryable_error_after_streaming from chaos.chaos_list_errors"
   assert_output --partial 'retriableError'
 }
 
-@test "steampipe query list 5" {
+@test "test the should_ignore_error in list call" {
   run steampipe query "select should_ignore_error from chaos.chaos_list_errors"
   assert_success
 }
 
-@test "steampipe query list 6" {
+@test "test the should_ignore_error(after streaming) in list call" {
   run steampipe query --output json "select should_ignore_error_after_streaming from chaos.chaos_list_errors order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_should_ignore_error_after_streaming.json)"
 }
 
-@test "steampipe query list 7" {
+@test "test the delay in list call" {
   run steampipe query --output json "select delay from chaos.chaos_list_errors order by id limit 5"
    assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_delay.json)"
 }
 
-@test "steampipe query list 8" {
+@test "test the panic in list call" {
   run steampipe query "select panic from chaos.chaos_list_errors"
   assert_output --partial 'Panic'
 }
 
-@test "steampipe query list 9" {
+@test "test the panic(after streaming) in list call" {
   run steampipe query "select panic_after_streaming from chaos.chaos_list_errors"
   assert_output --partial 'Panic'
 }
 
-@test "steampipe query list 10" {
+@test "test the parent_fatal_error in list call" {
   run steampipe query "select parent_fatal_error from chaos.chaos_list_parent_child"
   assert_output --partial 'fatalError'
 }
 
-@test "steampipe query list 11" {
+@test "test the parent_fatal_error(after streaming) in list call" {
   run steampipe query "select parent_fatal_error_after_streaming from chaos.chaos_list_parent_child"
   assert_output --partial 'fatalError'
 }
 
-@test "steampipe query list 12" {
+@test "test the parent_retryable_error in list call" {
   run steampipe query --output json "select parent_retryable_error from chaos.chaos_list_parent_child order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_parent_retryable_error.json)"
 }
 
-@test "steampipe query list 13" {
+@test "test the parent_retryable_error(after streaming) in list call" {
   run steampipe query "select parent_retryable_error_after_streaming from chaos.chaos_list_parent_child"
   assert_output --partial 'retriableError'
 }
 
-@test "steampipe query list 14" {
+@test "test the parent_should_ignore_error in list call" {
   run steampipe query "select parent_should_ignore_error from chaos.chaos_list_parent_child"
   assert_success
 }
 
-@test "steampipe query list 15" {
+@test "test the parent_should_ignore_error(after streaming) in list call" {
   run steampipe query --output json "select parent_should_ignore_error_after_streaming from chaos.chaos_list_parent_child order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_parent_should_ignore_error_after_streaming.json)"
 }
 
-@test "steampipe query list 16" {
+@test "test the parent_delay in list call" {
   run steampipe query --output json "select parent_delay from chaos.chaos_list_parent_child order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_parent_delay.json)"
 }
 
-@test "steampipe query list 17" {
+@test "test the parent_panic in list call" {
   run steampipe query "select parent_panic from chaos.chaos_list_parent_child"
   assert_output --partial 'Panic'
 }
 
-@test "steampipe query list 18" {
+@test "test the child_fatal_error in list call" {
   run steampipe query "select child_fatal_error from chaos.chaos_list_parent_child"
   assert_output --partial 'fatalError'
 }
 
-@test "steampipe query list 19" {
+@test "test the child_fatal_error(after streaming) in list call" {
   run steampipe query "select child_fatal_error_after_streaming from chaos.chaos_list_parent_child"
   assert_output --partial 'fatalError'
 }
 
-@test "steampipe query list 20" {
+@test "test the child_retryable_error in list call" {
   run steampipe query "select child_retryable_error from chaos.chaos_list_parent_child"
   assert_output --partial 'retriableError'
 }
 
-@test "steampipe query list 21" {
+@test "test the child_retryable_error(after streaming) in list call" {
   run steampipe query --output json "select child_retryable_error_after_streaming from chaos.chaos_list_parent_child order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_retryable_error_after_streaming.json)"
 }
 
-@test "steampipe query list 22" {
+@test "test the child_should_ignore_error in list call" {
   run steampipe query "select child_should_ignore_error from chaos.chaos_list_parent_child"
   assert_success
 }
 
-@test "steampipe query list 23" {
+@test "test the child_should_ignore_error(after streaming) in list call" {
   run steampipe query --output json "select child_should_ignore_error_after_streaming from chaos.chaos_list_parent_child order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_should_ignore_error_after_streaming.json)"
 }
 
-@test "steampipe query list 24" {
+@test "test the child_delay in list call" {
   run steampipe query --output json "select child_delay from chaos.chaos_list_parent_child order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_delay.json)"
 }
 
-@test "steampipe query list 25" {
+@test "test the child_panic in list call" {
   run steampipe query "select child_panic from chaos.chaos_list_parent_child"
   assert_output --partial 'Panic'
 }
