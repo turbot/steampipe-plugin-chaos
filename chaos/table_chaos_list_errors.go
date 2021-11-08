@@ -11,11 +11,11 @@ import (
 type listBuildConfig struct {
 	listError FailType
 	// the number of rows returned before a list error/hydrate error is raised
-	listErrorRows int
-	listDelay     bool
-	rowCount      int
-	columnCount   int
-	failureCount  int
+	rowsBeforeError int
+	listDelay       bool
+	rowCount        int
+	columnCount     int
+	failureCount    int
 }
 
 var listTableErrorCount = 0
@@ -52,7 +52,7 @@ func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "fatal_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15, listErrorRows: 5}
+		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15, rowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error") {
@@ -60,7 +60,7 @@ func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, listErrorRows: 5, failureCount: 200}
+		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, rowsBeforeError: 5, failureCount: 200}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "should_ignore_error") {
@@ -68,7 +68,7 @@ func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "should_ignore_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15, listErrorRows: 5}
+		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15, rowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "delay") {
@@ -80,7 +80,7 @@ func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "panic_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 15, listErrorRows: 5}
+		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 15, rowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	return nil, nil
