@@ -89,20 +89,23 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 			time.Sleep(delayValue)
 		}
 
-		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
+		log.Printf("[TRACE] ABOUT TO START STREAMING. row count: %d, rows before error: %d, pid: %d, cols: %v", buildConfig.rowCount, buildConfig.rowsBeforeError, os.Getpid(), d.QueryContext.Columns)
 
 		for i := 0; i < buildConfig.rowCount; i++ {
 			time.Sleep(50 * time.Millisecond)
 			// listErrorRows is the number of rows to return successfully before raising an error
 			// if we stream that many rows, let's raise an error
-			if i == buildConfig.listErrorRows {
+			if i == buildConfig.rowsBeforeError {
+				log.Printf("[TRACE] streamed %d rows - raising an error", i)
 				switch buildConfig.listError {
 				case RetryableError:
 					// failureCount is the number of times the error occurs before we succeed
 					if listTableErrorCount <= buildConfig.failureCount {
+						log.Printf("[TRACE] raise retryable error")
 						listTableErrorCount++
 						return nil, errors.New(RetryableError)
 					}
+					log.Printf("[TRACE] retryable error has retried %d times - succed now")
 					// if we have failed 'failureCount' times, reset listTableErrorCount and fall through to return item
 					listTableErrorCount = 0
 				case IgnorableError:
