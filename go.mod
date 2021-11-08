@@ -12,5 +12,5 @@ require (
 	github.com/rivo/uniseg v0.2.0 // indirect
 	github.com/turbot/go-kit v0.3.0
 	github.com/turbot/steampipe v0.9.0 // indirect
-	github.com/turbot/steampipe-plugin-sdk v1.7.3-0.20211105133501-a1d2159c820a
+	github.com/turbot/steampipe-plugin-sdk v1.7.3-0.20211105210557-22268e285909
 )
