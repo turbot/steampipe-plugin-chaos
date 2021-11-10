@@ -18,6 +18,10 @@ func checkCacheTable() *plugin.Table {
 
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
+			{Name: "a", Type: proto.ColumnType_INT},
+			{Name: "b", Type: proto.ColumnType_INT},
+			{Name: "c", Type: proto.ColumnType_INT},
+			{Name: "d", Type: proto.ColumnType_INT},
 			{Name: "time_now", Type: proto.ColumnType_TIMESTAMP},
 		},
 	}
@@ -26,7 +30,7 @@ func checkCacheTable() *plugin.Table {
 func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	time.Sleep(1 * time.Second)
 	for i := 0; i < 5; i++ {
-		item := map[string]interface{}{"id": i, "time_now": time.Now()}
+		item := map[string]interface{}{"id": i, "a": i, "b": i, "c": i, "d": i, "time_now": time.Now()}
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
