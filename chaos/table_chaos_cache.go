@@ -17,12 +17,12 @@ func checkCacheTable() *plugin.Table {
 		},
 
 		Columns: []*plugin.Column{
-			{Name: "id", Type: proto.ColumnType_INT},
-			{Name: "a", Type: proto.ColumnType_INT},
-			{Name: "b", Type: proto.ColumnType_INT},
-			{Name: "c", Type: proto.ColumnType_INT},
-			{Name: "d", Type: proto.ColumnType_INT},
-			{Name: "time_now", Type: proto.ColumnType_TIMESTAMP},
+			{Name: "id", Type: proto.ColumnType_INT, Hydrate: listIdsWithTimeFunction},
+			{Name: "a", Type: proto.ColumnType_STRING, Hydrate: listColAFunction},
+			{Name: "b", Type: proto.ColumnType_STRING, Hydrate: listColBFunction},
+			{Name: "c", Type: proto.ColumnType_STRING, Hydrate: listColCFunction},
+			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: listColDFunction},
+			{Name: "time_now", Type: proto.ColumnType_TIMESTAMP, Hydrate: listIdsWithTimeFunction},
 		},
 	}
 }
@@ -30,8 +30,28 @@ func checkCacheTable() *plugin.Table {
 func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	time.Sleep(1 * time.Second)
 	for i := 0; i < 5; i++ {
-		item := map[string]interface{}{"id": i, "a": i, "b": i, "c": i, "d": i, "time_now": time.Now()}
+		item := map[string]interface{}{"id": i, "time_now": time.Now()}
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
+}
+
+func listColAFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"a": "a"}
+	return item, nil
+}
+
+func listColBFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"b": "b"}
+	return item, nil
+}
+
+func listColCFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"c": "c"}
+	return item, nil
+}
+
+func listColDFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"d": "d"}
+	return item, nil
 }
