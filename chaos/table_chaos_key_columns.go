@@ -35,13 +35,13 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 	}
 	if def.listKeyColumnSetType != "" {
 		table.List = &plugin.ListConfig{
-			Hydrate:    buildFetchHydrateUsingKeyColumns(def.listKeyColumnSetType),
+			Hydrate:    buildListUsingKeyColumns(),
 			KeyColumns: calculateListKeyColumns(def.listKeyColumnSetType),
 		}
 	}
 	if def.getKeyColumnSetType != "" {
 		table.Get = &plugin.GetConfig{
-			Hydrate:    buildFetchHydrateUsingKeyColumns(def.getKeyColumnSetType),
+			Hydrate:    buildGetUsingKeyColumns(),
 			KeyColumns: calculateGetKeyColumns(def.getKeyColumnSetType),
 		}
 	}
@@ -49,21 +49,35 @@ func KeyColumnTableBuilder(def *keyColumnTableDefinitions) *plugin.Table {
 	return table
 }
 
-func buildFetchHydrateUsingKeyColumns(keyColumnSetType keyColumnType) plugin.HydrateFunc {
+func buildListUsingKeyColumns() plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-		item := map[string]interface{}{}
-		if keyColumnSetType == singleColumn {
-			id := d.KeyColumnQuals["id"].GetInt64Value()
-			item = map[string]interface{}{"id": id}
-		} else {
-			id := d.KeyColumnQuals["id"].GetInt64Value()
-			columnA := d.KeyColumnQuals["column_a"].GetStringValue()
-			combinedColumn := fmt.Sprintf("%d-%s", id, columnA)
-			item = map[string]interface{}{"id": id, "column_a": columnA, "combined_columns": combinedColumn}
-		}
+		item := getItemFromKeyColumns(d)
 		d.StreamListItem(ctx, item)
+
 		return nil, nil
 	}
+}
+
+func buildGetUsingKeyColumns() plugin.HydrateFunc {
+	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+		item := getItemFromKeyColumns(d)
+		return item, nil
+	}
+}
+func getItemFromKeyColumns(d *plugin.QueryData) map[string]interface{} {
+	item := map[string]interface{}{}
+	id, gotId := d.KeyColumnQuals["id"]
+	if gotId {
+		item = map[string]interface{}{"id": id.GetInt64Value()}
+	}
+	columnA, gotColumnA := d.KeyColumnQuals["column_a"]
+	if gotColumnA {
+		item["column_a"] = columnA.GetStringValue()
+	}
+	if gotId && gotColumnA {
+		item["combine_column"] = fmt.Sprintf("%d-%s", id, columnA)
+	}
+	return item
 }
 
 func calculateListKeyColumns(keyColumnSetType keyColumnType) plugin.KeyColumnSlice {
