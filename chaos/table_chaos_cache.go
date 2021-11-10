@@ -25,6 +25,7 @@ func checkCacheTable() *plugin.Table {
 			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: colDHydrate},
 			{Name: "time_now", Type: proto.ColumnType_TIMESTAMP, Hydrate: listIdsWithTimeFunction},
 			{Name: "delay", Type: proto.ColumnType_STRING, Hydrate: delayHydrate},
+			{Name: "long_delay", Type: proto.ColumnType_STRING, Hydrate: longDelayHydrate},
 			{Name: "error_after_delay", Type: proto.ColumnType_STRING, Hydrate: errorAfterDelayHydrate},
 		},
 	}
@@ -61,6 +62,13 @@ func colDHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 
 func delayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	delay := 10 * time.Second
+	item := map[string]interface{}{"delay": delay.String()}
+	time.Sleep(delay)
+	return item, nil
+}
+
+func longDelayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	delay := 10 * time.Hour
 	item := map[string]interface{}{"delay": delay.String()}
 	time.Sleep(delay)
 	return item, nil
