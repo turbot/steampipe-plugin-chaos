@@ -18,3 +18,5 @@ require (
 	google.golang.org/genproto v0.0.0-20210207032614-bba0dbe2a9ea // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 )
+
+replace github.com/turbot/steampipe-plugin-sdk => /Users/kai/Dev/github/turbot/steampipe-plugin-sdk
