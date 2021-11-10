@@ -37,3 +37,6 @@ echo "|____/ \__\__,_|_|   \__|_|_| |_|\__, |   |_|\___||___/\__|___/"
 echo "                                 |___/                         "
 
 $BATS_PATH --tap $MY_PATH/test_files
+
+# Setting the exit_code, to use in the github workflow(This only gets set to 0 when the above bats test suite passes)
+echo "::set-output name=exit_code::$(echo $?)"
