@@ -61,7 +61,7 @@ func colDHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 }
 
 func delayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	delay := 3 * time.Second
+	delay := 10 * time.Second
 	item := map[string]interface{}{"delay": delay.String()}
 	time.Sleep(delay)
 	return item, nil
