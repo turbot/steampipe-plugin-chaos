@@ -2,6 +2,7 @@ package chaos
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -17,8 +18,15 @@ func checkCacheTable() *plugin.Table {
 		},
 
 		Columns: []*plugin.Column{
-			{Name: "id", Type: proto.ColumnType_INT},
-			{Name: "time_now", Type: proto.ColumnType_TIMESTAMP},
+			{Name: "id", Type: proto.ColumnType_INT, Hydrate: listIdsWithTimeFunction},
+			{Name: "a", Type: proto.ColumnType_STRING, Hydrate: colAHydrate},
+			{Name: "b", Type: proto.ColumnType_STRING, Hydrate: colBHydrate},
+			{Name: "c", Type: proto.ColumnType_STRING, Hydrate: colCHydrate},
+			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: colDHydrate},
+			{Name: "time_now", Type: proto.ColumnType_TIMESTAMP, Hydrate: listIdsWithTimeFunction},
+			{Name: "delay", Type: proto.ColumnType_STRING, Hydrate: delayHydrate},
+			{Name: "long_delay", Type: proto.ColumnType_STRING, Hydrate: longDelayHydrate},
+			{Name: "error_after_delay", Type: proto.ColumnType_STRING, Hydrate: errorAfterDelayHydrate},
 		},
 	}
 }
@@ -30,4 +38,44 @@ func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
+}
+
+func colAHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"a": "a"}
+	return item, nil
+}
+
+func colBHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"b": "b"}
+	return item, nil
+}
+
+func colCHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"c": "c"}
+	return item, nil
+}
+
+func colDHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	item := map[string]interface{}{"d": "d"}
+	return item, nil
+}
+
+func delayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	delay := 3 * time.Second
+	item := map[string]interface{}{"delay": delay.String()}
+	time.Sleep(delay)
+	return item, nil
+}
+
+func longDelayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	delay := 10 * time.Hour
+	item := map[string]interface{}{"delay": delay.String()}
+	time.Sleep(delay)
+	return item, nil
+}
+
+func errorAfterDelayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	delay := 10 * time.Second
+	time.Sleep(delay)
+	return nil, fmt.Errorf("errorAfterDelayHydrate")
 }
