@@ -3,6 +3,7 @@ package chaos
 import (
 	"context"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -23,7 +24,7 @@ func checkCacheTable() *plugin.Table {
 			{Name: "b", Type: proto.ColumnType_STRING, Hydrate: colBHydrate},
 			{Name: "c", Type: proto.ColumnType_STRING, Hydrate: colCHydrate},
 			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: colDHydrate},
-			{Name: "time_now", Type: proto.ColumnType_TIMESTAMP, Hydrate: listIdsWithTimeFunction},
+			{Name: "time_now", Type: proto.ColumnType_STRING, Hydrate: listIdsWithTimeFunction},
 			{Name: "delay", Type: proto.ColumnType_STRING, Hydrate: delayHydrate},
 			{Name: "long_delay", Type: proto.ColumnType_STRING, Hydrate: longDelayHydrate},
 			{Name: "error_after_delay", Type: proto.ColumnType_STRING, Hydrate: errorAfterDelayHydrate},
@@ -32,9 +33,9 @@ func checkCacheTable() *plugin.Table {
 }
 
 func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	time.Sleep(1 * time.Second)
+	time1 := time.Now()
 	for i := 0; i < 5; i++ {
-		item := map[string]interface{}{"id": i, "time_now": time.Now()}
+		item := map[string]interface{}{"id": i, "time_now": time1}
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
