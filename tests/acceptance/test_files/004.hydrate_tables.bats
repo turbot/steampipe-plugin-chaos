@@ -7,7 +7,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 # ignored for now as it is giving inconsistent results
-# in any case thi sneeds revisiting - we _should_ be able to retry errors from hydrate functions
+# in any case this needs revisiting - we _should_ be able to retry errors from hydrate functions
 # (at present we cannot as stream count > 1)
 #@test "test retryable_error in hydrate call" {
 #  run STEAMPIPE_CACHE=FALSE && steampipe query "select retryable_error from chaos.chaos_hydrate_errors"

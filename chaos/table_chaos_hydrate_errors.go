@@ -3,6 +3,7 @@ package chaos
 import (
 	"context"
 	"errors"
+	"log"
 	"time"
 
 	"github.com/turbot/go-kit/helpers"
@@ -112,6 +113,7 @@ func buildHydrate(buildConfig *hydrateBuildConfig) plugin.HydrateFunc {
 			time.Sleep(delayValue)
 		}
 		if buildConfig.hydrateError == RetryableError {
+			log.Printf("[DEBUG] RetryableError")
 			// failureCount is the number of times the error occurs before we succeed
 			if hydrateTableErrorCount <= buildConfig.failureCount {
 				hydrateTableErrorCount++
@@ -122,16 +124,20 @@ func buildHydrate(buildConfig *hydrateBuildConfig) plugin.HydrateFunc {
 
 		}
 		if buildConfig.hydrateError == IgnorableError {
+			log.Printf("[DEBUG] IgnorableError")
 			return nil, errors.New(IgnorableError)
 		}
 		if buildConfig.hydrateError == FailError {
+			log.Printf("[DEBUG] FatalError")
 			return nil, errors.New(FatalError)
 		}
 		if buildConfig.hydrateError == FailPanic {
+			log.Printf("[DEBUG] FailPanic")
 			panic(FailPanic)
 		}
 
 		item := populateItem(id, d.Table)
+		log.Printf("[DEBUG] RETURN ITEM")
 		return item, nil
 	}
 }
