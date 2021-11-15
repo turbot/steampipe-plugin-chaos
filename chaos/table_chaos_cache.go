@@ -3,7 +3,6 @@ package chaos
 import (
 	"context"
 	"fmt"
-	"log"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
