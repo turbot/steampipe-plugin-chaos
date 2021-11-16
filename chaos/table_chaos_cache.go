@@ -3,6 +3,7 @@ package chaos
 import (
 	"context"
 	"fmt"
+	"math/rand"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
@@ -19,6 +20,7 @@ func checkCacheTable() *plugin.Table {
 
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT, Hydrate: listIdsWithTimeFunction},
+			{Name: "unique_col", Type: proto.ColumnType_INT, Hydrate: listIdsWithTimeFunction},
 			{Name: "a", Type: proto.ColumnType_STRING, Hydrate: colAHydrate},
 			{Name: "b", Type: proto.ColumnType_STRING, Hydrate: colBHydrate},
 			{Name: "c", Type: proto.ColumnType_STRING, Hydrate: colCHydrate},
@@ -34,7 +36,7 @@ func checkCacheTable() *plugin.Table {
 func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	time1 := time.Now()
 	for i := 0; i < 5; i++ {
-		item := map[string]interface{}{"id": i, "time_now": time1.String()}
+		item := map[string]interface{}{"id": i, "unique_col": rand.Intn(500), "time_now": time1.String()}
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
