@@ -59,11 +59,11 @@ load "$LIB_BATS_SUPPORT/load.bash"
   content2=$(cat output2.json | jq '.[0].time_now')
 
   run steampipe query "select time_now, a, b, c from chaos_cache_check" --output json &> output3.json
-  # store the time from 2nd query in `new_content`
+  # store the time from 3rd query in `new_content`
   content3=$(cat output3.json | jq '.[0].time_now')
 
   run steampipe query "select time_now, a, b, c from chaos_cache_check" --output json &> output4.json
-  # store the time from 2nd query in `new_content`
+  # store the time from 4th query in `new_content`
   content4=$(cat output4.json | jq '.[0].time_now')
 
   echo $content
@@ -93,11 +93,11 @@ load "$LIB_BATS_SUPPORT/load.bash"
   content2=$(cat output2.json | jq '.[0].time_now')
 
   run steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output3.json
-  # store the time from 2nd query in `new_content`
+  # store the time from 3rd query in `new_content`
   content3=$(cat output3.json | jq '.[0].time_now')
 
   run steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output4.json
-  # store the time from 2nd query in `new_content`
+  # store the time from 4th query in `new_content`
   content4=$(cat output4.json | jq '.[0].time_now')
 
   echo $content
@@ -323,9 +323,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
   content=$(cat output1.json | jq '.[0].time_now')
   # store the time from 2nd query in `new_content`
   content2=$(cat output2.json | jq '.[0].time_now')
-  # store the time from 2nd query in `new_content`
+  # store the time from 3rd query in `new_content`
   content3=$(cat output3.json | jq '.[0].time_now')
-  # store the time from 2nd query in `new_content`
+  # store the time from 4th query in `new_content`
   content4=$(cat output4.json | jq '.[0].time_now')
 
   echo $content
@@ -356,9 +356,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
   content=$(cat output1.json | jq '.[0].time_now')
   # store the time from 2nd query in `new_content`
   content2=$(cat output2.json | jq '.[0].time_now')
-  # store the time from 2nd query in `new_content`
+  # store the time from 3rd query in `new_content`
   content3=$(cat output3.json | jq '.[0].time_now')
-  # store the time from 2nd query in `new_content`
+  # store the time from 4th query in `new_content`
   content4=$(cat output4.json | jq '.[0].time_now')
 
   echo $content
@@ -528,3 +528,118 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service stop
 }
 
+######## ERROR AND TIMEOUT TESTS ###########
+
+@test "check cache functionality when first query returns error, other queries should not cache(first query in background)" {
+  run steampipe plugin install chaos
+  run steampipe service start
+
+  steampipe query "select time_now, a, b, c, error_after_delay from chaos_cache_check" --output json &> output1.json &
+  sleep .5s
+  steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output2.json
+  steampipe query "select time_now, a, b, c from chaos_cache_check" --output json &> output3.json
+
+  # store the time from 2nd query in `new_content`
+  content2=$(cat output2.json | jq '.[0].time_now')
+  # store the time from 3rd query in `new_content`
+  content3=$(cat output3.json | jq '.[0].time_now')
+
+  echo $content2
+  echo $content3
+
+  # verify that `content2` and `content3` are not the same
+  if [[ "$content2" == "$content3" ]]; then
+    flag=1
+  else
+    flag=0
+  fi
+  assert_equal "$flag" "0"
+
+  rm -f output?.json
+  run steampipe service stop --force
+}
+
+@test "check cache functionality when first query returns error, other queries should not cache(first 2 queries in background)" {
+  run steampipe plugin install chaos
+  run steampipe service start
+
+  steampipe query "select time_now, a, b, c, error_after_delay from chaos_cache_check" --output json &> output1.json &
+  sleep .5s
+  steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output2.json &
+  sleep .5s
+  steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output3.json
+
+  # store the time from 2nd query in `content2`
+  content2=$(cat output2.json | jq '.[0].time_now')
+  # store the time from 3rd query in `content3`
+  content3=$(cat output3.json | jq '.[0].time_now')
+
+  echo $content2
+  echo $content3
+
+  # verify that `content2` and `content3` are not the same
+  if [[ "$content2" == "$content3" ]]; then
+    flag=1
+  else
+    flag=0
+  fi
+  assert_equal "$flag" "0"
+
+  rm -f output?.json
+  run steampipe service stop --force
+}
+
+@test "check cache functionality when first query times out, other queries should cache(first query in background)" {
+  run steampipe plugin install chaos
+  run steampipe service start
+  export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10
+
+  steampipe query "select time_now, a, b, c, long_delay from chaos_cache_check" --output json &> output1.json &
+  sleep .5s
+  steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output2.json
+  steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output3.json
+
+  # store the time from 2nd query in `new_content`
+  content2=$(cat output2.json | jq '.[0].time_now')
+  # store the time from 3rd query in `new_content`
+  content3=$(cat output3.json | jq '.[0].time_now')
+
+  echo $content2
+  echo $content3
+
+  # verify that `content2` and `content3` are the same
+  assert_equal "$content2" "$content3"
+
+  rm -f output?.json
+  run steampipe service stop --force
+}
+
+@test "check cache functionality when first query times out, other queries should not cache(first query in background)" {
+  run steampipe plugin install chaos
+  run steampipe service start
+  export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10
+
+  steampipe query "select time_now, a, b, c, long_delay from chaos_cache_check" --output json &> output1.json &
+  sleep .5s
+  steampipe query "select time_now, a, b from chaos_cache_check" --output json &> output2.json
+  steampipe query "select time_now, a, b, c from chaos_cache_check" --output json &> output3.json
+
+  # store the time from 2nd query in `new_content`
+  content2=$(cat output2.json | jq '.[0].time_now')
+  # store the time from 3rd query in `new_content`
+  content3=$(cat output3.json | jq '.[0].time_now')
+
+  echo $content2
+  echo $content3
+
+  # verify that `content2` and `content3` are not the same
+  if [[ "$content2" == "$content3" ]]; then
+    flag=1
+  else
+    flag=0
+  fi
+  assert_equal "$flag" "0"
+
+  rm -f output?.json
+  run steampipe service stop --force
+}
