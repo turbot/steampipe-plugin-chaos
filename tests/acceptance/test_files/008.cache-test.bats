@@ -4,7 +4,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 ######## ERROR AND TIMEOUT TESTS ###########
 
 @test "check cache functionality when first query returns error, other queries should not cache(first 2 queries in background)" {
-  export STEAMPIPE_LOG=trace
+  # export STEAMPIPE_LOG=trace
   run steampipe plugin install chaos
   run steampipe service start
 
