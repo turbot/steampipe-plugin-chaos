@@ -14,7 +14,7 @@ import (
 type listTimeWithID struct {
 	Id        int
 	UniqueCol int
-	TimeNow   string
+	TimeCol   string
 }
 
 func checkCacheTable() *plugin.Table {
@@ -24,6 +24,23 @@ func checkCacheTable() *plugin.Table {
 		Description:      "Chaos table to print the current time and check the cache functionality.",
 		List: &plugin.ListConfig{
 			Hydrate: listIdsWithTimeFunction,
+			KeyColumns: []*plugin.KeyColumn{
+				{
+					Name:      "time_col",
+					Require:   plugin.Optional,
+					Operators: []string{"=", "<", ">", "<=", ">=", "!="},
+				},
+				{
+					Name:      "int_col",
+					Require:   plugin.Optional,
+					Operators: []string{"=", "<", ">", "<=", ">=", "!="},
+				},
+				{
+					Name:      "float_col",
+					Require:   plugin.Optional,
+					Operators: []string{"=", "<", ">", "<=", ">=", "!="},
+				},
+			},
 		},
 
 		Columns: []*plugin.Column{
@@ -35,7 +52,7 @@ func checkCacheTable() *plugin.Table {
 			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: colDHydrate},
 			{Name: "int_col", Type: proto.ColumnType_INT, Hydrate: intColHydrate, Transform: transform.FromValue()},
 			{Name: "float_col", Type: proto.ColumnType_DOUBLE, Hydrate: floatColHydrate, Transform: transform.FromValue()},
-			{Name: "time_now", Type: proto.ColumnType_STRING, Hydrate: listIdsWithTimeFunction},
+			{Name: "time_col", Type: proto.ColumnType_STRING, Hydrate: listIdsWithTimeFunction},
 			{Name: "delay", Type: proto.ColumnType_STRING, Hydrate: delayHydrate},
 			{Name: "long_delay", Type: proto.ColumnType_STRING, Hydrate: longDelayHydrate},
 			{Name: "error_after_delay", Type: proto.ColumnType_STRING, Hydrate: errorAfterDelayHydrate},
@@ -44,9 +61,10 @@ func checkCacheTable() *plugin.Table {
 }
 
 func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	time1 := time.Now()
+	time_now := time.Date(2021, 1, 1, 0, 0, 0, 0, time.UTC)
 	for i := 0; i < 10; i++ {
-		d.StreamListItem(ctx, listTimeWithID{i, rand.Intn(500), time1.String()})
+		time_now = time_now.AddDate(0, 1, 1)
+		d.StreamListItem(ctx, listTimeWithID{i, rand.Intn(500), time_now.String()})
 	}
 	return nil, nil
 }
