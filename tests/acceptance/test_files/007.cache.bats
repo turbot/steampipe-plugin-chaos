@@ -25,7 +25,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when the second query's columns is a subset of the first" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
@@ -47,7 +46,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality multiple queries with same columns" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   run steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
@@ -81,7 +79,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when multiple query's columns are a subset of the first" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   run steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
@@ -115,7 +112,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when the second query has more columns than the first" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output1.json
@@ -142,7 +138,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when the both the queries have same limits" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c from chaos_cache_check limit 3" --output json &> output1.json
@@ -164,7 +159,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when first query has no limit but second query has a limit" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
@@ -186,7 +180,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when second query has lower limit than first" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c from chaos_cache_check limit 4" --output json &> output1.json
@@ -208,7 +201,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when second query has higher limit than first" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c from chaos_cache_check limit 3" --output json &> output1.json
@@ -237,7 +229,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 ######## BACKGROUND TESTS ###########
 
 @test "check cache functionality when querying same columns(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
@@ -260,7 +251,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when the second query's columns is a subset of the first(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
@@ -283,7 +273,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality multiple queries with same columns(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
@@ -316,7 +305,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when multiple query's columns are a subset of the first(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
@@ -349,7 +337,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when the second query has more columns than the first(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, delay from chaos_cache_check" --output json &> output1.json &
@@ -377,7 +364,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when the both the queries have same limits(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
@@ -423,7 +409,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when second query has no limit but first query has a limit(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
@@ -451,7 +436,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when second query has lower limit than first(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 4" --output json &> output1.json &
@@ -474,7 +458,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when second query has higher limit than first(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
@@ -504,7 +487,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 ######## ERROR AND TIMEOUT TESTS ###########
 
 @test "check cache functionality when first query returns error, other queries should not cache(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, error_after_delay from chaos_cache_check" --output json &> output1.json &
@@ -533,7 +515,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when first query times out, other queries should cache(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
   export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10
 
@@ -558,7 +539,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when first query times out, other queries should not cache(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
   export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10
 
@@ -588,7 +568,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when second query has higher limit than first(first query in background)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
