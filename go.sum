@@ -167,6 +167,10 @@ github.com/turbot/steampipe-plugin-sdk v1.8.1-0.20211116111536-8adb9b613fc5 h1:c
 github.com/turbot/steampipe-plugin-sdk v1.8.1-0.20211116111536-8adb9b613fc5/go.mod h1:76H3wr6KB6t+kDS38EEOZAsw61Ie/q7/IV9X0kv5NjI=
 github.com/turbot/steampipe-plugin-sdk v1.8.1-beta.0 h1:+eE30MCaCb8JYW28LXcpbYL5Kc/zC+2S3JHVw8GaWPY=
 github.com/turbot/steampipe-plugin-sdk v1.8.1-beta.0/go.mod h1:76H3wr6KB6t+kDS38EEOZAsw61Ie/q7/IV9X0kv5NjI=
+github.com/turbot/steampipe-plugin-sdk v1.8.1-beta.0.0.20211119100147-73a83cbf217c h1:S3NnO0z2dTnlqWKdZsbclCuZLPAaT5vhX5bX3oDKQBo=
+github.com/turbot/steampipe-plugin-sdk v1.8.1-beta.0.0.20211119100147-73a83cbf217c/go.mod h1:76H3wr6KB6t+kDS38EEOZAsw61Ie/q7/IV9X0kv5NjI=
+github.com/turbot/steampipe-plugin-sdk v1.8.1-beta.0.0.20211119141727-6f7d24f2a39e h1:nO+ybxJvNXrXeBDx+Tfn4/zxHC8yUSccpqOdkDo0GjA=
+github.com/turbot/steampipe-plugin-sdk v1.8.1-beta.0.0.20211119141727-6f7d24f2a39e/go.mod h1:76H3wr6KB6t+kDS38EEOZAsw61Ie/q7/IV9X0kv5NjI=
 github.com/vmihailenco/msgpack v3.3.3+incompatible/go.mod h1:fy3FlTQTDXWkZ7Bh6AcGMlsjHatGryHQYUTf1ShIgkk=
 github.com/vmihailenco/msgpack/v4 v4.3.12/go.mod h1:gborTTJjAo/GWTqqRjrLCn9pgNN+NXzzngzBKDPIqw4=
 github.com/vmihailenco/tagparser v0.1.1/go.mod h1:OeAg3pn3UbLjkWt+rN9oFYB6u/cQgqMEUPoW2WPyhdI=
