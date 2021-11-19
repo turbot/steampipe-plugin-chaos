@@ -8,12 +8,20 @@ import (
 
 	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/plugin/transform"
 )
+
+type listTimeWithID struct {
+	Id        int
+	UniqueCol int
+	TimeNow   string
+}
 
 func checkCacheTable() *plugin.Table {
 	return &plugin.Table{
-		Name:        "chaos_cache_check",
-		Description: "Chaos table to print the current time and check the cache functionality.",
+		DefaultTransform: transform.FromCamel(),
+		Name:             "chaos_cache_check",
+		Description:      "Chaos table to print the current time and check the cache functionality.",
 		List: &plugin.ListConfig{
 			Hydrate: listIdsWithTimeFunction,
 		},
@@ -25,6 +33,8 @@ func checkCacheTable() *plugin.Table {
 			{Name: "b", Type: proto.ColumnType_STRING, Hydrate: colBHydrate},
 			{Name: "c", Type: proto.ColumnType_STRING, Hydrate: colCHydrate},
 			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: colDHydrate},
+			{Name: "int_col", Type: proto.ColumnType_INT, Hydrate: intColHydrate, Transform: transform.FromValue()},
+			{Name: "float_col", Type: proto.ColumnType_DOUBLE, Hydrate: floatColHydrate, Transform: transform.FromValue()},
 			{Name: "time_now", Type: proto.ColumnType_STRING, Hydrate: listIdsWithTimeFunction},
 			{Name: "delay", Type: proto.ColumnType_STRING, Hydrate: delayHydrate},
 			{Name: "long_delay", Type: proto.ColumnType_STRING, Hydrate: longDelayHydrate},
@@ -36,42 +46,51 @@ func checkCacheTable() *plugin.Table {
 func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	time1 := time.Now()
 	for i := 0; i < 5; i++ {
-		item := map[string]interface{}{"id": i, "unique_col": rand.Intn(500), "time_now": time1.String()}
-		d.StreamListItem(ctx, item)
+		d.StreamListItem(ctx, listTimeWithID{i, rand.Intn(500), time1.String()})
 	}
 	return nil, nil
 }
 
 func colAHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	item := map[string]interface{}{"a": "a"}
+	item := map[string]interface{}{"A": "a"}
 	return item, nil
 }
 
 func colBHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	item := map[string]interface{}{"b": "b"}
+	item := map[string]interface{}{"B": "b"}
 	return item, nil
 }
 
 func colCHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	item := map[string]interface{}{"c": "c"}
+	item := map[string]interface{}{"C": "c"}
 	return item, nil
 }
 
 func colDHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	item := map[string]interface{}{"d": "d"}
+	item := map[string]interface{}{"D": "d"}
 	return item, nil
+}
+
+func intColHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	data := h.Item.(listTimeWithID).Id
+	return data, nil
+}
+
+func floatColHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	data := h.Item.(listTimeWithID).Id
+	return data, nil
 }
 
 func delayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	delay := 10 * time.Second
-	item := map[string]interface{}{"delay": delay.String()}
+	item := map[string]interface{}{"Delay": delay.String()}
 	time.Sleep(delay)
 	return item, nil
 }
 
 func longDelayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	delay := 10 * time.Hour
-	item := map[string]interface{}{"delay": delay.String()}
+	item := map[string]interface{}{"LongDelay": delay.String()}
 	time.Sleep(delay)
 	return item, nil
 }
