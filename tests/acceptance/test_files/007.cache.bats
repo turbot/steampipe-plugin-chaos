@@ -185,33 +185,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service stop
 }
 
-@test "check cache functionality when second query has no limit but first query has a limit" {
-  run steampipe plugin install chaos
-  run steampipe service start
-
-  steampipe query "select time_now, a, b, c from chaos_cache_check limit 3" --output json &> output1.json
-  # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].time_now')
-
-  steampipe query "select time_now, a, b, c from chaos_cache_check" --output json &> output2.json
-  # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].time_now')
-
-  echo $content
-  echo $new_content
-
-  # verify that `content` and `new_content` are not the same
-  if [[ "$content" == "$new_content" ]]; then
-    flag=1
-  else
-    flag=0
-  fi
-  assert_equal "$flag" "0"
-
-  rm -f output?.json
-  run steampipe service stop
-}
-
 @test "check cache functionality when second query has lower limit than first" {
   run steampipe plugin install chaos
   run steampipe service start
