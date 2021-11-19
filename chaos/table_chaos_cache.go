@@ -45,7 +45,7 @@ func checkCacheTable() *plugin.Table {
 
 func listIdsWithTimeFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	time1 := time.Now()
-	for i := 0; i < 5; i++ {
+	for i := 0; i < 10; i++ {
 		d.StreamListItem(ctx, listTimeWithID{i, rand.Intn(500), time1.String()})
 	}
 	return nil, nil
