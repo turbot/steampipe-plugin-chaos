@@ -4,6 +4,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 ##### INT #####
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '<'; cache hit)" {
+  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output3.json
@@ -25,7 +26,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '<'; cache miss)" {
-  run steampipe plugin install chaos
   run steampipe service start
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
