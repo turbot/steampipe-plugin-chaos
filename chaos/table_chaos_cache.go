@@ -96,7 +96,8 @@ func intColHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 
 func floatColHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	data := h.Item.(listTimeWithID).Id
-	return data, nil
+	f := float64(data) / 10
+	return f, nil
 }
 
 func delayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
