@@ -45,7 +45,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 @test "test panic in hydrate call" {
   run steampipe query --output json "select panic from chaos.chaos_hydrate_errors"
   assert_failure
-  run steampipe service stop --force
+  # run steampipe service stop --force
 }
 
 # @test "status" {
