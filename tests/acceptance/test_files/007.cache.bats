@@ -232,7 +232,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -254,7 +254,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, delay from chaos_cache_check" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -276,7 +276,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output3.json
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output4.json
@@ -308,7 +308,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output2.json
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output3.json
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output4.json
@@ -340,7 +340,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, delay, c from chaos_cache_check" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -367,7 +367,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -390,7 +390,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -412,7 +412,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -439,7 +439,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 4" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -461,7 +461,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 4" --output json &> output2.json
 
   # store the time from 1st query in `content`
@@ -490,7 +490,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, error_after_delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output2.json
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output3.json
 
@@ -519,7 +519,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10
 
   steampipe query "select unique_col, a, b, c, long_delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output2.json
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output3.json
 
@@ -543,7 +543,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10
 
   steampipe query "select unique_col, a, b, c, long_delay from chaos_cache_check" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output2.json
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output3.json
 
@@ -571,7 +571,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service start
 
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
-  sleep .5s
+  sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 4" --output json &> output2.json
 
   # store the time from 1st query in `content`
