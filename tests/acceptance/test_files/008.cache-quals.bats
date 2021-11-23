@@ -5,6 +5,7 @@ setup() {
   steampipe service start > /dev/null
 }
 teardown() {
+  rm -f output?.json
   steampipe service stop
 }
 
@@ -24,13 +25,9 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '<'; cache miss)" {
-  run steampipe service start
-
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -49,8 +46,6 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '<='; cache hit)" {
@@ -67,8 +62,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '<='; cache miss)" {
@@ -90,8 +83,6 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '>'; cache hit)" {
@@ -108,8 +99,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '>'; cache miss)" {
@@ -131,8 +120,6 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '>='; cache hit)" {
@@ -149,9 +136,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
-  run steampipe service stop
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '>='; cache miss)" {
@@ -173,8 +157,6 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '='; cache hit)" {
@@ -191,8 +173,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '='; cache miss)" {
@@ -214,8 +194,6 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<='; operator2: '='; cache hit)" {
@@ -232,8 +210,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<='; operator2: '='; cache miss)" {
@@ -255,8 +231,6 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '='; cache hit)" {
@@ -273,8 +247,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  # rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '='; cache miss)" {
@@ -296,8 +268,6 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>='; operator2: '='; cache hit)" {
@@ -314,8 +284,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>='; operator2: '='; cache miss)" {
@@ -337,13 +305,12 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
-
-  rm -f output?.json
 }
 
 ##### TIME #####
 
-@test "check cache functionality when the second query quals is a subset of the first(operator1: '>='; operator2: '='; cache hit)" {
+@test "check cache functionality when the second query quals is a subset of the first(operator1: '>='; operator2: '='; cache hit)[DISABLED]" {
+  skip
   steampipe query "select time_col, a, b, unique_col from chaos_cache_check where time_col >= '2021-05-05 00:00:00 +0000 UTC' order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -357,8 +324,6 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
-
-  rm -f output?.json
 }
 
 # @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>='; operator2: '='; cache miss)" {
