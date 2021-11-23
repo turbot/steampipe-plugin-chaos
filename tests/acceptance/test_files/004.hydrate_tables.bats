@@ -29,3 +29,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   assert_failure
   run steampipe service stop --force
 }
+
+@test "sleep 10s" {
+  sleep 10
+}
