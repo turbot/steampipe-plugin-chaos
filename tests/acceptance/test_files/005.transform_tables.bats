@@ -1,14 +1,14 @@
 load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
-@test "test the transform_errors during executing transform functions" {
-  run steampipe query "select error from chaos_transform_errors"
-  assert_output --partial 'TRANSFORM ERROR'
-}
-
 @test "test the from_json_tag transform function" {
   run steampipe query --output json "select from_json_tag from chaos_transforms order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_chaos_transform_from_json_tag.json)"
+}
+
+@test "test the transform_errors during executing transform functions" {
+  run steampipe query "select error from chaos_transform_errors"
+  assert_output --partial 'TRANSFORM ERROR'
 }
 
 @test "test the from_qual_column transform function" {
