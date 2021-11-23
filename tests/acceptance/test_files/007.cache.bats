@@ -464,3 +464,7 @@ teardown() {
   fi
   assert_equal "$flag" "0"
 }
+
+@test "sleep 20s" {
+  sleep 20
+}
