@@ -466,5 +466,5 @@ teardown() {
 }
 
 @test "sleep 20s" {
-  sleep 20
+  sleep 20 3>- &
 }
