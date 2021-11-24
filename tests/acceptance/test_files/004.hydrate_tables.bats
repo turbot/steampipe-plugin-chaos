@@ -34,6 +34,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe service stop --force
 }
 
-@test "start" {
+@test "stop" {
   steampipe service stop --force
 }

@@ -465,6 +465,6 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
-@test "sleep 20s" {
-  sleep 20 3>- &
+@test "stop" {
+  steampipe service stop --force
 }
