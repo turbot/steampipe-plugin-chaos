@@ -1,8 +1,7 @@
 load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
-@test "test ignorable_error in hydrate call [DISABLED]" {
-  skip
+@test "test ignorable_error in hydrate call" {
   run steampipe query "select ignorable_error from chaos.chaos_hydrate_errors"
   assert_success
 }
@@ -13,9 +12,14 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test retryable_error in hydrate call [DISABLED]" {
-  skip
   export STEAMPIPE_CACHE=FALSE
   run steampipe query "select retryable_error from chaos.chaos_hydrate_errors"
+  assert_failure
+}
+
+@test "status" {
+  steampipe service status
+  ps -ef | grep steampipe
   assert_failure
 }
 
