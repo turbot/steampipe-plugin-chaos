@@ -1,16 +1,18 @@
 load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
-@test "test fatal_error in hydrate call" {
-  run steampipe query "select fatal_error from chaos.chaos_hydrate_errors"
-  assert_failure
-}
+# @test "test fatal_error in hydrate call" {
+#   skip
+#   run steampipe query "select fatal_error from chaos.chaos_hydrate_errors"
+#   assert_failure
+# }
 
-@test "test retryable_error in hydrate call" {
-  export STEAMPIPE_CACHE=FALSE
-  run steampipe query "select retryable_error from chaos.chaos_hydrate_errors"
-  assert_failure
-}
+# @test "test retryable_error in hydrate call" {
+#   skip
+#   export STEAMPIPE_CACHE=FALSE
+#   run steampipe query "select retryable_error from chaos.chaos_hydrate_errors"
+#   assert_failure
+# }
 
 @test "test ignorable_error in hydrate call" {
   run steampipe query "select ignorable_error from chaos.chaos_hydrate_errors"
