@@ -464,7 +464,3 @@ teardown() {
   fi
   assert_equal "$flag" "0"
 }
-
-@test "stop" {
-  steampipe service stop --force
-}

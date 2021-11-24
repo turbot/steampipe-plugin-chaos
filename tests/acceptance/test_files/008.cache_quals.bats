@@ -4,6 +4,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 setup() {
   steampipe service start > /dev/null
 }
+
 teardown() {
   rm -f output?.json
   steampipe service stop
