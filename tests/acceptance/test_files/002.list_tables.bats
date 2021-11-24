@@ -117,8 +117,8 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the child_delay in list call [DISABLED]" {
-  # run steampipe query --output json "select child_delay from chaos.chaos_list_parent_child order by id"
-  # assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_delay.json)"
+  run steampipe query --output json "select child_delay from chaos.chaos_list_parent_child order by id"
+  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_delay.json)"
 }
 
 @test "test the child_panic in list call" {
