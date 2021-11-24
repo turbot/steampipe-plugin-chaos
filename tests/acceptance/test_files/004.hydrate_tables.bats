@@ -17,12 +17,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
   assert_success
 }
 
-@test "status" {
-  steampipe service status
-  ps -ef | grep steampipe
-  assert_failure
-}
-
 @test "test delay in hydrate call [DISABLED]" {
   skip
   run steampipe query --output json "select delay from chaos.chaos_hydrate_errors order by id"
