@@ -17,12 +17,12 @@ load "$LIB_BATS_SUPPORT/load.bash"
   assert_success
 }
 
-@test "test delay in hydrate call [DISABLED]" {
+@test "test delay in hydrate call" {
   run steampipe query --output json "select delay from chaos.chaos_hydrate_errors order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_hydrate_delay.json)"
 }
 
-@test "test panic in hydrate call [DISABLED]" {
+@test "test panic in hydrate call" {
   run steampipe query --output json "select panic from chaos.chaos_hydrate_errors"
   assert_failure
   run steampipe service stop --force

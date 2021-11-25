@@ -116,7 +116,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_should_ignore_error_after_streaming.json)"
 }
 
-@test "test the child_delay in list call [DISABLED]" {
+@test "test the child_delay in list call" {
   run steampipe query --output json "select child_delay from chaos.chaos_list_parent_child order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_delay.json)"
 }
