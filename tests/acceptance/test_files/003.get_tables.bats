@@ -23,7 +23,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "test the panic in get call" {
   run steampipe query --output json "select panic from chaos.chaos_get_errors where id=0"
-   assert_output --partial 'Panic'
+  assert_output --partial 'Panic'
 }
 
 @test "test the retryable_error_default_config in case of non fatal error in get call" {
