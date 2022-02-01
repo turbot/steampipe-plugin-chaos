@@ -6,7 +6,6 @@ setup() {
 }
 
 teardown() {
-  rm -f output?.json
   steampipe service stop
 }
 
@@ -24,6 +23,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when the second query's columns is a subset of the first" {
@@ -40,6 +40,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality multiple queries with same columns" {
@@ -68,6 +69,7 @@ teardown() {
   assert_equal "$content2" "$content"
   assert_equal "$content3" "$content"
   assert_equal "$content4" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when multiple query's columns are a subset of the first" {
@@ -96,6 +98,7 @@ teardown() {
   assert_equal "$content2" "$content"
   assert_equal "$content3" "$content"
   assert_equal "$content4" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when the second query has more columns than the first" {
@@ -117,6 +120,7 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
+  rm -f output?.json
 }
 
 @test "check cache functionality when the both the queries have same limits" {
@@ -133,6 +137,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when first query has no limit but second query has a limit" {
@@ -149,6 +154,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when second query has lower limit than first" {
@@ -165,6 +171,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when second query has higher limit than first" {
@@ -186,6 +193,7 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
+  rm -f output?.json
 }
 
 ######## BACKGROUND TESTS ###########
@@ -205,6 +213,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when the second query's columns is a subset of the first(first query in background)" {
@@ -222,6 +231,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality multiple queries with same columns(first query in background)" {
@@ -249,6 +259,7 @@ teardown() {
   assert_equal "$content2" "$content"
   assert_equal "$content3" "$content"
   assert_equal "$content4" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when multiple query's columns are a subset of the first(first query in background)" {
@@ -276,6 +287,7 @@ teardown() {
   assert_equal "$content2" "$content"
   assert_equal "$content3" "$content"
   assert_equal "$content4" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when the second query has more columns than the first(first query in background)" {
@@ -298,6 +310,7 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
+  rm -f output?.json
 }
 
 @test "check cache functionality when the both the queries have same limits(first query in background)" {
@@ -315,6 +328,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when first query has no limit but second query has a limit(first query in background)" {
@@ -332,6 +346,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when second query has no limit but first query has a limit(first query in background)" {
@@ -354,6 +369,7 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
+  rm -f output?.json
 }
 
 @test "check cache functionality when second query has lower limit than first(first query in background)" {
@@ -371,6 +387,7 @@ teardown() {
 
   # verify that `content` and `new_content` are the same
   assert_equal "$new_content" "$content"
+  rm -f output?.json
 }
 
 @test "check cache functionality when second query has higher limit than first(first query in background)" {
@@ -393,6 +410,7 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
+  rm -f output?.json
 }
 
 ######## ERROR AND TIMEOUT TESTS ###########
@@ -418,6 +436,7 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
+  rm -f output?.json
 }
 
 @test "check cache functionality when first query times out, other queries should cache(first query in background)" {
@@ -438,6 +457,7 @@ teardown() {
 
   # verify that `content2` and `content3` are the same
   assert_equal "$content2" "$content3"
+  rm -f output?.json
 }
 
 @test "check cache functionality when first query times out, other queries should not cache(first query in background)" {
@@ -463,8 +483,9 @@ teardown() {
     flag=0
   fi
   assert_equal "$flag" "0"
+  rm -f output?.json
 }
 
-@test "stop service" {
+@test "stop service 1" {
   sleep 10s
 }
