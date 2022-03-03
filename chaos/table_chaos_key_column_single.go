@@ -3,8 +3,8 @@ package chaos
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v2/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v2/plugin"
 )
 
 func listKeyColumnsSingleEqualsTable() *plugin.Table {

@@ -5,9 +5,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v2/plugin"
 
-	"github.com/turbot/steampipe-plugin-sdk/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v2/grpc/proto"
 )
 
 func populateItem(rowNumber int, table *plugin.Table) map[string]interface{} {
