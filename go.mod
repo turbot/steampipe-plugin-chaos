@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/turbot/go-kit v0.3.0
-	github.com/turbot/steampipe-plugin-sdk/v2 v2.0.3
+	github.com/turbot/steampipe-plugin-sdk/v2 v2.1.0
 )
 
 require (
