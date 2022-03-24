@@ -2,8 +2,10 @@ module github.com/turbot/steampipe-plugin-chaos
 
 go 1.18
 
+replace github.com/turbot/steampipe-plugin-sdk/v3 => /Users/kai/Dev/github/turbot/steampipe-plugin-sdk
+
 require (
-	github.com/turbot/go-kit v0.3.0
+	github.com/turbot/go-kit v0.4.0
 	github.com/turbot/steampipe-plugin-sdk/v3 v3.3.0-rc.2
 )
 
