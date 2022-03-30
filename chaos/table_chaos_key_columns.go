@@ -75,7 +75,7 @@ func getItemFromKeyColumns(d *plugin.QueryData) map[string]interface{} {
 		item["column_a"] = columnA.GetStringValue()
 	}
 	if gotId && gotColumnA {
-		item["combine_column"] = fmt.Sprintf("%d-%s", id, columnA)
+		item["combine_column"] = fmt.Sprintf("%s-%s", id, columnA)
 	}
 	return item
 }
