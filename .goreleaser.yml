@@ -11,13 +11,9 @@ builds:
     goos:
       - linux
       - darwin
-      #- windows #- not yet.....
     goarch:
       - amd64
       - arm64
-    #ignore:
-    #  - goos: darwin # docs suggest that darwin arm64 should compile, but doesnt...
-    #    goarch: arm64
 
     id: "steampipe-chaos"
     binary: "{{ .ProjectName }}.plugin"
