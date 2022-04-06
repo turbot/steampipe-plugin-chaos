@@ -102,7 +102,7 @@ jobs:
           gzip --decompress ./dist/steampipe-plugin-chaos_darwin_amd64.gz
           gzip --decompress ./dist/steampipe-plugin-chaos_darwin_arm64.gz
           lipo -create -output ./dist/steampipe-plugin-chaos_darwin_universal ./dist/steampipe-plugin-chaos_darwin_amd64 ./dist/steampipe-plugin-chaos_darwin_arm64
-          gzip ./dist/steampipe-plugin-chaos_darwin_universal.gz
+          gzip ./dist/steampipe-plugin-chaos_darwin_universal
 
       - name: Save MacOS Build Artifact - AMD64
         uses: actions/upload-artifact@v2
