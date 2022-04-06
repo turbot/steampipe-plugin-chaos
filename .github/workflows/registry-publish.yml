@@ -100,18 +100,25 @@ jobs:
           path: ./dist/steampipe-plugin-chaos_linux_arm64.gz
           if-no-files-found: error
 
+      - name: UnGZip darwin artifacts and Create Universal binary
+        run: |-
+          gzip --decompress ./dist/steampipe-plugin-chaos_darwin_amd64.gz
+          gzip --decompress ./dist/steampipe-plugin-chaos_darwin_arm64.gz
+          lipo -create -output ./dist/steampipe-plugin-chaos_darwin_universal ./dist/steampipe-plugin-chaos_darwin_amd64 ./dist/steampipe-plugin-chaos_darwin_arm64
+          gzip ./dist/steampipe-plugin-chaos_darwin_universal.gz
+
       - name: Save MacOS Build Artifact - AMD64
         uses: actions/upload-artifact@v2
         with:
           name: steampipe-chaos_darwin_amd64
-          path: ./dist/steampipe-plugin-chaos_darwin_amd64.gz
+          path: ./dist/steampipe-plugin-chaos_darwin_universal.gz
           if-no-files-found: error
 
       - name: Save MacOS Build Artifact - ARM64
         uses: actions/upload-artifact@v2
         with:
           name: steampipe-chaos_darwin_arm64
-          path: ./dist/steampipe-plugin-chaos_darwin_arm64.gz
+          path: ./dist/steampipe-plugin-chaos_darwin_universal.gz
           if-no-files-found: error
 
   publish-deploy:
@@ -231,8 +238,8 @@ jobs:
           oras push $REF \
             --manifest-config config.json:application/vnd.turbot.steampipe.config.v1+json \
             --manifest-annotations annotations.json \
-            steampipe-plugin-chaos_darwin_amd64.gz:application/vnd.turbot.steampipe.plugin.darwin-amd64.layer.v1+gzip \
-            steampipe-plugin-chaos_darwin_arm64.gz:application/vnd.turbot.steampipe.plugin.darwin-arm64.layer.v1+gzip \
+            steampipe-plugin-chaos_darwin_universal.gz:application/vnd.turbot.steampipe.plugin.darwin-amd64.layer.v1+gzip \
+            steampipe-plugin-chaos_darwin_universal.gz:application/vnd.turbot.steampipe.plugin.darwin-arm64.layer.v1+gzip \
             steampipe-plugin-chaos_linux_amd64.gz:application/vnd.turbot.steampipe.plugin.linux-amd64.layer.v1+gzip \
             steampipe-plugin-chaos_linux_arm64.gz:application/vnd.turbot.steampipe.plugin.linux-arm64.layer.v1+gzip \
             docs:application/vnd.turbot.steampipe.plugin.docs.layer.v1+tar \
