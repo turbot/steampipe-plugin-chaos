@@ -97,13 +97,13 @@ jobs:
           path: ./dist/steampipe-plugin-chaos_linux_arm64.gz
           if-no-files-found: error
 
-      - name: UnGZip darwin artifacts and Create Universal binary for amd64
-        run: |-
-          gzip --decompress ./dist/steampipe-plugin-chaos_darwin_amd64.gz
-          gzip --decompress ./dist/steampipe-plugin-chaos_darwin_arm64.gz
-          lipo -create -output ./dist/steampipe-plugin-chaos_darwin_amd64 ./dist/steampipe-plugin-chaos_darwin_amd64 ./dist/steampipe-plugin-chaos_darwin_arm64
-          gzip ./dist/steampipe-plugin-chaos_darwin_arm64
-          gzip ./dist/steampipe-plugin-chaos_darwin_amd64
+      # - name: UnGZip darwin artifacts and Create Universal binary for amd64
+      #   run: |-
+      #     gzip --decompress ./dist/steampipe-plugin-chaos_darwin_amd64.gz
+      #     gzip --decompress ./dist/steampipe-plugin-chaos_darwin_arm64.gz
+      #     lipo -create -output ./dist/steampipe-plugin-chaos_darwin_amd64 ./dist/steampipe-plugin-chaos_darwin_amd64 ./dist/steampipe-plugin-chaos_darwin_arm64
+      #     gzip ./dist/steampipe-plugin-chaos_darwin_arm64
+      #     gzip ./dist/steampipe-plugin-chaos_darwin_amd64
 
       - name: Save MacOS Build Artifact - AMD64
         uses: actions/upload-artifact@v2
