@@ -18,6 +18,11 @@ builds:
     id: "steampipe-chaos"
     binary: "{{ .ProjectName }}.plugin"
 
+universal_binaries:
+  - name_template: '{{.ProjectName}}.plugin'
+    ids:
+    - steampipe-chaos
+
 archives:
   - format: gz
     name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
