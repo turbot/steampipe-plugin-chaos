@@ -102,6 +102,7 @@ jobs:
           gzip --decompress ./dist/steampipe-plugin-chaos_darwin_amd64.gz
           gzip --decompress ./dist/steampipe-plugin-chaos_darwin_arm64.gz
           lipo -create -output ./dist/steampipe-plugin-chaos_darwin_universal ./dist/steampipe-plugin-chaos_darwin_amd64 ./dist/steampipe-plugin-chaos_darwin_arm64
+          gzip ./dist/steampipe-plugin-chaos_darwin_arm64
           gzip ./dist/steampipe-plugin-chaos_darwin_universal
           mv ./dist/steampipe-plugin-chaos_darwin_universal.gz ./dist/steampipe-plugin-chaos_darwin_amd64.gz
 
