@@ -7,5 +7,5 @@ import (
 
 func main() {
 	plugin.Serve(&plugin.ServeOpts{
-		PluginFunc: chaos.Plugin})
+		PluginFunc: chaos.Plugin, PluginName: "chaos"})
 }
