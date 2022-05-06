@@ -3,27 +3,25 @@ package chaos
 import (
 	"context"
 	"errors"
-	"sync"
+	"log"
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
 )
 
-var retryHydrateError = map[string]int{}
-var hydrateErrorString = "retriableError"
-var hydrateMutex = &sync.Mutex{}
+var hydrateRetryConfigErrorCount = 0
 
 func hydrateRetryConfigTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_hydrate_retry_config",
-		Description: "Chaos table to test the Hydrate function with Retry config in case of non fatal error",
+		Description: "Chaos table to test the Hydrate function with Retry config",
 		List: &plugin.ListConfig{
 			Hydrate: hydrateRetryConfigList,
 		},
 		HydrateConfig: []plugin.HydrateConfig{
 			{
-				Func: retryHydrateConfig,
+				Func: hydrateWithRetriableErrors,
 				RetryConfig: &plugin.RetryConfig{
 					ShouldRetryError: shouldRetryError,
 				},
@@ -34,13 +32,7 @@ func hydrateRetryConfigTable() *plugin.Table {
 			{
 				Name:      "retriable_errors",
 				Type:      proto.ColumnType_STRING,
-				Hydrate:   retryHydrateConfig,
-				Transform: transform.FromValue(),
-			},
-			{
-				Name:      "fatal_error",
-				Type:      proto.ColumnType_STRING,
-				Hydrate:   buildRetryHydrate("fatalError", 4),
+				Hydrate:   hydrateWithRetriableErrors,
 				Transform: transform.FromValue(),
 			},
 		},
@@ -55,40 +47,18 @@ func hydrateRetryConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.
 	return nil, nil
 }
 
-func retryHydrateConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func hydrateWithRetriableErrors(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	var failureCount = 2
 
-	hydrateMutex.Lock()
-	retryHydrateError[hydrateErrorString]++
-	errorCount := retryHydrateError[hydrateErrorString]
-	hydrateMutex.Unlock()
+	hydrateRetryConfigErrorCount++
 
-	if errorCount == failureCount {
-		hydrateMutex.Lock()
-		retryHydrateError[hydrateErrorString] = 0
-		hydrateMutex.Unlock()
+	if hydrateRetryConfigErrorCount == failureCount {
+		log.Printf("[WARN] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning success", hydrateRetryConfigErrorCount)
+		hydrateRetryConfigErrorCount = 0
 		return "SUCCESS", nil
 	}
 
-	return nil, errors.New(hydrateErrorString)
-}
+	log.Printf("[WARN] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning error", hydrateRetryConfigErrorCount)
 
-func buildRetryHydrate(errorName string, failureCount int) plugin.HydrateFunc {
-	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-
-		hydrateMutex.Lock()
-		retryHydrateError[errorName]++
-		hydrateMutex.Unlock()
-
-		errorCount := retryHydrateError[errorName]
-		if errorCount == failureCount {
-			hydrateMutex.Lock()
-			retryHydrateError[hydrateErrorString] = 0
-			hydrateMutex.Unlock()
-			return "SUCCESS", nil
-		}
-
-		return nil, errors.New(errorName)
-	}
-
+	return nil, errors.New(retriableErrorString)
 }

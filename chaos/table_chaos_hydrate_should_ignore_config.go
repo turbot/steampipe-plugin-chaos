@@ -1,8 +1,7 @@
 package chaos
 
 import (
-	"context"
-	"errors"
+	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
@@ -17,44 +16,26 @@ func hydrateShouldIgnoreConfigTable() *plugin.Table {
 		},
 		HydrateConfig: []plugin.HydrateConfig{
 			{
-				Func:              shouldIgnoreConfigHydrateA,
-				ShouldIgnoreError: shouldIgnoreError,
-			},
-			{
-				Func:              shouldIgnoreConfigHydrateB,
+				Func:              ignorableErrorWithShouldIgnore,
 				ShouldIgnoreError: shouldIgnoreError,
 			},
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
 			{
-				Name:    "should_ignore_error_a",
+				Name:    "ignorable_error_with_ignore_config",
 				Type:    proto.ColumnType_STRING,
-				Hydrate: shouldIgnoreConfigHydrateA,
+				Hydrate: ignorableErrorWithShouldIgnore,
+				// verify that null hydrate items resulting from ignored errors do not get passed to transform functions
+				Transform: transform.From(checkNilTransform),
 			},
 			{
-				Name:    "should_ignore_error_b",
+				Name:    "ignorable_error_with_no_ignore_config",
 				Type:    proto.ColumnType_STRING,
-				Hydrate: shouldIgnoreConfigHydrateB,
+				Hydrate: ignorableErrorWithoutShouldIgnore,
+				// verify that null hydrate items resulting from ignored errors do not get passed to transform functions
+				Transform: transform.From(checkNilTransform),
 			},
 		},
 	}
-}
-
-func hydrateShouldIgnoreConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < 1; i++ {
-		item := map[string]interface{}{"id": i}
-		d.StreamListItem(ctx, item)
-	}
-	return nil, nil
-}
-
-func shouldIgnoreConfigHydrateA(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-
-	return nil, errors.New(notFoundError)
-}
-
-func shouldIgnoreConfigHydrateB(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-
-	return nil, errors.New(notFoundError)
 }

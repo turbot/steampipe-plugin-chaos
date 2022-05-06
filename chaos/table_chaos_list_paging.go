@@ -62,7 +62,7 @@ func listPagingFunction(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	}
 
 	for {
-		retryResp, err := plugin.RetryHydrate(ctx, d, h, listPage, &plugin.RetryConfig{shouldRetryError})
+		retryResp, err := plugin.RetryHydrate(ctx, d, h, listPage, &plugin.RetryConfig{ShouldRetryError: shouldRetryError})
 		listResponse := retryResp.(ListResponse)
 		items := listResponse.Items
 		resp := listResponse.Resp
@@ -91,7 +91,7 @@ func getPage(pageNumber int) ([]Item, *PagingResponse, error) {
 	// after returning 3 pages, fail 5 times to return the next page before succeeding on the 6th attempt
 	if pageNumber == errorAfterPages && errorCount < failureCount {
 		errorCount++
-		return nil, nil, errors.New(retriableError)
+		return nil, nil, errors.New(retriableErrorString)
 	}
 
 	var items []Item

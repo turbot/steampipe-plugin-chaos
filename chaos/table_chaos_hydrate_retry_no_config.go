@@ -9,6 +9,8 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
 )
 
+var hydrateRetryNoConfigTableErrorCount = 0
+
 func hydrateRetryNoConfigTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_hydrate_retry_no_config",
@@ -39,17 +41,12 @@ func hydrateRetryNoConfigErrorList(ctx context.Context, d *plugin.QueryData, h *
 func retryHydrateNoConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	var failureCount = 2
 
-	hydrateMutex.Lock()
-	retryHydrateError[hydrateErrorString]++
-	hydrateMutex.Unlock()
+	hydrateRetryNoConfigTableErrorCount++
 
-	errorCount := retryHydrateError[hydrateErrorString]
-	if errorCount == failureCount {
-		hydrateMutex.Lock()
-		retryHydrateError[hydrateErrorString] = 0
-		hydrateMutex.Unlock()
+	if hydrateRetryNoConfigTableErrorCount == failureCount {
+		hydrateRetryNoConfigTableErrorCount = 0
 		return "SUCCESS", nil
 	}
 
-	return nil, errors.New(hydrateErrorString)
+	return nil, errors.New(retriableErrorString)
 }
