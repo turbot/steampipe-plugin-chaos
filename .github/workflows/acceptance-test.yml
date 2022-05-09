@@ -32,7 +32,6 @@ jobs:
       - name: Build Steampipe
         run: |
           echo "PATH=$PATH:$HOME/build:/home/runner" >> $GITHUB_ENV
-          go mod tidy
           cd /home/runner/work/steampipe-plugin-chaos/steampipe-plugin-chaos/steampipe
           sudo ./install.sh
 
