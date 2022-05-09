@@ -1,11 +1,6 @@
 package chaos
 
 import (
-	"context"
-	"errors"
-	"log"
-
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
@@ -19,11 +14,11 @@ func hydrateShouldIgnoreConfigTableWithTableDefault() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: hydrateShouldIgnoreConfigList,
 		},
-		DefaultIgnoreConfig: &plugin.IgnoreConfig{ShouldIgnoreError: shouldIgnoreError},
+		DefaultIgnoreConfig: &plugin.IgnoreConfig{ShouldIgnoreErrorFunc: shouldIgnoreError},
 		HydrateConfig: []plugin.HydrateConfig{
 			{
-				Func:              ignorableErrorWithShouldIgnore,
-				ShouldIgnoreError: shouldIgnoreError,
+				Func:         ignorableErrorWithShouldIgnore,
+				IgnoreConfig: &plugin.IgnoreConfig{ShouldIgnoreErrorFunc: shouldIgnoreError},
 			},
 		},
 		Columns: []*plugin.Column{
@@ -44,31 +39,4 @@ func hydrateShouldIgnoreConfigTableWithTableDefault() *plugin.Table {
 			},
 		},
 	}
-}
-
-func hydrateShouldIgnoreConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < 1; i++ {
-		item := map[string]interface{}{"id": i}
-		d.StreamListItem(ctx, item)
-	}
-	return nil, nil
-}
-
-func ignorableErrorWithShouldIgnore(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Printf("[WARN] ignorableErrorWithShouldIgnore return error")
-	return nil, errors.New(notFoundErrorString)
-}
-
-func ignorableErrorWithoutShouldIgnore(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Printf("[WARN] ignorableErrorWithShouldIgnore return error")
-	return nil, errors.New(notFoundErrorString)
-}
-
-func checkNilTransform(_ context.Context, d *transform.TransformData) (interface{}, error) {
-	data := d.HydrateItem
-	log.Printf("[WARN] checkNilTransform hydrateItem: %v", data)
-	if helpers.IsNil(data) {
-		panic("NIL HYDRATE")
-	}
-	return data, nil
 }

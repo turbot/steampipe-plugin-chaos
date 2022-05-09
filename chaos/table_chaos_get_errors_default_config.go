@@ -2,6 +2,7 @@ package chaos
 
 import (
 	"context"
+	"log"
 
 	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
@@ -11,7 +12,7 @@ import (
 func getErrorsDefaultConfigTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_get_errors_default_config",
-		Description: "Chaos table to test the Get function with Default Retry config defined at plugin level in case of non fatal error",
+		Description: "Chaos table to test the Get function using default Retry and Ignore config defined at plugin level",
 		List: &plugin.ListConfig{
 			Hydrate: listGetErrorsDefaultConfig,
 		},
@@ -36,9 +37,13 @@ func listGetErrorsDefaultConfig(ctx context.Context, d *plugin.QueryData, h *plu
 }
 
 func chaosGetDefaultConfigHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	log.Printf("[WARN] chaosGetDefaultConfigHydrate")
 	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error_default_config") {
+		log.Printf("[WARN] RETRYABLE")
 		buildConfig := &getBuildConfig{getError: RetryableError, failureCount: 5}
-		return buildGetHydrate(buildConfig)(ctx, d, h)
+		hy, err := buildGetHydrate(buildConfig)(ctx, d, h)
+		log.Printf("[WARN] RETRYABLE 2 %v, err %v", hy, err)
+		return hy, err
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "ignorable_error_default_config") {
 		buildConfig := &getBuildConfig{getError: IgnorableError}

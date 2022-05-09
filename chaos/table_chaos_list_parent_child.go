@@ -20,7 +20,7 @@ func chaosListParentChildTable() *plugin.Table {
 		List: &plugin.ListConfig{
 			ParentHydrate:     listParentRetryTable,
 			Hydrate:           getChildList(&listBuildConfig{}),
-			ShouldIgnoreError: shouldIgnoreError,
+			ShouldIgnoreError: shouldIgnoreErrorLegacy,
 		},
 
 		Columns: []*plugin.Column{
@@ -51,7 +51,7 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_fatal_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15, listErrorRows: 5}
+		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15, listRowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_retryable_error") {
@@ -59,7 +59,7 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_retryable_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 15, listErrorRows: 5, failureCount: 200}
+		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 15, listRowsBeforeError: 5, failureCount: 200}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_should_ignore_error") {
@@ -67,7 +67,7 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_should_ignore_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15, listErrorRows: 5}
+		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15, listRowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_delay") {
@@ -83,7 +83,7 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_fatal_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15, listErrorRows: 5}
+		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15, listRowsBeforeError: 5}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_retryable_error") {
@@ -99,7 +99,7 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_should_ignore_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15, listErrorRows: 5}
+		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15, listRowsBeforeError: 5}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_delay") {
@@ -128,10 +128,10 @@ func getChildList(listBuildConfig *listBuildConfig) plugin.HydrateFunc {
 
 		for i := 0; i < rowCount; i++ {
 
-			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", i, listBuildConfig.listErrorRows)
+			log.Printf("[DEBUG] ROW LOOP streamed %d error limit %d", i, listBuildConfig.listRowsBeforeError)
 			// listErrorRows is the number of rows to return successfully before raising an error
 			// if we stream that many rows, let's raise an error
-			if i == listBuildConfig.listErrorRows {
+			if i == listBuildConfig.listRowsBeforeError {
 				switch listBuildConfig.listError {
 				case RetryableError:
 					// failureCount is the number of times the error occurs before we succeed

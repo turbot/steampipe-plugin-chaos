@@ -62,7 +62,7 @@ func listPagingFunction(ctx context.Context, d *plugin.QueryData, h *plugin.Hydr
 	}
 
 	for {
-		retryResp, err := plugin.RetryHydrate(ctx, d, h, listPage, &plugin.RetryConfig{ShouldRetryError: shouldRetryError})
+		retryResp, err := plugin.RetryHydrate(ctx, d, h, listPage, &plugin.RetryConfig{ShouldRetryError: shouldRetryErrorLegacy})
 		listResponse := retryResp.(ListResponse)
 		items := listResponse.Items
 		resp := listResponse.Resp

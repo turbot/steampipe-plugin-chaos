@@ -7,17 +7,17 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
 )
 
-func hydrateShouldIgnoreConfigTable() *plugin.Table {
+func hydrateShouldIgnoreConfigTableLegacy() *plugin.Table {
 	return &plugin.Table{
-		Name:        "chaos_hydrate_should_ignore_config",
+		Name:        "chaos_hydrate_should_ignore_config_legacy",
 		Description: "Chaos table to test the Hydrate function with Should Ignore Error defined in the Hydrate config",
 		List: &plugin.ListConfig{
 			Hydrate: hydrateShouldIgnoreConfigList,
 		},
 		HydrateConfig: []plugin.HydrateConfig{
 			{
-				Func:         ignorableErrorWithShouldIgnore,
-				IgnoreConfig: &plugin.IgnoreConfig{ShouldIgnoreErrorFunc: shouldIgnoreError},
+				Func:              ignorableErrorWithShouldIgnore,
+				ShouldIgnoreError: shouldIgnoreErrorLegacy,
 			},
 		},
 		Columns: []*plugin.Column{

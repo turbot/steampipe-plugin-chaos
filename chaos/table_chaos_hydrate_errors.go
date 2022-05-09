@@ -31,9 +31,9 @@ func chaosHydrateTable() *plugin.Table {
 			{
 				Func: chaosHydrateFunction,
 				RetryConfig: &plugin.RetryConfig{
-					ShouldRetryError: shouldRetryError,
+					ShouldRetryError: shouldRetryErrorLegacy,
 				},
-				ShouldIgnoreError: shouldIgnoreError,
+				ShouldIgnoreError: shouldIgnoreErrorLegacy,
 			},
 		},
 		Columns: []*plugin.Column{

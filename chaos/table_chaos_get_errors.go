@@ -31,9 +31,9 @@ func chaosGetTable() *plugin.Table {
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.SingleColumn("id"),
 			Hydrate:           chaosGetHydrate,
-			ShouldIgnoreError: shouldIgnoreError,
+			ShouldIgnoreError: shouldIgnoreErrorLegacy,
 			RetryConfig: &plugin.RetryConfig{
-				ShouldRetryError: shouldRetryError,
+				ShouldRetryError: shouldRetryErrorLegacy,
 			},
 		},
 
