@@ -82,7 +82,7 @@ func listHydrateErrors(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 }
 
 func chaosHydrateErrorsRetryHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	buildConfig := &hydrateBuildConfig{hydrateError: RetryableError, failureCount: 5}
+	buildConfig := &hydrateBuildConfig{hydrateError: RetryableError, failureCount: 2}
 	return buildHydrate(buildConfig)(ctx, d, h)
 
 }
@@ -115,13 +115,16 @@ func buildHydrate(buildConfig *hydrateBuildConfig) plugin.HydrateFunc {
 		if buildConfig.hydrateDelay {
 			time.Sleep(delayValue)
 		}
+
 		if buildConfig.hydrateError == RetryableError {
-			log.Printf("[DEBUG] RetryableError")
+			log.Printf("[DEBUG] RetryableError error count %d, configured failure count %d", hydrateTableErrorCount, buildConfig.failureCount)
 			// failureCount is the number of times the error occurs before we succeed
-			if hydrateTableErrorCount <= buildConfig.failureCount {
+			if hydrateTableErrorCount < buildConfig.failureCount {
+				log.Printf("[DEBUG] return retryable error")
 				hydrateTableErrorCount++
 				return nil, errors.New(RetryableError)
 			}
+			log.Printf("[DEBUG] we have failed 'failureCount' times, reset hydrateTableErrorCount and fall through to return item")
 			// if we have failed 'failureCount' times, reset hydrateTableErrorCount and fall through to return item
 			hydrateTableErrorCount = 0
 
