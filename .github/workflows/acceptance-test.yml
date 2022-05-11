@@ -29,11 +29,11 @@ jobs:
           repository: turbot/steampipe
           path: steampipe
 
-      - name: Build Steampipe
+      - name: Install Steampipe
         run: |
           echo "PATH=$PATH:$HOME/build:/home/runner" >> $GITHUB_ENV
           cd /home/runner/work/steampipe-plugin-chaos/steampipe-plugin-chaos/steampipe
-          go build -o /home/runner/steampipe
+          sudo ./install.sh
 
       - name: Build Chaos plugin
         run: |

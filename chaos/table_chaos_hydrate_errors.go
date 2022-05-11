@@ -6,7 +6,6 @@ import (
 	"log"
 	"time"
 
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
 )
@@ -29,11 +28,14 @@ func chaosHydrateTable() *plugin.Table {
 		},
 		HydrateConfig: []plugin.HydrateConfig{
 			{
-				Func: chaosHydrateFunction,
+				Func: chaosHydrateErrorsRetryHydrate,
 				RetryConfig: &plugin.RetryConfig{
-					ShouldRetryError: shouldRetryError,
+					ShouldRetryError: shouldRetryErrorLegacy,
 				},
-				ShouldIgnoreError: shouldIgnoreError,
+			},
+			{
+				Func:              chaosHydrateErrorsIgnorableHydrate,
+				ShouldIgnoreError: shouldIgnoreErrorLegacy,
 			},
 		},
 		Columns: []*plugin.Column{
@@ -42,66 +44,67 @@ func chaosHydrateTable() *plugin.Table {
 				Name:        "fatal_error",
 				Type:        proto.ColumnType_BOOL,
 				Description: "Column to test the table with fatal error",
-				Hydrate:     chaosHydrateFunction,
+				Hydrate:     chaosHydrateErrorsFatalHydrate,
 			},
 			{
 				Name:        "retryable_error",
 				Type:        proto.ColumnType_BOOL,
 				Description: "Column to test the Hydrate function with retry config in case of non fatal error",
-				Hydrate:     chaosHydrateFunction,
+				Hydrate:     chaosHydrateErrorsRetryHydrate,
 			},
 			{
 				Name:        "ignorable_error",
 				Type:        proto.ColumnType_BOOL,
 				Description: "Column to test the  Hydrate function with Ignorable errors",
-				Hydrate:     chaosHydrateFunction,
+				Hydrate:     chaosHydrateErrorsIgnorableHydrate,
 			},
 			{
 				Name:        "delay",
 				Type:        proto.ColumnType_BOOL,
 				Description: "Column to test delay in Hydrate function",
-				Hydrate:     chaosHydrateFunction,
+				Hydrate:     chaosHydrateErrorsDelayHydrate,
 			},
 			{
 				Name:        "panic",
 				Type:        proto.ColumnType_BOOL,
 				Description: "Column to test panicking Hydrate function",
-				Hydrate:     chaosHydrateFunction,
+				Hydrate:     chaosHydrateErrorsPanicHydrate,
 			},
 		},
 	}
 }
 
 func listHydrateErrors(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < 10; i++ {
-		item := map[string]interface{}{"id": i}
-		d.StreamListItem(ctx, item)
-	}
+	item := map[string]interface{}{"id": 0}
+	d.StreamListItem(ctx, item)
 	return nil, nil
+
 }
 
-func chaosHydrateFunction(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	if helpers.StringSliceContains(d.QueryContext.Columns, "fatal_error") {
-		buildConfig := &hydrateBuildConfig{hydrateError: FailError}
-		return buildHydrate(buildConfig)(ctx, d, h)
-	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error") {
-		buildConfig := &hydrateBuildConfig{hydrateError: RetryableError, failureCount: 5}
-		return buildHydrate(buildConfig)(ctx, d, h)
-	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "ignorable_error") {
-		buildConfig := &hydrateBuildConfig{hydrateError: IgnorableError}
-		return buildHydrate(buildConfig)(ctx, d, h)
-	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "delay") {
-		buildConfig := &hydrateBuildConfig{hydrateDelay: true}
-		return buildHydrate(buildConfig)(ctx, d, h)
-	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "panic") {
-		buildConfig := &hydrateBuildConfig{hydrateError: FailPanic}
-		return buildHydrate(buildConfig)(ctx, d, h)
-	}
-	return nil, nil
+func chaosHydrateErrorsRetryHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	buildConfig := &hydrateBuildConfig{hydrateError: RetryableError, failureCount: 2}
+	return buildHydrate(buildConfig)(ctx, d, h)
+
+}
+
+func chaosHydrateErrorsFatalHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	buildConfig := &hydrateBuildConfig{hydrateError: FailError}
+	return buildHydrate(buildConfig)(ctx, d, h)
+}
+
+func chaosHydrateErrorsIgnorableHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	buildConfig := &hydrateBuildConfig{hydrateError: IgnorableError}
+	return buildHydrate(buildConfig)(ctx, d, h)
+}
+
+func chaosHydrateErrorsDelayHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	buildConfig := &hydrateBuildConfig{hydrateDelay: true}
+	return buildHydrate(buildConfig)(ctx, d, h)
+}
+
+func chaosHydrateErrorsPanicHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	buildConfig := &hydrateBuildConfig{hydrateError: FailPanic}
+	return buildHydrate(buildConfig)(ctx, d, h)
 }
 
 func buildHydrate(buildConfig *hydrateBuildConfig) plugin.HydrateFunc {
@@ -112,13 +115,16 @@ func buildHydrate(buildConfig *hydrateBuildConfig) plugin.HydrateFunc {
 		if buildConfig.hydrateDelay {
 			time.Sleep(delayValue)
 		}
+
 		if buildConfig.hydrateError == RetryableError {
-			log.Printf("[DEBUG] RetryableError")
+			log.Printf("[DEBUG] RetryableError error count %d, configured failure count %d", hydrateTableErrorCount, buildConfig.failureCount)
 			// failureCount is the number of times the error occurs before we succeed
-			if hydrateTableErrorCount <= buildConfig.failureCount {
+			if hydrateTableErrorCount < buildConfig.failureCount {
+				log.Printf("[DEBUG] return retryable error")
 				hydrateTableErrorCount++
 				return nil, errors.New(RetryableError)
 			}
+			log.Printf("[DEBUG] we have failed 'failureCount' times, reset hydrateTableErrorCount and fall through to return item")
 			// if we have failed 'failureCount' times, reset hydrateTableErrorCount and fall through to return item
 			hydrateTableErrorCount = 0
 

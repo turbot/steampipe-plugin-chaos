@@ -134,7 +134,7 @@ func BuildMatrixItem(ctx context.Context, connection *plugin.Connection) []map[s
 
 func transformFromFieldList(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 
-	log.Printf("[WARN] transformFromFieldList")
+	log.Printf("[INFO] transformFromFieldList")
 	for i := 0; i < 2; i++ {
 		columnA := fmt.Sprintf("column-%d", i)
 		columnOptional := fmt.Sprintf("optional-column-%d", i)
@@ -142,7 +142,7 @@ func transformFromFieldList(ctx context.Context, d *plugin.QueryData, h *plugin.
 		column := "THIS IS COMING FROM LIST CALL"
 		columnD := "LIST CALL COLUMN D"
 		item := ListStruct{Id: i, OptionalKeyColumn: &columnOptional, FromTagColumn: &fromTagColumn, FromJSONTag: &columnA, FromFieldColumn: &column, ColumnD: &columnD}
-		log.Printf("[WARN] transformFromFieldList STREAM")
+		log.Printf("[INFO] transformFromFieldList STREAM")
 		d.StreamLeafListItem(ctx, item)
 	}
 	return nil, nil

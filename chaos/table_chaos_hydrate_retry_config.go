@@ -3,44 +3,43 @@ package chaos
 import (
 	"context"
 	"errors"
-	"sync"
+	"log"
 
 	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v3/plugin/transform"
 )
 
-var retryHydrateError = map[string]int{}
-var hydrateErrorString = "retriableError"
-var hydrateMutex = &sync.Mutex{}
+var hydrateWithRetriableErrors1ErrorCount = 0
+var hydrateWithRetriableErrors2ErrorCount = 0
 
 func hydrateRetryConfigTable() *plugin.Table {
 	return &plugin.Table{
 		Name:        "chaos_hydrate_retry_config",
-		Description: "Chaos table to test the Hydrate function with Retry config in case of non fatal error",
+		Description: "Chaos table to test the Hydrate function with Retry config",
 		List: &plugin.ListConfig{
 			Hydrate: hydrateRetryConfigList,
 		},
 		HydrateConfig: []plugin.HydrateConfig{
 			{
-				Func: retryHydrateConfig,
+				Func: hydrateWithRetriableErrors1,
 				RetryConfig: &plugin.RetryConfig{
-					ShouldRetryError: shouldRetryError,
+					ShouldRetryErrorFunc: shouldRetryError,
 				},
 			},
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT},
 			{
-				Name:      "retriable_errors",
+				Name:      "retriable_errors_with_retry_config",
 				Type:      proto.ColumnType_STRING,
-				Hydrate:   retryHydrateConfig,
+				Hydrate:   hydrateWithRetriableErrors1,
 				Transform: transform.FromValue(),
 			},
 			{
-				Name:      "fatal_error",
+				Name:      "retriable_errors_with_no_retry_config",
 				Type:      proto.ColumnType_STRING,
-				Hydrate:   buildRetryHydrate("fatalError", 4),
+				Hydrate:   hydrateWithRetriableErrors2,
 				Transform: transform.FromValue(),
 			},
 		},
@@ -55,40 +54,34 @@ func hydrateRetryConfigList(ctx context.Context, d *plugin.QueryData, h *plugin.
 	return nil, nil
 }
 
-func retryHydrateConfig(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func hydrateWithRetriableErrors1(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	var failureCount = 2
 
-	hydrateMutex.Lock()
-	retryHydrateError[hydrateErrorString]++
-	errorCount := retryHydrateError[hydrateErrorString]
-	hydrateMutex.Unlock()
+	hydrateWithRetriableErrors1ErrorCount++
 
-	if errorCount == failureCount {
-		hydrateMutex.Lock()
-		retryHydrateError[hydrateErrorString] = 0
-		hydrateMutex.Unlock()
+	if hydrateWithRetriableErrors1ErrorCount == failureCount {
+		log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors1 error count %d, returning success", hydrateWithRetriableErrors1ErrorCount)
+		hydrateWithRetriableErrors1ErrorCount = 0
 		return "SUCCESS", nil
 	}
 
-	return nil, errors.New(hydrateErrorString)
+	log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning error", hydrateWithRetriableErrors1ErrorCount)
+
+	return nil, errors.New(retriableErrorString)
 }
 
-func buildRetryHydrate(errorName string, failureCount int) plugin.HydrateFunc {
-	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func hydrateWithRetriableErrors2(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	var failureCount = 2
 
-		hydrateMutex.Lock()
-		retryHydrateError[errorName]++
-		hydrateMutex.Unlock()
+	hydrateWithRetriableErrors2ErrorCount++
 
-		errorCount := retryHydrateError[errorName]
-		if errorCount == failureCount {
-			hydrateMutex.Lock()
-			retryHydrateError[hydrateErrorString] = 0
-			hydrateMutex.Unlock()
-			return "SUCCESS", nil
-		}
-
-		return nil, errors.New(errorName)
+	if hydrateWithRetriableErrors2ErrorCount == failureCount {
+		log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors1 error count %d, returning success", hydrateWithRetriableErrors2ErrorCount)
+		hydrateWithRetriableErrors2ErrorCount = 0
+		return "SUCCESS", nil
 	}
 
+	log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning error", hydrateWithRetriableErrors2ErrorCount)
+
+	return nil, errors.New(retriableErrorString)
 }
