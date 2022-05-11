@@ -101,7 +101,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   assert_output --partial 'retriableError'
 }
 
-@test "test the child_retryable_error(after streaming) in list call" {
+@test "test the child_retryable_error (after streaming) in list call" {
   run steampipe query --output json "select child_retryable_error_after_streaming from chaos.chaos_list_parent_child order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_retryable_error_after_streaming.json)"
 }
