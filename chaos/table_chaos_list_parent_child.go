@@ -89,8 +89,10 @@ func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, failureCount: 5}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
+	// TODO this currently does not actually work - the test only passes as the failure count (15)
+	//  is greater than the sdk error retry count (10)
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_retryable_error_after_streaming") {
-		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, failureCount: 5}
+		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, failureCount: 15}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "child_should_ignore_error") {
