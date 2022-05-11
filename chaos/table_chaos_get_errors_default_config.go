@@ -37,12 +37,10 @@ func listGetErrorsDefaultConfig(ctx context.Context, d *plugin.QueryData, h *plu
 }
 
 func chaosGetDefaultConfigHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Printf("[WARN] chaosGetDefaultConfigHydrate")
+	log.Printf("[INFO] chaosGetDefaultConfigHydrate")
 	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error_default_config") {
-		log.Printf("[WARN] RETRYABLE")
 		buildConfig := &getBuildConfig{getError: RetryableError, failureCount: 5}
 		hy, err := buildGetHydrate(buildConfig)(ctx, d, h)
-		log.Printf("[WARN] RETRYABLE 2 %v, err %v", hy, err)
 		return hy, err
 	}
 	if helpers.StringSliceContains(d.QueryContext.Columns, "ignorable_error_default_config") {

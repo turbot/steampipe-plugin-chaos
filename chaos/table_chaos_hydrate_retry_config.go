@@ -60,12 +60,12 @@ func hydrateWithRetriableErrors1(ctx context.Context, d *plugin.QueryData, h *pl
 	hydrateWithRetriableErrors1ErrorCount++
 
 	if hydrateWithRetriableErrors1ErrorCount == failureCount {
-		log.Printf("[WARN] chaos_hydrate_retry_config hydrateWithRetriableErrors1 error count %d, returning success", hydrateWithRetriableErrors1ErrorCount)
+		log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors1 error count %d, returning success", hydrateWithRetriableErrors1ErrorCount)
 		hydrateWithRetriableErrors1ErrorCount = 0
 		return "SUCCESS", nil
 	}
 
-	log.Printf("[WARN] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning error", hydrateWithRetriableErrors1ErrorCount)
+	log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning error", hydrateWithRetriableErrors1ErrorCount)
 
 	return nil, errors.New(retriableErrorString)
 }
@@ -76,12 +76,12 @@ func hydrateWithRetriableErrors2(ctx context.Context, d *plugin.QueryData, h *pl
 	hydrateWithRetriableErrors2ErrorCount++
 
 	if hydrateWithRetriableErrors2ErrorCount == failureCount {
-		log.Printf("[WARN] chaos_hydrate_retry_config hydrateWithRetriableErrors1 error count %d, returning success", hydrateWithRetriableErrors2ErrorCount)
+		log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors1 error count %d, returning success", hydrateWithRetriableErrors2ErrorCount)
 		hydrateWithRetriableErrors2ErrorCount = 0
 		return "SUCCESS", nil
 	}
 
-	log.Printf("[WARN] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning error", hydrateWithRetriableErrors2ErrorCount)
+	log.Printf("[INFO] chaos_hydrate_retry_config hydrateWithRetriableErrors error count %d, returning error", hydrateWithRetriableErrors2ErrorCount)
 
 	return nil, errors.New(retriableErrorString)
 }

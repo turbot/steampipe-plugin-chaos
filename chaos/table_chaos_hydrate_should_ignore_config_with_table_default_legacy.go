@@ -55,18 +55,18 @@ func hydrateShouldIgnoreConfigList(ctx context.Context, d *plugin.QueryData, h *
 }
 
 func ignorableErrorWithShouldIgnore(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Printf("[WARN] ignorableErrorWithShouldIgnore return error")
+	log.Printf("[INFO] ignorableErrorWithShouldIgnore return error")
 	return nil, errors.New(notFoundErrorString)
 }
 
 func ignorableErrorWithoutShouldIgnore(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	log.Printf("[WARN] ignorableErrorWithShouldIgnore return error")
+	log.Printf("[INFO] ignorableErrorWithShouldIgnore return error")
 	return nil, errors.New(notFoundErrorString)
 }
 
 func checkNilTransform(_ context.Context, d *transform.TransformData) (interface{}, error) {
 	data := d.HydrateItem
-	log.Printf("[WARN] checkNilTransform hydrateItem: %v", data)
+	log.Printf("[INFO] checkNilTransform hydrateItem: %v", data)
 	if helpers.IsNil(data) {
 		panic("NIL HYDRATE")
 	}
