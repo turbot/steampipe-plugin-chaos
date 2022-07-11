@@ -125,6 +125,12 @@ func allColumnsTable() *plugin.Table {
 				Hydrate:   inetColumnValue,
 				Transform: transform.FromValue(),
 			},
+			{
+				Name:      "ltree_column",
+				Type:      proto.ColumnType_LTREE,
+				Hydrate:   ltreeColumnValue,
+				Transform: transform.FromValue(),
+			},
 		},
 	}
 
@@ -251,6 +257,15 @@ func inetColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	key := h.Item.(map[string]interface{})
 	id := key["id"].(int)
 	columnVal := inet[id%len(inet)]
+
+	return columnVal, nil
+}
+
+func ltreeColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	ltree := []string{"Top.Science.Astronomy", "Top.Science.Astronomy.Astrophysics", "Top.Science.Astronomy.Cosmology", "Top.Hobbies.Amateurs_Astronomy"}
+	key := h.Item.(map[string]interface{})
+	id := key["id"].(int)
+	columnVal := ltree[id%len(ltree)]
 
 	return columnVal, nil
 }
