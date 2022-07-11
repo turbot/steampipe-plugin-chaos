@@ -15,6 +15,7 @@
   "epoch_column_milliseconds": "2021-01-19T11:53:18Z",
   "epoch_column_seconds": "2021-01-19T13:39:39Z",
   "id": 0,
+	"inet_column": "10.0.1.4",
   "ipaddress_column": "10.0.1.4",
   "json_column": {
    "Id": 0,
@@ -46,6 +47,7 @@
   "epoch_column_milliseconds": "2020-08-22T00:56:18Z",
   "epoch_column_seconds": "2021-01-19T13:54:14Z",
   "id": 1,
+	"inet_column": "10.0.0.1",
   "ipaddress_column": "10.0.0.1",
   "json_column": {
    "Id": 1,
@@ -77,6 +79,7 @@
   "epoch_column_milliseconds": "2015-05-20T10:19:58Z",
   "epoch_column_seconds": "2020-04-04T08:59:23Z",
   "id": 2,
+	"inet_column": "10.0.2.2",
   "ipaddress_column": "10.0.2.2",
   "json_column": {
    "Id": 2,
@@ -108,6 +111,7 @@
   "epoch_column_milliseconds": "2023-11-13T04:53:13Z",
   "epoch_column_seconds": "2021-02-01T02:10:54Z",
   "id": 3,
+	"inet_column": "10.0.1.1",
   "ipaddress_column": "10.0.1.1",
   "json_column": {
    "Id": 3,
@@ -139,6 +143,7 @@
   "epoch_column_milliseconds": "2021-01-25T18:33:13Z",
   "epoch_column_seconds": "2019-07-03T09:17:34Z",
   "id": 4,
+	"inet_column": "10.0.0.0/24",
   "ipaddress_column": "10.0.0.4",
   "json_column": {
    "Id": 4,
