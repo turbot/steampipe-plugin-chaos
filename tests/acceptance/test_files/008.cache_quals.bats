@@ -12,6 +12,8 @@ teardown() {
 
 ##### INT #####
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col < 2) is 
+# a subset of the result of the first query quals(int_col < 3), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '<'; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -28,6 +30,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col < 4) is 
+# NOT a subset of the result of the first query quals(int_col < 3), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '<'; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -49,6 +53,8 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col <= 3) is 
+# a subset of the result of the first query quals(int_col < 4), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '<='; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 4 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -65,6 +71,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col <= 7) is 
+# NOT a subset of the result of the first query quals(int_col < 5), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '<='; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 5 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -86,6 +94,8 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col > 6) is 
+# a subset of the result of the first query quals(int_col > 6), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '>'; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -102,6 +112,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col > 5) is 
+# NOT a subset of the result of the first query quals(int_col > 6), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '>'; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -123,6 +135,8 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col >= 7) is 
+# a subset of the result of the first query quals(int_col > 6), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '>='; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -139,6 +153,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col >= 6) is 
+# NOT a subset of the result of the first query quals(int_col > 6), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '>='; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -160,6 +176,8 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 5) is 
+# a subset of the result of the first query quals(int_col < 6), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '='; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -176,6 +194,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 6) is 
+# NOT a subset of the result of the first query quals(int_col < 6), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '='; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -197,6 +217,8 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 5) is 
+# a subset of the result of the first query quals(int_col <= 6), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<='; operator2: '='; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -213,6 +235,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 7) is 
+# NOT a subset of the result of the first query quals(int_col <= 6), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<='; operator2: '='; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -234,6 +258,8 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 7) is 
+# a subset of the result of the first query quals(int_col > 6), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '='; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -250,6 +276,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 6) is 
+# NOT a subset of the result of the first query quals(int_col > 6), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '='; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -271,6 +299,8 @@ teardown() {
   assert_equal "$flag" "0"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 6) is 
+# a subset of the result of the first query quals(int_col >= 6), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>='; operator2: '='; cache hit)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -287,6 +317,8 @@ teardown() {
   assert_equal "$new_content" "$content"
 }
 
+# Test the cache functionality while using int quals. The result of the second query quals(int_col = 5) is 
+# NOT a subset of the result of the first query quals(int_col >= 6), hence CACHE MISS.
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>='; operator2: '='; cache miss)" {
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
@@ -310,6 +342,8 @@ teardown() {
 
 ##### TIME #####
 
+# Test the cache functionality while using time quals. The result of the second query quals(time_col >= '2021-05-05 00:00:00 +0000 UTC') is 
+# a subset of the result of the first query quals(time_col = '2021-05-05 00:00:00 +0000 UTC'), hence CACHE HIT.
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>='; operator2: '='; cache hit)[DISABLED]" {
   skip
   steampipe query "select time_col, a, b, unique_col from chaos_cache_check where time_col >= '2021-05-05 00:00:00 +0000 UTC' order by id" --output json &> output1.json
