@@ -2,14 +2,13 @@ package chaos
 
 import (
 	"context"
-	"errors"
 	"fmt"
 	"log"
 	"os"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
 )
 
 type FailType string
@@ -91,41 +90,49 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 
 		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 
+		var item map[string]interface{}
+		item = populateItem(0, d.Table)
+
 		for i := 0; i < buildConfig.rowCount; i++ {
-			time.Sleep(50 * time.Millisecond)
-			// listErrorRows is the number of rows to return successfully before raising an error
-			// if we stream that many rows, let's raise an error
-			if i == buildConfig.listRowsBeforeError {
-				switch buildConfig.listError {
-				case RetryableError:
-					// failureCount is the number of times the error occurs before we succeed
-					if listTableErrorCount < buildConfig.failureCount {
-						log.Printf("[TRACE] return retriable error")
-						listTableErrorCount++
-						return nil, errors.New(RetryableError)
-					}
+			//listErrorRows is the number of rows to return successfully before raising an error
+			//if we stream that many rows, let's raise an error
+			//if i == buildConfig.listRowsBeforeError {
+			//	switch buildConfig.listError {
+			//	case RetryableError:
+			//		// failureCount is the number of times the error occurs before we succeed
+			//		if listTableErrorCount < buildConfig.failureCount {
+			//			log.Printf("[TRACE] return retriable error")
+			//			listTableErrorCount++
+			//			return nil, errors.New(RetryableError)
+			//		}
+			//
+			//		// if we have failed 'failureCount' times, reset listTableErrorCount and fall through to return item
+			//		log.Printf("[TRACE] retry worked - no error")
+			//		listTableErrorCount = 0
+			//	case IgnorableError:
+			//		log.Printf("[TRACE] return ignorable error")
+			//		return nil, errors.New(IgnorableError)
+			//	case FailError:
+			//		log.Printf("[TRACE] return fatal  error")
+			//		return nil, errors.New(FatalError)
+			//	case FailPanic:
+			//		panic(FailPanic)
+			//
+			//	}
+			//
+			//}
+			//item = populateItem(i, d.Table)
 
-					// if we have failed 'failureCount' times, reset listTableErrorCount and fall through to return item
-					log.Printf("[TRACE] retry worked - no error")
-					listTableErrorCount = 0
-				case IgnorableError:
-					log.Printf("[TRACE] return ignorable error")
-					return nil, errors.New(IgnorableError)
-				case FailError:
-					log.Printf("[TRACE] return fatal  error")
-					return nil, errors.New(FatalError)
-				case FailPanic:
-					panic(FailPanic)
-
-				}
-
-			}
-			item := populateItem(i, d.Table)
-			log.Printf("[TRACE] stream item %d", i)
-			d.StreamListItem(ctx, item)
+			//if d.QueryStatus.StreamingComplete {
+			//	//break
+			//	item = nil
+			//}
+			d.StreamLeafListItem(ctx, item)
 		}
 
-		log.Printf("[TRACE] END  STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
+		log.Printf("[WARN] END STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
+		time.Sleep(10 * time.Second)
+		log.Printf("[WARN] END STREAMING. RET")
 		return nil, nil
 	}
 }
