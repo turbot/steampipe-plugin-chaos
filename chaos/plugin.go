@@ -27,8 +27,8 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			ShouldIgnoreErrorFunc: shouldIgnoreError,
 		},
 		TableMap: map[string]*plugin.Table{
-			"chaos_very_high_row_count":                                    buildTable(&chaosTable{name: "chaos_very_high_row_count", description: "Chaos table to test steampipe with very high row count", listBuildConfig: &listBuildConfig{rowCount: 1000000}}),
-			"chaos_high_row_count":                                         buildTable(&chaosTable{name: "chaos_high_row_count", description: "Chaos table to test steampipe with high row count", listBuildConfig: &listBuildConfig{rowCount: 5000}}),
+			"chaos_very_high_row_count":                                    buildTable(&chaosTable{name: "chaos_very_high_row_count", description: "Chaos table to test steampipe with very high row count", listBuildConfig: &listBuildConfig{rowCount: 1000000}, cache: &plugin.TableCacheOptions{Enabled: true}}),
+			"chaos_high_row_count":                                         buildTable(&chaosTable{name: "chaos_high_row_count", description: "Chaos table to test steampipe with high row count", listBuildConfig: &listBuildConfig{rowCount: 5000}, cache: &plugin.TableCacheOptions{Enabled: true}}),
 			"chaos_high_column_count":                                      buildTable(&chaosTable{name: "chaos_high_column_count", description: "Chaos table to test steampipe with high column count", listBuildConfig: &listBuildConfig{columnCount: 100}}),
 			"chaos_list_errors":                                            chaosListTable(),                                       // test the List calls with all the possible scenarios like errors, panics and delays
 			"chaos_list_parent_child":                                      chaosListParentChildTable(),                            // test the List calls having parent-child dependencies with all the possible scenarios like errors, panics and delays at both parent and child levels

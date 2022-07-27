@@ -30,9 +30,9 @@ type chaosTable struct {
 	name                 string
 	description          string
 	columnCount          int
+	cache                *plugin.TableCacheOptions
 }
 
-const columnPrefix = "column_"
 const defaultColumnCount = 10
 const defaultRowCount = 10
 const delayValue = 5 * time.Second
@@ -43,12 +43,19 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 		Description: tableDef.description,
 		List: &plugin.ListConfig{
 			Hydrate: buildListHydrate(tableDef.listBuildConfig),
+			//KeyColumns: []*plugin.KeyColumn{
+			//	{
+			//		Name:    "id",
+			//		Require: plugin.Optional,
+			//	},
+			//},
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.SingleColumn("id"),
 			Hydrate:    buildGetHydrate(tableDef.getBuildConfig),
 		},
 		Columns: buildColumns(tableDef),
+		Cache:   tableDef.cache,
 	}
 
 }
@@ -90,10 +97,18 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 
 		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 
-		var item map[string]interface{}
-		item = populateItem(0, d.Table)
+		//var item map[string]interface{}
+		//item = populateItem(0, d.Table)
 
+		//for i := 0; i < 50000; i++ {
+		//	if i%10000 == 0 {
+		//		log.Printf("[WARN] st")
+		//		runtime.GC()
+		//	}
+		//	d.FOO(ctx, populateItem(0, d.Table))
+		//}
 		for i := 0; i < buildConfig.rowCount; i++ {
+			//time.Sleep(1 * time.Millisecond)
 			//listErrorRows is the number of rows to return successfully before raising an error
 			//if we stream that many rows, let's raise an error
 			//if i == buildConfig.listRowsBeforeError {
@@ -121,18 +136,25 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 			//	}
 			//
 			//}
-			//item = populateItem(i, d.Table)
+			item := populateItem(i, d.Table)
 
-			//if d.QueryStatus.StreamingComplete {
-			//	//break
-			//	item = nil
+			if d.QueryStatus.StreamingComplete {
+				//break
+				item = nil
+			}
+
+			//if i%1000 == 0 {
+			//	log.Printf("[WARN] streamed 1000")
 			//}
 			d.StreamLeafListItem(ctx, item)
 		}
 
 		log.Printf("[WARN] END STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
-		time.Sleep(10 * time.Second)
+
+		//time.Sleep(10 * time.Second)
 		log.Printf("[WARN] END STREAMING. RET")
+
+		//runtime.GC()
 		return nil, nil
 	}
 }
