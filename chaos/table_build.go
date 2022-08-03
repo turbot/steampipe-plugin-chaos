@@ -44,12 +44,6 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 		Description: tableDef.description,
 		List: &plugin.ListConfig{
 			Hydrate: buildListHydrate(tableDef.listBuildConfig),
-			//KeyColumns: []*plugin.KeyColumn{
-			//	{
-			//		Name:    "id",
-			//		Require: plugin.Optional,
-			//	},
-			//},
 		},
 		Get: &plugin.GetConfig{
 			KeyColumns: plugin.SingleColumn("id"),
@@ -99,7 +93,6 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 
 		for i := 0; i < buildConfig.rowCount; i++ {
-			//time.Sleep(1 * time.Millisecond)
 			// listErrorRows is the number of rows to return successfully before raising an error
 			// if we stream that many rows, let's raise an error
 			if i == buildConfig.listRowsBeforeError {
@@ -128,7 +121,8 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 
 			}
 			item := populateItem(i, d.Table)
-			d.StreamLeafListItem(ctx, item)
+
+			d.StreamListItem(ctx, item)
 		}
 
 		log.Printf("[TRACE] END STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
