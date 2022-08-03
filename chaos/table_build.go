@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/v3/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v3/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
 )
 
 type FailType string
@@ -31,9 +31,9 @@ type chaosTable struct {
 	name                 string
 	description          string
 	columnCount          int
+	cache                *plugin.TableCacheOptions
 }
 
-const columnPrefix = "column_"
 const defaultColumnCount = 10
 const defaultRowCount = 10
 const delayValue = 5 * time.Second
@@ -50,6 +50,7 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 			Hydrate:    buildGetHydrate(tableDef.getBuildConfig),
 		},
 		Columns: buildColumns(tableDef),
+		Cache:   tableDef.cache,
 	}
 
 }
@@ -92,7 +93,6 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 
 		for i := 0; i < buildConfig.rowCount; i++ {
-			time.Sleep(50 * time.Millisecond)
 			// listErrorRows is the number of rows to return successfully before raising an error
 			// if we stream that many rows, let's raise an error
 			if i == buildConfig.listRowsBeforeError {
@@ -121,11 +121,11 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 
 			}
 			item := populateItem(i, d.Table)
-			log.Printf("[TRACE] stream item %d", i)
+
 			d.StreamListItem(ctx, item)
 		}
 
-		log.Printf("[TRACE] END  STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
+		log.Printf("[TRACE] END STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 		return nil, nil
 	}
 }
