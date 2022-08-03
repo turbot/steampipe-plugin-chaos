@@ -39,6 +39,7 @@ jobs:
         run: |
           steampipe --version
           steampipe plugin install chaos
+          go mod download
           make
           steampipe plugin list    
 
