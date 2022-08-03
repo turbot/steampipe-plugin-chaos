@@ -1,6 +1,6 @@
 # Table: chaos_list_key_columns_any_multiple_operator
 
-Chaos table to test a list function supporting columns(which supports only multiple operators).
+Chaos table to test a list function supporting optional key columns(which supports only multiple operators).
 
 
 ## Examples
