@@ -2,6 +2,7 @@
 
 Chaos table to test a list function supporting optional key columns(which supports only multiple operators).
 
+NOTE: The columns defined as optional key columns must be used as quals in the query.
 
 ## Examples
 
