@@ -116,13 +116,12 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 					return nil, errors.New(FatalError)
 				case FailPanic:
 					panic(FailPanic)
-
 				}
 
 			}
 			item := populateItem(i, d.Table)
-
 			d.StreamListItem(ctx, item)
+
 		}
 
 		log.Printf("[TRACE] END STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
