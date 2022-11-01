@@ -3,7 +3,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "test fatal_error in hydrate call" {
   run steampipe query "select fatal_error from chaos.chaos_hydrate_errors"
-  assert_failure
+  assert_output --partial 'Error: fatalError'
 }
 
 @test "test retryable_error in hydrate call" {
@@ -24,6 +24,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "test panic in hydrate call" {
   run steampipe query --output json "select panic from chaos.chaos_hydrate_errors"
-  assert_failure
+  assert_output --partial 'failed with panic'
   run steampipe service stop --force
 }
