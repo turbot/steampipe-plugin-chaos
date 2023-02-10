@@ -36,7 +36,14 @@ echo " ___) | || (_| | |  | |_| | | | | (_| |   | |  __/\__ \ |_\__ \\"
 echo "|____/ \__\__,_|_|   \__|_|_| |_|\__, |   |_|\___||___/\__|___/"
 echo "                                 |___/                         "
 
-$BATS_PATH --tap $MY_PATH/test_files
+# $BATS_PATH --tap $MY_PATH/test_files
+
+if [ $# -eq 0 ]; then
+  # Run all test files
+  $BATS_PATH --tap $MY_PATH/test_files
+else
+  $BATS_PATH --tap $MY_PATH/test_files/${1}
+fi
 
 # Setting the exit_code, to use in the github workflow(This only gets set to 0 when the above bats test suite passes)
 echo "::set-output name=exit_code::$(echo $?)"
