@@ -33,10 +33,10 @@ func cacheDelayQualsTable() *plugin.Table {
 
 		Columns: []*plugin.Column{
 			{Name: "unique_col", Type: proto.ColumnType_INT, Hydrate: listUnique},
-			{Name: "a", Type: proto.ColumnType_STRING, Hydrate: colAHydrate},
-			{Name: "b", Type: proto.ColumnType_STRING, Hydrate: colBHydrate},
-			{Name: "c", Type: proto.ColumnType_STRING, Hydrate: colCHydrate},
-			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: colDHydrate},
+			{Name: "a", Type: proto.ColumnType_STRING, Hydrate: aHydrate},
+			{Name: "b", Type: proto.ColumnType_STRING, Hydrate: bHydrate},
+			{Name: "c", Type: proto.ColumnType_STRING, Hydrate: cHydrate},
+			{Name: "d", Type: proto.ColumnType_STRING, Hydrate: dHydrate},
 			{Name: "delay", Type: proto.ColumnType_INT, Transform: transform.FromQual("delay"), Default: 0},
 		},
 	}
