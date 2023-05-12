@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
 type parentData struct {
@@ -47,7 +47,7 @@ func listChildHydrateTable(ctx context.Context, d *plugin.QueryData, h *plugin.H
 }
 
 func getTable(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	id := d.KeyColumnQuals["id"].GetInt64Value()
+	id := d.EqualsQuals["id"].GetInt64Value()
 
 	item := map[string]interface{}{"id": id, "child_column": fmt.Sprintf("child_column-get-%v", id)}
 	d.StreamListItem(ctx, item)

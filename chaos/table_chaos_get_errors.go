@@ -6,8 +6,8 @@ import (
 	"time"
 
 	"github.com/turbot/go-kit/helpers"
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
 const getErrorsRowCount = 100
@@ -80,10 +80,10 @@ func chaosGetHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	return nil, nil
 }
 
-/// get the 'Get' hydrate function ///
+// / get the 'Get' hydrate function ///
 func buildGetHydrate(buildConfig *getBuildConfig) plugin.HydrateFunc {
 	return func(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-		id := d.KeyColumnQuals["id"].GetInt64Value()
+		id := d.EqualsQuals["id"].GetInt64Value()
 		if buildConfig.getDelay {
 			time.Sleep(delayValue)
 		}

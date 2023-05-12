@@ -5,9 +5,9 @@ import (
 	"errors"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 type transformBuildConfig struct {
@@ -40,7 +40,7 @@ func listTransformErrors(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 	return nil, nil
 }
 
-//// Transform functions ////
+// // Transform functions ////
 func buildTransform(tableDef *transformBuildConfig) transform.TransformFunc {
 	return func(_ context.Context, d *transform.TransformData) (interface{}, error) {
 		if tableDef.transformError == FailError {

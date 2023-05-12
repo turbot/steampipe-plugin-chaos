@@ -4,7 +4,7 @@ import (
 	"context"
 	"log"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
 const retriableErrorString = "retriableError"

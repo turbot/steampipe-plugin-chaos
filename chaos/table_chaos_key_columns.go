@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
 type keyColumnType string
@@ -66,11 +66,11 @@ func buildGetUsingKeyColumns() plugin.HydrateFunc {
 }
 func getItemFromKeyColumns(d *plugin.QueryData) map[string]interface{} {
 	item := map[string]interface{}{}
-	id, gotId := d.KeyColumnQuals["id"]
+	id, gotId := d.EqualsQuals["id"]
 	if gotId {
 		item = map[string]interface{}{"id": id.GetInt64Value()}
 	}
-	columnA, gotColumnA := d.KeyColumnQuals["column_a"]
+	columnA, gotColumnA := d.EqualsQuals["column_a"]
 	if gotColumnA {
 		item["column_a"] = columnA.GetStringValue()
 	}
