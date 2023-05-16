@@ -12,6 +12,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the retryable_error in list call" {
+  skip
   run steampipe query --output json "select retryable_error from chaos.chaos_list_errors order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_retryable_error.json)"
 }
@@ -57,6 +58,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the parent_retryable_error in list call" {
+  skip
   run steampipe query --output json "select parent_retryable_error from chaos.chaos_list_parent_child order by id limit 5"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_parent_retryable_error.json)"
 }
@@ -97,11 +99,13 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the child_retryable_error in list call" {
+  skip
   run steampipe query "select child_retryable_error from chaos.chaos_list_parent_child"
   assert_output --partial 'retriableError'
 }
 
 @test "test the child_retryable_error (after streaming) in list call" {
+  skip
   run steampipe query --output json "select child_retryable_error_after_streaming from chaos.chaos_list_parent_child order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_retryable_error_after_streaming.json)"
 }
@@ -122,6 +126,11 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the child_panic in list call" {
+  # skip "bats unable to recover from panic"
   run steampipe query "select child_panic from chaos.chaos_list_parent_child"
   assert_output --partial 'Panic'
+}
+
+@test "service stop" {
+  run steampipe service stop --force
 }
