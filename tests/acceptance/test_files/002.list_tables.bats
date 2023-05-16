@@ -1,7 +1,7 @@
 load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
-@test "test the fatal_error in list call" {
+@test "test the fatal_error in list call 1" {
   run steampipe query "select fatal_error from chaos.chaos_list_errors"
   assert_output --partial 'fatalError'
 }
