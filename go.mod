@@ -2,7 +2,7 @@ module github.com/turbot/steampipe-plugin-chaos
 
 go 1.19
 
-replace github.com/turbot/steampipe-plugin-sdk/v5 => /Users/pskrbasu/turbot-delivery/Steampipe/steampipe-plugin-sdk
+// replace github.com/turbot/steampipe-plugin-sdk/v5 => /Users/pskrbasu/turbot-delivery/Steampipe/steampipe-plugin-sdk
 
 require (
 	github.com/turbot/go-kit v0.5.0
