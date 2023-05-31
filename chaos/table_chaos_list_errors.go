@@ -28,6 +28,8 @@ func chaosListTable() *plugin.Table {
 			Hydrate:           chaosListHydrate,
 			ShouldIgnoreError: shouldIgnoreErrorLegacy,
 			RetryConfig: &plugin.RetryConfig{
+				MaxAttempts:      2,
+				MaxDuration:      5000,
 				ShouldRetryError: shouldRetryErrorLegacy,
 			},
 		},
