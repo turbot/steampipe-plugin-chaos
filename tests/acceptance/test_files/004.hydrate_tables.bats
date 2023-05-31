@@ -7,7 +7,6 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test retryable_error in hydrate call" {
-  skip
   export STEAMPIPE_CACHE=FALSE
   run steampipe query "select retryable_error from chaos.chaos_hydrate_errors"
   assert_success
