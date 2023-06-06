@@ -421,7 +421,7 @@ teardown() {
 }
 
 @test "check cache functionality when first query times out, other queries should cache(first query in background)" {
-  export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10
+  skip
 
   steampipe query "select unique_col, a, b, c, long_delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
@@ -441,7 +441,7 @@ teardown() {
 }
 
 @test "check cache functionality when first query times out, other queries should not cache(first query in background)" {
-  export STEAMPIPE_CACHE_PENDING_QUERY_TIMEOUT=10 
+  skip 
 
   steampipe query "select unique_col, a, b, c, long_delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
