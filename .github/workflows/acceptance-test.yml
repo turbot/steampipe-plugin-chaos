@@ -6,9 +6,22 @@ env:
   STEAMPIPE_UPDATE_CHECK: false
 
 jobs:
-  goreleaser:
-    name: Build
+  build_and_test:
+    name: Test
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        test_block:
+          - "001.query"
+          - "002.list_tables"
+          - "003.get_tables"
+          - "004.hydrate_tables"
+          - "005.transform_tables"
+          - "006.limit"
+          - "007.cache"
+          - "008.cache_pending_transfers"
+          - "009.cache_quals"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -54,7 +67,7 @@ jobs:
         timeout-minutes: 15
         run: |
           chmod +x $GITHUB_WORKSPACE/tests/acceptance/run.sh
-          $GITHUB_WORKSPACE/tests/acceptance/run.sh
+          $GITHUB_WORKSPACE/tests/acceptance/run.sh ${{ matrix.test_block }}.bats
           steampipe service stop --force
 
       - name: Save Test Suite Logs
@@ -82,7 +95,7 @@ jobs:
     # refer:
     #   https://docs.github.com/en/actions/configuring-and-managing-workflows/persisting-workflow-data-using-artifacts#downloading-and-deleting-artifacts-after-a-workflow-run-is-complete
     name: Clean Up Artifacts
-    needs: goreleaser
+    needs: build_and_test
     runs-on: ubuntu-latest
     steps:
       - name: Clean up test suite logs
