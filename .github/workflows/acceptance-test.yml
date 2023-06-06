@@ -1,4 +1,4 @@
-name: Steampipe plugin Chaos acceptance tests
+name: Chaos acceptance tests
 on:
   pull_request:
 
