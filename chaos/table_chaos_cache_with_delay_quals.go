@@ -5,9 +5,9 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 func cacheDelayQualsTable() *plugin.Table {
@@ -45,8 +45,8 @@ func cacheDelayQualsTable() *plugin.Table {
 func listUnique(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	val := rand.Intn(5000)
 	item := map[string]interface{}{"UniqueCol": val}
-	if d.KeyColumnQuals["delay"] != nil {
-		time.Sleep(time.Duration(d.KeyColumnQuals["delay"].GetInt64Value() * int64(time.Second)))
+	if d.EqualsQuals["delay"] != nil {
+		time.Sleep(time.Duration(d.EqualsQuals["delay"].GetInt64Value() * int64(time.Second)))
 	}
 	d.StreamListItem(ctx, item)
 	return nil, nil
