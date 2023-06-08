@@ -122,6 +122,11 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the child_panic in list call" {
+  # skip "bats unable to recover from panic"
   run steampipe query "select child_panic from chaos.chaos_list_parent_child"
   assert_output --partial 'Panic'
+}
+
+@test "service stop" {
+  run steampipe service stop --force
 }

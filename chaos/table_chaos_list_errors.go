@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/turbot/go-kit/helpers"
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
 type listBuildConfig struct {
@@ -28,6 +28,8 @@ func chaosListTable() *plugin.Table {
 			Hydrate:           chaosListHydrate,
 			ShouldIgnoreError: shouldIgnoreErrorLegacy,
 			RetryConfig: &plugin.RetryConfig{
+				MaxAttempts:      2,
+				MaxDuration:      5000,
 				ShouldRetryError: shouldRetryErrorLegacy,
 			},
 		},

@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 type ListStruct struct {
@@ -149,7 +149,7 @@ func transformFromFieldList(ctx context.Context, d *plugin.QueryData, h *plugin.
 }
 
 func transformFromFieldGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	i := d.KeyColumnQuals["id"].GetInt64Value()
+	i := d.EqualsQuals["id"].GetInt64Value()
 	columnA := fmt.Sprintf("column-%d", i)
 	columnOptional := fmt.Sprintf("optional-column-%d", i)
 	fromTagColumn := "from tag"

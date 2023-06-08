@@ -35,3 +35,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
   run steampipe query "select ignorable_error_default_config from chaos.chaos_get_errors_default_config where id=0"
   assert_success
 }
+
+@test "service stop" {
+  run steampipe service stop --force
+}

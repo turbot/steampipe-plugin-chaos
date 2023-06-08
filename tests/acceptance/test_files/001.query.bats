@@ -30,5 +30,3 @@ load "$LIB_BATS_SUPPORT/load.bash"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_columns.json)"
   run steampipe query "drop table all_columns"
 }
-
-

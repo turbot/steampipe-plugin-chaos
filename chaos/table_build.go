@@ -8,8 +8,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
 type FailType string
@@ -93,6 +93,7 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 		log.Printf("[TRACE] ABOUT TO START STREAMING. pid %d, cols %v", os.Getpid(), d.QueryContext.Columns)
 
 		for i := 0; i < buildConfig.rowCount; i++ {
+			log.Printf("[TRACE] loop: %d listRowsBeforeError: %d", i, buildConfig.listRowsBeforeError)
 			// listErrorRows is the number of rows to return successfully before raising an error
 			// if we stream that many rows, let's raise an error
 			if i == buildConfig.listRowsBeforeError {
@@ -102,6 +103,7 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 					if listTableErrorCount < buildConfig.failureCount {
 						log.Printf("[TRACE] return retriable error")
 						listTableErrorCount++
+						log.Printf("[TRACE] >>>>>> coming here %d", listTableErrorCount)
 						return nil, errors.New(RetryableError)
 					}
 
@@ -120,6 +122,7 @@ func buildListHydrate(buildConfig *listBuildConfig) plugin.HydrateFunc {
 				}
 
 			}
+			log.Printf("[TRACE] ?? here ??")
 			item := populateItem(i, d.Table)
 
 			d.StreamListItem(ctx, item)

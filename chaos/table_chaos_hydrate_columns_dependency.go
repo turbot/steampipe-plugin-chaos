@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/v4/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v4/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
 func hydrateColumnsDependencyTable() *plugin.Table {
@@ -45,8 +45,7 @@ func hydrateColumnsDependencyTable() *plugin.Table {
 }
 
 func hydrateInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	quals := d.KeyColumnQuals
-	item := quals["id"].GetInt64Value()
+	item := d.EqualsQuals["id"].GetInt64Value()
 	return item, nil
 }
 
