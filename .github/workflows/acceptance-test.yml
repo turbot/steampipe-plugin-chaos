@@ -18,7 +18,7 @@ jobs:
           - "003.get_tables"
           - "004.hydrate_tables"
           - "005.transform_tables"
-          - "006.limit"
+          - "006.limit_rows_remaining"
           - "007.cache"
           - "008.cache_pending_transfers"
           - "009.cache_quals"
