@@ -6,6 +6,7 @@ import (
 	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 type listBuildConfig struct {
@@ -32,6 +33,17 @@ func chaosListTable() *plugin.Table {
 				MaxDuration:      5000,
 				ShouldRetryError: shouldRetryErrorLegacy,
 			},
+			KeyColumns: []*plugin.KeyColumn{
+				{Name: "fatal_error", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "fatal_error_after_streaming", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "retryable_error", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "retryable_error_after_streaming", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "should_ignore_error", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "should_ignore_error_after_streaming", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "delay", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "panic", Operators: []string{"="}, Require: plugin.Optional},
+				{Name: "panic_after_streaming", Operators: []string{"="}, Require: plugin.Optional},
+			},
 		},
 		Columns: []*plugin.Column{
 			{Name: "id", Type: proto.ColumnType_INT, Description: "Column for the ID"},
@@ -41,7 +53,7 @@ func chaosListTable() *plugin.Table {
 			{Name: "retryable_error_after_streaming", Type: proto.ColumnType_BOOL, Description: "Column to test the List function with retry config in case of non fatal errors occured after streaming a few rows"},
 			{Name: "should_ignore_error", Type: proto.ColumnType_BOOL, Description: "Column to test the List function with Ignorable errors"},
 			{Name: "should_ignore_error_after_streaming", Type: proto.ColumnType_BOOL, Description: "Column to test the List function with Ignorable errors occuring after already streaming some rows"},
-			{Name: "delay", Type: proto.ColumnType_BOOL, Description: "Column to test delay in List function"},
+			{Name: "delay", Type: proto.ColumnType_INT, Description: "Column to test delay in List function", Transform: transform.FromQual("delay"), Default: 0},
 			{Name: "panic", Type: proto.ColumnType_BOOL, Description: "Column to test panicking List function"},
 			{Name: "panic_after_streaming", Type: proto.ColumnType_BOOL, Description: "Column to test panicking List function, where function panics after streaming a few rows"},
 		},
