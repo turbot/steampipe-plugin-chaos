@@ -51,7 +51,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"chaos_hydrate_should_ignore_config_legacy":                    hydrateShouldIgnoreConfigTableLegacy(),                 // test the Hydrate function with Should Ignore Error defined in the Hydrate config
 			"chaos_hydrate_should_ignore_config_with_table_default":        hydrateShouldIgnoreConfigTableWithTableDefault(),       // test the Hydrate function with Should Ignore Error defined in the Hydrate config
 			"chaos_hydrate_should_ignore_config":                           hydrateShouldIgnoreConfigTable(),                       // test the Hydrate function with Should Ignore Error defined in the Hydrate config
-			"chaos_limit":                                                  chaosLimitTable(),                                      // test the limit functionality
+			"chaos_limit_verify_rows_remaining":                            chaosLimitVerifyRowsRemainingTable(),                   // test the limit with the SDK rows remianing functionality
 			"chaos_list_paging":                                            listPagingTable(),                                      // test the list function supporting pagination fails to send results after some pages with a non fatal error
 			"chaos_list_single_key_columns":                                KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_single_key_columns", description: "Chaos table to test the list call with single key column", listKeyColumnSetType: "single"}),
 			"chaos_list_all_key_columns":                                   KeyColumnTableBuilder(&keyColumnTableDefinitions{name: "chaos_list_all_key_columns", description: "Chaos table to test the list call with all key columns", listKeyColumnSetType: "all"}),

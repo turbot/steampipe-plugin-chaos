@@ -2,52 +2,45 @@ package chaos
 
 import (
 	"context"
-	"time"
+	"log"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
-func chaosLimitTable() *plugin.Table {
+func chaosLimitVerifyRowsRemainingTable() *plugin.Table {
 	return &plugin.Table{
-		Name:        "chaos_limit",
-		Description: "Chaos table to check the limit functionality.",
+		Name:        "chaos_limit_verify_rows_remaining",
+		Description: "Chaos table to check the SDK rows remaining functionality when a limit is passed to a query.",
 		List: &plugin.ListConfig{
-			Hydrate: listLimits,
-			KeyColumns: []*plugin.KeyColumn{
-				{
-					Name:      "c1",
-					Require:   plugin.Optional,
-					Operators: []string{"="},
-				},
-				{
-					Name:      "c2",
-					Require:   plugin.Optional,
-					Operators: []string{"<="},
-				},
-				{
-					Name:      "c3",
-					Require:   plugin.Optional,
-					Operators: []string{">="},
-				},
-			},
+			Hydrate:    listRowsRemaining,
+			KeyColumns: commonQuals(),
 		},
 
-		Columns: []*plugin.Column{
-			{Name: "c1", Type: proto.ColumnType_INT},
-			{Name: "c2", Type: proto.ColumnType_INT},
-			{Name: "c3", Type: proto.ColumnType_INT},
-			{Name: "c4", Type: proto.ColumnType_TIMESTAMP},
-			{Name: "c5", Type: proto.ColumnType_STRING},
-			{Name: "c6", Type: proto.ColumnType_INT},
-			{Name: "limit_value", Type: proto.ColumnType_INT},
-		},
+		Columns: commonColumns(
+			&plugin.Column{Name: "rows_streamed", Type: proto.ColumnType_INT, Description: "Column that returns the number of row streamed."},
+			&plugin.Column{Name: "sdk_rows_remaining", Type: proto.ColumnType_INT, Description: "Column that returns the number of rows remaining to be streamed."},
+			&plugin.Column{Name: "limit_value", Type: proto.ColumnType_INT, Description: "Column that returns the limit value which is passed in the query."},
+		),
 	}
 }
 
-func listLimits(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < 5; i++ {
-		item := map[string]interface{}{"c1": i, "c2": i + 1, "c3": i + 2, "c4": time.Now(), "c5": "num", "c6": i + 5, "limit_value": d.QueryContext.Limit}
+func listRowsRemaining(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+	total_row_count := int(d.EqualsQuals["total_row_count"].GetInt64Value())
+	limit := d.QueryContext.Limit
+	rows := DefaultTotalRowCount
+	if total_row_count != 0 {
+		rows = int(total_row_count)
+	}
+	log.Printf("[INFO] row_count=%d", rows)
+	log.Printf("[INFO] limit=%d", limit)
+
+	for i := 0; i < rows; i++ {
+		item := map[string]interface{}{
+			"rows_streamed":      i,
+			"sdk_rows_remaining": d.RowsRemaining(ctx),
+			"limit_value":        limit,
+		}
 		d.StreamListItem(ctx, item)
 	}
 	return nil, nil
