@@ -26,11 +26,10 @@ func chaosLimitVerifyRowsRemainingTable() *plugin.Table {
 }
 
 func listRowsRemaining(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	total_row_count := int(d.EqualsQuals["total_row_count"].GetInt64Value())
 	limit := d.QueryContext.Limit
 	rows := DefaultTotalRowCount
-	if total_row_count != 0 {
-		rows = int(total_row_count)
+	if int(d.EqualsQuals["row_count"].GetInt64Value()) != 0 {
+		rows = int(d.EqualsQuals["row_count"].GetInt64Value())
 	}
 	log.Printf("[INFO] row_count=%d", rows)
 	log.Printf("[INFO] limit=%d", limit)

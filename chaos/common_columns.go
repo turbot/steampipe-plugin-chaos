@@ -12,23 +12,25 @@ import (
 
 const DefaultTotalRowCount = 50
 
+// list of common key column quals that can be used with all chaos tables
 func commonQuals(key ...*plugin.KeyColumn) []*plugin.KeyColumn {
 	return append(key, []*plugin.KeyColumn{
 		{
-			Name:      "total_row_count",
+			Name:      "row_count",
 			Require:   plugin.Optional,
 			Operators: []string{"="},
 		},
 	}...)
 }
 
+// list of common columns that can be used with all chaos tables
 func commonColumns(key ...*plugin.Column) []*plugin.Column {
 	return append(key, []*plugin.Column{
 		{
-			Name:        "total_row_count",
+			Name:        "row_count",
 			Type:        proto.ColumnType_INT,
-			Description: "Column that returns the total number of rows. This is an optional key column. Set this to a desired number to get a specific number of rows. Default is 50.",
-			Transform:   transform.FromQual("total_row_count"),
+			Description: "Total number of rows returned. This is an optional key column. Pass this as a qual to set the number of rows returned. Default is 50.",
+			Transform:   transform.FromQual("row_count"),
 		}}...)
 }
 
