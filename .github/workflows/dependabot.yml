@@ -1,0 +1,9 @@
+name: Dependabot alerts
+on:
+  schedule:
+    interval: "daily"
+  workflow_dispatch:
+
+jobs:
+  dependabot:
+    uses: turbot/steampipe-workflows/.github/workflows/dependabot.yml@main
