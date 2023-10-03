@@ -5,7 +5,7 @@ go 1.21
 // replace github.com/turbot/steampipe-plugin-sdk/v5 => /Users/pskrbasu/turbot-delivery/Steampipe/steampipe-plugin-sdk
 
 require (
-	github.com/turbot/go-kit v0.8.0-rc.0
+	github.com/turbot/go-kit v0.9.0-rc.0
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2
 )
 
