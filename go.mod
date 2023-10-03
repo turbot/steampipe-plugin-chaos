@@ -6,7 +6,7 @@ go 1.21
 
 require (
 	github.com/turbot/go-kit v0.8.0-rc.0
-	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2-0.20231003112301-8a3e20761d79
+	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2
 )
 
 require (
