@@ -5,7 +5,7 @@ go 1.21
 // replace github.com/turbot/steampipe-plugin-sdk/v5 => /Users/pskrbasu/turbot-delivery/Steampipe/steampipe-plugin-sdk
 
 require (
-	github.com/turbot/go-kit v0.8.0-rc.0
+	github.com/turbot/go-kit v0.9.0-rc.3
 	github.com/turbot/steampipe-plugin-sdk/v5 v5.6.2
 )
 
@@ -33,7 +33,7 @@ require (
 	github.com/dustin/go-humanize v1.0.0 // indirect
 	github.com/eko/gocache/v3 v3.1.2 // indirect
 	github.com/fatih/color v1.15.0 // indirect
-	github.com/fsnotify/fsnotify v1.6.0 // indirect
+	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/gertd/go-pluralize v0.2.1 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-logr/logr v1.2.4 // indirect
