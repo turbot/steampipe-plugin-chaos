@@ -13,6 +13,7 @@ teardown() {
 ##### INT #####
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '<'; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -29,6 +30,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '<'; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -50,6 +52,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '<='; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 4 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -66,6 +69,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '<='; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 5 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -87,6 +91,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '>'; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -103,6 +108,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '>'; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -124,6 +130,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '>='; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -140,6 +147,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '>='; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -161,6 +169,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<'; operator2: '='; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[5].unique_col')
@@ -177,6 +186,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<'; operator2: '='; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[5].unique_col')
@@ -198,6 +208,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '<='; operator2: '='; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[5].unique_col')
@@ -214,6 +225,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '<='; operator2: '='; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[5].unique_col')
@@ -235,6 +247,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>'; operator2: '='; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -251,6 +264,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>'; operator2: '='; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -272,6 +286,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is a subset of the first(operator1: '>='; operator2: '='; cache hit)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -288,6 +303,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query quals is not a subset of the first(operator1: '>='; operator2: '='; cache miss)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')

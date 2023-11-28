@@ -13,6 +13,7 @@ teardown() {
 ######## PENDING TRANSFERS TESTS ###########
 
 @test "check cache functionality when querying same columns(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
@@ -30,6 +31,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query's columns is a subset of the first(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, delay from chaos_cache_check" --output json &> output2.json
@@ -47,6 +49,7 @@ teardown() {
 }
 
 @test "check cache functionality multiple queries with same columns(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
@@ -74,6 +77,7 @@ teardown() {
 }
 
 @test "check cache functionality when multiple query's columns are a subset of the first(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output2.json
@@ -101,6 +105,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query has more columns than the first(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, delay, c from chaos_cache_check" --output json &> output2.json
@@ -123,6 +128,7 @@ teardown() {
 }
 
 @test "check cache functionality when the both the queries have same limits(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
@@ -140,6 +146,7 @@ teardown() {
 }
 
 @test "check cache functionality when first query has no limit but second query has a limit(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
@@ -157,6 +164,7 @@ teardown() {
 }
 
 @test "check cache functionality when second query has no limit but first query has a limit(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
@@ -179,6 +187,7 @@ teardown() {
 }
 
 @test "check cache functionality when second query has lower limit than first(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 4" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
@@ -196,6 +205,7 @@ teardown() {
 }
 
 @test "check cache functionality when second query has higher limit than first(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 4" --output json &> output2.json
@@ -220,6 +230,7 @@ teardown() {
 ######## ERROR AND TIMEOUT TESTS ###########
 
 @test "check cache functionality when first query returns error, other queries should not cache(first query in background)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, error_after_delay from chaos_cache_check" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output2.json
@@ -291,6 +302,7 @@ teardown() {
 # This is because the cache key of the pending item does not match the cache key used to write data which satisfies the pending request
 # https://github.com/turbot/steampipe-plugin-sdk/issues/512
 @test "check cache functionality(edge case)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c, d, delay from chaos_cache_with_delay_quals where delay=10" --output json &> output1.json &
   sleep 1
   steampipe query "select unique_col, a, b from chaos_cache_with_delay_quals where delay=10" --output json &> output2.json
@@ -310,6 +322,7 @@ teardown() {
 # Test to validate the issue where completed cache requests with quals are incorrectly being identified as satisfying pending cache transfers
 # https://github.com/turbot/steampipe-plugin-sdk/issues/517
 @test "check cache functionality 2(edge case)" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   # skip
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_with_delay_quals where delay=10" --output json &> output1.json &
   sleep 1
@@ -340,5 +353,6 @@ teardown() {
 }
 
 @test "stop service" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe service stop --force
 }

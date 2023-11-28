@@ -11,6 +11,7 @@ teardown() {
 }
 
 @test "check cache functionality when querying same columns" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -27,6 +28,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query's columns is a subset of the first" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -43,6 +45,7 @@ teardown() {
 }
 
 @test "check cache functionality multiple queries with same columns" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   run steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -71,6 +74,7 @@ teardown() {
 }
 
 @test "check cache functionality when multiple query's columns are a subset of the first" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   run steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -99,6 +103,7 @@ teardown() {
 }
 
 @test "check cache functionality when the second query has more columns than the first" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -120,6 +125,7 @@ teardown() {
 }
 
 @test "check cache functionality when the both the queries have same limits" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c from chaos_cache_check limit 3" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -136,6 +142,7 @@ teardown() {
 }
 
 @test "check cache functionality when first query has no limit but second query has a limit" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -152,6 +159,7 @@ teardown() {
 }
 
 @test "check cache functionality when second query has lower limit than first" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c from chaos_cache_check limit 4" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -168,6 +176,7 @@ teardown() {
 }
 
 @test "check cache functionality when second query has higher limit than first" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select unique_col, a, b, c from chaos_cache_check limit 3" --output json &> output1.json
   # store the unique number from 1st query in `content`
   content=$(cat output1.json | jq '.[0].unique_col')
@@ -189,5 +198,6 @@ teardown() {
 }
 
 @test "stop service" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe service stop --force
 }

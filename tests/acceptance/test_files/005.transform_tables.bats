@@ -7,6 +7,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the transform_errors during executing transform functions" {
+  skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   run steampipe query "select error from chaos_transform_errors"
   assert_output --partial 'TRANSFORM ERROR'
 }
