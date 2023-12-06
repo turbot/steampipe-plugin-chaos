@@ -1,8 +1,5 @@
 [
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "array_element": {
    "Key": "stringValuesomething-0",
    "Value": "value"
@@ -34,9 +31,6 @@
   ]
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "array_element": {
    "Key": "stringValuesomething-1",
    "Value": "value"
@@ -68,9 +62,6 @@
   ]
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "array_element": {
    "Key": "stringValuesomething-2",
    "Value": "value"
@@ -102,9 +93,6 @@
   ]
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "array_element": {
    "Key": "stringValuesomething-3",
    "Value": "value"
@@ -136,9 +124,6 @@
   ]
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "array_element": {
    "Key": "stringValuesomething-4",
    "Value": "value"
