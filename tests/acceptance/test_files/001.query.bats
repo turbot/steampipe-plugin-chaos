@@ -18,7 +18,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test all flavours of integer and float data types" {
-  run steampipe query --output json "select id,int_data,int8_data,int16_data,int32_data,int64_data,uint_data,uint8_data,uint16_data,uint32_data,uint64_data,float32_data from chaos.chaos_all_numeric_column order by id"
+  run steampipe query --output json "select id,int_data,int8_data,int16_data,int32_data,int64_data,uint_data,uint8_data,uint16_data,uint32_data,uint64_data,float32_data,float64_data from chaos.chaos_all_numeric_column order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_numeric_column.json)"
 }
 
