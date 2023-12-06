@@ -2,7 +2,7 @@ load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "test all columns of different types" {
-  run steampipe query --output json  "select id,string_column,boolean_column,date_time_column,double_column,ipaddress_column,json_column,cidr_column,long_string_column,  array_element,epoch_column_seconds,epoch_column_milliseconds,string_to_array_column,array_to_maps_column from chaos.chaos_all_column_types order by id limit 5"
+  run steampipe query --output json  "select id,string_column,boolean_column,date_time_column,double_column,ipaddress_column,json_column,cidr_column,long_string_column,array_element,epoch_column_seconds,epoch_column_milliseconds,string_to_array_column,array_to_maps_column,empty_hydrate from chaos.chaos_all_column_types order by id limit 5"
   # the expected output has been made considering Daylight Saving Time
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_column_types.json)"
 }
@@ -18,7 +18,7 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test all flavours of integer and float data types" {
-  run steampipe query --output json "select id,int_data,int8_data,int16_data, ,int32_data, ,int64_data, ,uint_data, ,uint8_data, ,uint16_data,uint32_data,uint64_data,float32_data from chaos.chaos_all_numeric_column order by id"
+  run steampipe query --output json "select id,int_data,int8_data,int16_data,int32_data,int64_data,uint_data,uint8_data,uint16_data,uint32_data,uint64_data,float32_data from chaos.chaos_all_numeric_column order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_numeric_column.json)"
 }
 
