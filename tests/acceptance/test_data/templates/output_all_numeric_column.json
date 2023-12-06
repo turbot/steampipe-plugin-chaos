@@ -1,8 +1,5 @@
 [
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 4.285714149475098,
   "float64_data": 2.5,
   "id": 30,
@@ -18,9 +15,6 @@
   "uint_data": 360
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 4.4285712242126465,
   "float64_data": 2.5833333333333335,
   "id": 31,
@@ -36,9 +30,6 @@
   "uint_data": 372
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 4.5714287757873535,
   "float64_data": 2.6666666666666665,
   "id": 32,
@@ -54,9 +45,6 @@
   "uint_data": 384
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 4.714285850524902,
   "float64_data": 2.75,
   "id": 33,
@@ -72,9 +60,6 @@
   "uint_data": 396
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 4.857142925262451,
   "float64_data": 2.8333333333333335,
   "id": 34,
@@ -90,9 +75,6 @@
   "uint_data": 408
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 5,
   "float64_data": 2.9166666666666665,
   "id": 35,
@@ -108,9 +90,6 @@
   "uint_data": 420
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 5.142857074737549,
   "float64_data": 3,
   "id": 36,
@@ -126,9 +105,6 @@
   "uint_data": 432
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 5.285714149475098,
   "float64_data": 3.0833333333333335,
   "id": 37,
@@ -144,9 +120,6 @@
   "uint_data": 444
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 5.4285712242126465,
   "float64_data": 3.1666666666666665,
   "id": 38,
@@ -162,9 +135,6 @@
   "uint_data": 456
  },
  {
-  "_ctx": {
-   "connection_name": "chaos"
-  },
   "float32_data": 5.5714287757873535,
   "float64_data": 3.25,
   "id": 39,

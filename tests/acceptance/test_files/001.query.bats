@@ -2,23 +2,23 @@ load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "test all columns of different types" {
-  run steampipe query --output json  "select id,string_column,boolean_column,date_time_column,double_column,ipaddress_column,json_column,cidr_column,long_string_column, array_element,epoch_column_seconds,epoch_column_milliseconds,string_to_array_column,array_to_maps_column,empty_hydrate from chaos.chaos_all_column_types order by id limit 5"
+  run steampipe query --output json  "select id,string_column,boolean_column,date_time_column,double_column,ipaddress_column,json_column,cidr_column,long_string_column,  array_element,epoch_column_seconds,epoch_column_milliseconds,string_to_array_column,array_to_maps_column from chaos.chaos_all_column_types order by id limit 5"
   # the expected output has been made considering Daylight Saving Time
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_column_types.json)"
 }
 
 @test "test dependencies between hydrate functions" {
-  run steampipe query --output json "select * from chaos.chaos_hydrate_columns_dependency order by id"
+  run steampipe query --output json "select id,hydrate_column_1,hydrate_column_2,hydrate_column_3,hydrate_column_4,hydrate_column_5 from chaos.chaos_hydrate_columns_dependency order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_hydrate_columns_dependency.json)"
 }
 
 @test "test the execution of multiple hydrate functions and transform functions asynchronously" {
-  run steampipe query --output json "select * from chaos.chaos_parallel_hydrate_columns order by id"
+  run steampipe query --output json "select id,column_1,column_2,column_3,column_4,column_5,column_6,column_7,column_8,column_9,column_10,column_11,column_12,column_13,column_14,column_15,column_16,column_17,column_18,column_19,column_20 from chaos.chaos_parallel_hydrate_columns order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_parallel_hydrate_columns.json)"
 }
 
 @test "test all flavours of integer and float data types" {
-  run steampipe query --output json "select * from chaos.chaos_all_numeric_column order by id"
+  run steampipe query --output json "select id,int_data,int8_data,int16_data, ,int32_data, ,int64_data, ,uint_data, ,uint8_data, ,uint16_data,uint32_data,uint64_data,float32_data from chaos.chaos_all_numeric_column order by id"
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_numeric_column.json)"
 }
 
