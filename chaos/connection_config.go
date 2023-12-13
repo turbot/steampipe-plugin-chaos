@@ -5,7 +5,7 @@ import (
 )
 
 type chaosConfig struct {
-	Regions []string `hcl:"regions"`
+	Regions []string `hcl:"regions,optional"`
 }
 
 func ConfigInstance() interface{} {
