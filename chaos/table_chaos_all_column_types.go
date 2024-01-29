@@ -119,6 +119,18 @@ func allColumnsTable() *plugin.Table {
 				Hydrate:   stringArrayToMapColumn,
 				Transform: transform.FromValue().Transform(transform.StringArrayToMap),
 			},
+			{
+				Name:      "inet_column",
+				Type:      proto.ColumnType_INET,
+				Hydrate:   inetColumnValue,
+				Transform: transform.FromValue(),
+			},
+			{
+				Name:      "ltree_column",
+				Type:      proto.ColumnType_LTREE,
+				Hydrate:   ltreeColumnValue,
+				Transform: transform.FromValue(),
+			},
 		},
 	}
 
@@ -238,4 +250,22 @@ func longStringColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.H
 
 	return item, nil
 
+}
+
+func inetColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	inet := []string{"10.0.1.4", "10.0.0.1", "10.0.2.2", "10.0.1.1", "10.0.0.0/24", "10.84.0.0/24", "172.31.0.0/16", "192.168.0.0/22"}
+	key := h.Item.(map[string]interface{})
+	id := key["id"].(int)
+	columnVal := inet[id%len(inet)]
+
+	return columnVal, nil
+}
+
+func ltreeColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	ltree := []string{"Top.Science.Astronomy", "Top.Science.Astronomy.Astrophysics", "Top.Science.Astronomy.Cosmology", "Top.Hobbies.Amateurs_Astronomy"}
+	key := h.Item.(map[string]interface{})
+	id := key["id"].(int)
+	columnVal := ltree[id%len(ltree)]
+
+	return columnVal, nil
 }

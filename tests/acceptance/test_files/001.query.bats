@@ -2,7 +2,7 @@ load "$LIB_BATS_ASSERT/load.bash"
 load "$LIB_BATS_SUPPORT/load.bash"
 
 @test "test all columns of different types" {
-  run steampipe query --output json  "select id,string_column,boolean_column,date_time_column,double_column,ipaddress_column,json_column,cidr_column,long_string_column,array_element,epoch_column_seconds,epoch_column_milliseconds,string_to_array_column,array_to_maps_column,empty_hydrate from chaos.chaos_all_column_types order by id limit 5"
+  run steampipe query --output json  "select id,inet_column,ltree_column,string_column,boolean_column,date_time_column,double_column,ipaddress_column,json_column,cidr_column,long_string_column,array_element,epoch_column_seconds,epoch_column_milliseconds,string_to_array_column,array_to_maps_column,empty_hydrate from chaos.chaos_all_column_types order by id limit 5"
   # the expected output has been made considering Daylight Saving Time
   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_all_column_types.json)"
 }
