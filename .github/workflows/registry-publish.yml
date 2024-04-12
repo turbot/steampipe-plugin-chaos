@@ -12,7 +12,7 @@ jobs:
     with:
       releaseTimeout: 60m
       
-  registry_publish_workflow-ghcr:
+  registry_publish_workflow_ghcr:
     uses: turbot/steampipe-workflows/.github/workflows/registry-publish-ghcr.yml@main
     secrets: inherit
     with:
