@@ -16,11 +16,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 2 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -33,11 +33,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 3 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 4 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -55,11 +55,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 4 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 3 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -72,11 +72,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 5 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 7 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -94,11 +94,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -111,11 +111,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 5 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -133,11 +133,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 7 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -150,11 +150,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 6 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -172,11 +172,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[5].unique_col')
+  content=$(cat output1.json | jq '.rows[5].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 5 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -189,11 +189,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col < 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[5].unique_col')
+  content=$(cat output1.json | jq '.rows[5].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 6 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -211,11 +211,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[5].unique_col')
+  content=$(cat output1.json | jq '.rows[5].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 5 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -228,11 +228,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col <= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[5].unique_col')
+  content=$(cat output1.json | jq '.rows[5].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 7 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -250,11 +250,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 7 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -267,11 +267,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col > 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 6 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -289,11 +289,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 6 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -306,11 +306,11 @@ teardown() {
   skip "TODO - verify behavior and re-enable - https://github.com/turbot/steampipe-plugin-sdk/issues/710"
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col >= 6 order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select int_col, a, b, unique_col from chaos_cache_check where int_col = 5 order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -330,11 +330,11 @@ teardown() {
   skip
   steampipe query "select time_col, a, b, unique_col from chaos_cache_check where time_col >= '2021-05-05 00:00:00 +0000 UTC' order by id" --output json &> output1.json
   # store the time from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
 
   steampipe query "select time_col, a, b, unique_col from chaos_cache_check where time_col = '2021-05-05 00:00:00 +0000 UTC' order by id" --output json &> output2.json
   # store the time from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content

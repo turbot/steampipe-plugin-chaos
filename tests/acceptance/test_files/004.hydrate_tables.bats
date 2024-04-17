@@ -18,8 +18,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test delay in hydrate call" {
-  run steampipe query --output json "select delay from chaos.chaos_hydrate_errors order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_hydrate_delay.json)"
+  steampipe query "select delay from chaos.chaos_hydrate_errors order by id" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_hydrate_delay.txt)"
+  rm -f output.txt
 }
 
 @test "test panic in hydrate call" {

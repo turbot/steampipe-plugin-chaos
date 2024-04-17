@@ -1,0 +1,24 @@
++--------------------------------------------+
+| parent_should_ignore_error_after_streaming |
++--------------------------------------------+
+| true                                       |
+| true                                       |
+| false                                      |
+| false                                      |
+| true                                       |
+| true                                       |
+| false                                      |
+| false                                      |
+| true                                       |
+| true                                       |
+| false                                      |
+| false                                      |
+| true                                       |
+| true                                       |
+| false                                      |
+| false                                      |
+| true                                       |
+| true                                       |
+| false                                      |
+| false                                      |
++--------------------------------------------+

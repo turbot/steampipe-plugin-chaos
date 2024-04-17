@@ -1,8 +1,0 @@
-[
- {
-  "child_should_ignore_error_after_streaming": true
- },
- {
-  "child_should_ignore_error_after_streaming": false
- }
-]

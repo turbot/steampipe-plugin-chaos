@@ -1,0 +1,14 @@
++---------------------------------------+
+| child_retryable_error_after_streaming |
++---------------------------------------+
+| true                                  |
+| false                                 |
+| true                                  |
+| false                                 |
+| true                                  |
+| false                                 |
+| true                                  |
+| false                                 |
+| true                                  |
+| false                                 |
++---------------------------------------+
