@@ -1,0 +1,9 @@
++-------+
+| delay |
++-------+
+| true  |
+| false |
+| true  |
+| false |
+| true  |
++-------+

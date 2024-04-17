@@ -12,8 +12,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the retryable_error in list call" {
-  run steampipe query --output json "select retryable_error from chaos.chaos_list_errors order by id limit 5"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_retryable_error.json)"
+  steampipe query "select retryable_error from chaos.chaos_list_errors order by id limit 5" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_retryable_error.txt)"
+  rm -f output.txt
 }
 
 @test "test the retryable_error(after streaming) in list call" {
@@ -27,13 +28,15 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the should_ignore_error(after streaming) in list call" {
-  run steampipe query --output json "select should_ignore_error_after_streaming from chaos.chaos_list_errors order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_should_ignore_error_after_streaming.json)"
+  steampipe query "select should_ignore_error_after_streaming from chaos.chaos_list_errors order by id" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_should_ignore_error_after_streaming.txt)"
+  rm -f output.txt
 }
 
 @test "test the delay in list call" {
-  run steampipe query --output json "select delay from chaos.chaos_list_errors order by id limit 5"
-   assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_delay.json)"
+  steampipe query "select delay from chaos.chaos_list_errors order by id limit 5" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_delay.txt)"
+  rm -f output.txt
 }
 
 @test "test the panic in list call" {
@@ -57,8 +60,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the parent_retryable_error in list call" {
-  run steampipe query --output json "select parent_retryable_error from chaos.chaos_list_parent_child order by id limit 5"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_parent_retryable_error.json)"
+  steampipe query "select parent_retryable_error from chaos.chaos_list_parent_child order by id limit 5" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_parent_retryable_error.txt)"
+  rm -f output.txt
 }
 
 @test "test the parent_retryable_error(after streaming) in list call" {
@@ -72,13 +76,14 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the parent_should_ignore_error(after streaming) in list call" {
-  run steampipe query --output json "select parent_should_ignore_error_after_streaming from chaos.chaos_list_parent_child order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_parent_should_ignore_error_after_streaming.json)"
+  steampipe query "select parent_should_ignore_error_after_streaming from chaos.chaos_list_parent_child order by id" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_parent_should_ignore_error_after_streaming.txt)"
 }
 
 @test "test the parent_delay in list call" {
-  run steampipe query --output json "select parent_delay from chaos.chaos_list_parent_child order by id limit 5"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_parent_delay.json)"
+  steampipe query "select parent_delay from chaos.chaos_list_parent_child order by id limit 5" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_parent_delay.txt)"
+  rm -f output.txt
 }
 
 @test "test the parent_panic in list call" {
@@ -102,8 +107,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the child_retryable_error (after streaming) in list call" {
-  run steampipe query --output json "select child_retryable_error_after_streaming from chaos.chaos_list_parent_child order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_retryable_error_after_streaming.json)"
+  steampipe query "select child_retryable_error_after_streaming from chaos.chaos_list_parent_child order by id" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_child_retryable_error_after_streaming.txt)"
+  rm -f output.txt
 }
 
 @test "test the child_should_ignore_error in list call" {
@@ -112,13 +118,15 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the child_should_ignore_error(after streaming) in list call" {
-  run steampipe query --output json "select child_should_ignore_error_after_streaming from chaos.chaos_list_parent_child order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_should_ignore_error_after_streaming.json)"
+  steampipe query "select child_should_ignore_error_after_streaming from chaos.chaos_list_parent_child order by id" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_child_should_ignore_error_after_streaming.txt)"
+  rm -f output.txt
 }
 
 @test "test the child_delay in list call" {
-  run steampipe query --output json "select child_delay from chaos.chaos_list_parent_child order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_list_child_delay.json)"
+  steampipe query "select child_delay from chaos.chaos_list_parent_child order by id" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_list_child_delay.txt)"
+  rm -f output.txt
 }
 
 @test "test the child_panic in list call" {
