@@ -17,8 +17,9 @@ load "$LIB_BATS_SUPPORT/load.bash"
 }
 
 @test "test the delay in get call" {
-  run steampipe query --output json "select delay from chaos.chaos_get_errors where id=0 order by id"
-  assert_equal "$output" "$(cat $TEST_DATA_DIR/output_get_delay.json)"
+  steampipe query "select delay from chaos.chaos_get_errors where id=0 order by id" > output.txt
+  assert_equal "$(cat output.txt)" "$(cat $TEST_DATA_DIR/output_get_delay.txt)"
+  rm -f output.txt
 }
 
 @test "test the panic in get call" {
