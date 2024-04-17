@@ -19,9 +19,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -37,9 +37,9 @@ teardown() {
   steampipe query "select unique_col, a, b, delay from chaos_cache_check" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -57,13 +57,13 @@ teardown() {
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output4.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  content2=$(cat output2.json | jq '.[0].unique_col')
+  content2=$(cat output2.json | jq '.rows[0].unique_col')
   # store the unique number from 3rd query in `new_content`
-  content3=$(cat output3.json | jq '.[0].unique_col')
+  content3=$(cat output3.json | jq '.rows[0].unique_col')
   # store the unique number from 4th query in `new_content`
-  content4=$(cat output4.json | jq '.[0].unique_col')
+  content4=$(cat output4.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $content2
@@ -85,13 +85,13 @@ teardown() {
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output4.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  content2=$(cat output2.json | jq '.[0].unique_col')
+  content2=$(cat output2.json | jq '.rows[0].unique_col')
   # store the unique number from 3rd query in `new_content`
-  content3=$(cat output3.json | jq '.[0].unique_col')
+  content3=$(cat output3.json | jq '.rows[0].unique_col')
   # store the unique number from 4th query in `new_content`
-  content4=$(cat output4.json | jq '.[0].unique_col')
+  content4=$(cat output4.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $content2
@@ -111,9 +111,9 @@ teardown() {
   steampipe query "select unique_col, a, b, delay, c from chaos_cache_check" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -134,9 +134,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -152,9 +152,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -170,9 +170,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -193,9 +193,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 3" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -211,9 +211,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c, delay from chaos_cache_check limit 4" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  new_content=$(cat output2.json | jq '.[0].unique_col')
+  new_content=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $new_content
@@ -237,9 +237,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output3.json
 
   # store the unique number from 2nd query in `new_content`
-  content2=$(cat output2.json | jq '.[0].unique_col')
+  content2=$(cat output2.json | jq '.rows[0].unique_col')
   # store the unique number from 3rd query in `new_content`
-  content3=$(cat output3.json | jq '.[0].unique_col')
+  content3=$(cat output3.json | jq '.rows[0].unique_col')
 
   echo $content2
   echo $content3
@@ -262,9 +262,9 @@ teardown() {
   steampipe query "select unique_col, a, b from chaos_cache_check" --output json &> output3.json
 
   # store the unique number from 2nd query in `new_content`
-  content2=$(cat output2.json | jq '.[0].unique_col')
+  content2=$(cat output2.json | jq '.rows[0].unique_col')
   # store the unique number from 3rd query in `new_content`
-  content3=$(cat output3.json | jq '.[0].unique_col')
+  content3=$(cat output3.json | jq '.rows[0].unique_col')
 
   echo $content2
   echo $content3
@@ -282,9 +282,9 @@ teardown() {
   steampipe query "select unique_col, a, b, c from chaos_cache_check" --output json &> output3.json
 
   # store the unique number from 2nd query in `new_content`
-  content2=$(cat output2.json | jq '.[0].unique_col')
+  content2=$(cat output2.json | jq '.rows[0].unique_col')
   # store the unique number from 3rd query in `new_content`
-  content3=$(cat output3.json | jq '.[0].unique_col')
+  content3=$(cat output3.json | jq '.rows[0].unique_col')
 
   echo $content2
   echo $content3
@@ -308,9 +308,9 @@ teardown() {
   steampipe query "select unique_col, a, b from chaos_cache_with_delay_quals where delay=10" --output json &> output2.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  content2=$(cat output2.json | jq '.[0].unique_col')
+  content2=$(cat output2.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $content2
@@ -330,11 +330,11 @@ teardown() {
   steampipe query "select unique_col, a, b, c, d from chaos_cache_with_delay_quals where unique_col > 10 and delay=10" --output json &> output3.json
 
   # store the unique number from 1st query in `content`
-  content=$(cat output1.json | jq '.[0].unique_col')
+  content=$(cat output1.json | jq '.rows[0].unique_col')
   # store the unique number from 2nd query in `new_content`
-  content2=$(cat output2.json | jq '.[0].unique_col')
+  content2=$(cat output2.json | jq '.rows[0].unique_col')
   # store the unique number from 3rd query in `new_content`
-  content3=$(cat output3.json | jq '.[0].unique_col')
+  content3=$(cat output3.json | jq '.rows[0].unique_col')
 
   echo $content
   echo $content2
