@@ -13,5 +13,5 @@ on:
 
 jobs:
   anywhere_publish_workflow:
-    uses: turbot/steampipe-workflows/.github/workflows/steampipe-anywhere.yml@dont-mutate
+    uses: turbot/steampipe-workflows/.github/workflows/steampipe-anywhere.yml@fix-export-build-issue
     secrets: inherit
