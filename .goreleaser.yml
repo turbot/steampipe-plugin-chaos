@@ -11,12 +11,15 @@ builds:
     goos:
       - linux
       - darwin
+
     goarch:
       - amd64
       - arm64
 
-    id: "steampipe-chaos"
+    id: "steampipe"
     binary: "{{ .ProjectName }}.plugin"
+    flags:
+      - -tags=netgo
 
 archives:
   - format: gz
