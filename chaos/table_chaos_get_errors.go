@@ -3,9 +3,9 @@ package chaos
 import (
 	"context"
 	"errors"
+	"slices"
 	"time"
 
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -57,23 +57,23 @@ func listGetErrors(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateDa
 }
 
 func chaosGetHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	if helpers.StringSliceContains(d.QueryContext.Columns, "fatal_error") {
+	if slices.Contains(d.QueryContext.Columns, "fatal_error") {
 		buildConfig := &getBuildConfig{getError: FailError}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error") {
+	if slices.Contains(d.QueryContext.Columns, "retryable_error") {
 		buildConfig := &getBuildConfig{getError: RetryableError, failureCount: 200}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "ignorable_error") {
+	if slices.Contains(d.QueryContext.Columns, "ignorable_error") {
 		buildConfig := &getBuildConfig{getError: IgnorableError}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "delay") {
+	if slices.Contains(d.QueryContext.Columns, "delay") {
 		buildConfig := &getBuildConfig{getDelay: true}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "panic") {
+	if slices.Contains(d.QueryContext.Columns, "panic") {
 		buildConfig := &getBuildConfig{getError: FailPanic}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}

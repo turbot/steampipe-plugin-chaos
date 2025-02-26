@@ -2,8 +2,8 @@ package chaos
 
 import (
 	"context"
+	"slices"
 
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -49,39 +49,39 @@ func chaosListTable() *plugin.Table {
 }
 
 func chaosListHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	if helpers.StringSliceContains(d.QueryContext.Columns, "fatal_error") {
+	if slices.Contains(d.QueryContext.Columns, "fatal_error") {
 		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "fatal_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "fatal_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 15, listRowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error") {
+	if slices.Contains(d.QueryContext.Columns, "retryable_error") {
 		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, failureCount: 2}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "retryable_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, listRowsBeforeError: 5, failureCount: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "should_ignore_error") {
+	if slices.Contains(d.QueryContext.Columns, "should_ignore_error") {
 		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "should_ignore_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "should_ignore_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 15, listRowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "delay") {
+	if slices.Contains(d.QueryContext.Columns, "delay") {
 		listBuildConfig := &listBuildConfig{listDelay: true, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "panic") {
+	if slices.Contains(d.QueryContext.Columns, "panic") {
 		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "panic_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "panic_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 15, listRowsBeforeError: 5}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}

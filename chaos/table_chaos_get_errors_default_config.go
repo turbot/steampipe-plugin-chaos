@@ -3,8 +3,8 @@ package chaos
 import (
 	"context"
 	"log"
+	"slices"
 
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -38,12 +38,12 @@ func listGetErrorsDefaultConfig(ctx context.Context, d *plugin.QueryData, h *plu
 
 func chaosGetDefaultConfigHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	log.Printf("[INFO] chaosGetDefaultConfigHydrate")
-	if helpers.StringSliceContains(d.QueryContext.Columns, "retryable_error_default_config") {
+	if slices.Contains(d.QueryContext.Columns, "retryable_error_default_config") {
 		buildConfig := &getBuildConfig{getError: RetryableError, failureCount: 5}
 		hy, err := buildGetHydrate(buildConfig)(ctx, d, h)
 		return hy, err
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "ignorable_error_default_config") {
+	if slices.Contains(d.QueryContext.Columns, "ignorable_error_default_config") {
 		buildConfig := &getBuildConfig{getError: IgnorableError}
 		return buildGetHydrate(buildConfig)(ctx, d, h)
 	}

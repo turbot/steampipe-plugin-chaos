@@ -3,9 +3,9 @@ package chaos
 import (
 	"context"
 	"errors"
+	"slices"
 	"time"
 
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
@@ -45,74 +45,74 @@ func chaosListParentChildTable() *plugin.Table {
 }
 
 func listParentRetryTable(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_fatal_error") {
+	if slices.Contains(d.QueryContext.Columns, "parent_fatal_error") {
 		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_fatal_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "parent_fatal_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 10, listRowsBeforeError: 2}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_retryable_error") {
+	if slices.Contains(d.QueryContext.Columns, "parent_retryable_error") {
 		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, failureCount: 2}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
 	// TODO this currently does not actually work - the test only passes as the failure count (15)
 	//  is greater than the sdk error retry count
 	// https://github.com/turbot/steampipe-plugin-sdk/issues/324
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_retryable_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "parent_retryable_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, listRowsBeforeError: 5, failureCount: 15}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_should_ignore_error") {
+	if slices.Contains(d.QueryContext.Columns, "parent_should_ignore_error") {
 		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_should_ignore_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "parent_should_ignore_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 10, listRowsBeforeError: 2}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_delay") {
+	if slices.Contains(d.QueryContext.Columns, "parent_delay") {
 		listBuildConfig := &listBuildConfig{listDelay: true, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "parent_panic") {
+	if slices.Contains(d.QueryContext.Columns, "parent_panic") {
 		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 10}
 		return buildListHydrate(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_fatal_error") {
+	if slices.Contains(d.QueryContext.Columns, "child_fatal_error") {
 		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 10}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_fatal_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "child_fatal_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: FailError, rowCount: 10, listRowsBeforeError: 2}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 	// TODO this currently does not actually work - the test only passes as the failure count (15)
 	//  is greater than the sdk error retry count
 	// https://github.com/turbot/steampipe-plugin-sdk/issues/324
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_retryable_error") {
+	if slices.Contains(d.QueryContext.Columns, "child_retryable_error") {
 		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, failureCount: 15}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
 
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_retryable_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "child_retryable_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: RetryableError, rowCount: 10, failureCount: 5}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_should_ignore_error") {
+	if slices.Contains(d.QueryContext.Columns, "child_should_ignore_error") {
 		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 10}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_should_ignore_error_after_streaming") {
+	if slices.Contains(d.QueryContext.Columns, "child_should_ignore_error_after_streaming") {
 		listBuildConfig := &listBuildConfig{listError: IgnorableError, rowCount: 10, listRowsBeforeError: 2}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_delay") {
+	if slices.Contains(d.QueryContext.Columns, "child_delay") {
 		listBuildConfig := &listBuildConfig{listDelay: true, rowCount: 2}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
-	if helpers.StringSliceContains(d.QueryContext.Columns, "child_panic") {
+	if slices.Contains(d.QueryContext.Columns, "child_panic") {
 		listBuildConfig := &listBuildConfig{listError: FailPanic, rowCount: 10}
 		return getChildList(listBuildConfig)(ctx, d, h)
 	}
