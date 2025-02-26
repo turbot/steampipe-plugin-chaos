@@ -7,7 +7,7 @@ on:
 
 jobs:
   registry_publish_workflow_ghcr:
-    uses: turbot/steampipe-workflows/.github/workflows/registry-publish-ghcr.yml@main
+    uses: turbot/steampipe-workflows/.github/workflows/registry-publish-ghcr.yml@also-publish-prereleases
     secrets: inherit
     with:
       releaseTimeout: 60m
