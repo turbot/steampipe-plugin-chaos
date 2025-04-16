@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 	"log"
+	"reflect"
 
-	"github.com/turbot/go-kit/helpers"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -67,8 +67,20 @@ func ignorableErrorWithoutShouldIgnore(ctx context.Context, d *plugin.QueryData,
 func checkNilTransform(_ context.Context, d *transform.TransformData) (interface{}, error) {
 	data := d.HydrateItem
 	log.Printf("[INFO] checkNilTransform hydrateItem: %v", data)
-	if helpers.IsNil(data) {
+	if isNil(data) {
 		panic("NIL HYDRATE")
 	}
 	return data, nil
+}
+
+func isNil(i interface{}) bool {
+	if i == nil {
+		return true
+	}
+	v := reflect.ValueOf(i)
+	switch v.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+		return v.IsNil()
+	}
+	return false
 }
