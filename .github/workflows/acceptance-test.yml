@@ -73,7 +73,7 @@ jobs:
       - name: Save Test Suite Logs
         uses: actions/upload-artifact@v4
         with:
-          name: test-logs
+          name: test-logs-${{ matrix.test_block }}
           path: ~/.steampipe/logs
           if-no-files-found: error
 
