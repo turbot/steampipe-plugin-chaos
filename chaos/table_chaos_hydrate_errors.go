@@ -3,11 +3,14 @@ package chaos
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
+	"strconv"
 	"time"
 
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
 type hydrateBuildConfig struct {
@@ -47,6 +50,13 @@ func chaosHydrateTable() *plugin.Table {
 				Hydrate:     chaosHydrateErrorsFatalHydrate,
 			},
 			{
+				Name:        "fatal_error_after_streaming_rows",
+				Type:        proto.ColumnType_INT,
+				Description: "Column to test the table with fatal error",
+				Transform:   transform.FromValue(),
+				Hydrate:     chaosHydrateErrorsFatalHydrateAfterStreamingRows,
+			},
+			{
 				Name:        "retryable_error",
 				Type:        proto.ColumnType_BOOL,
 				Description: "Column to test the Hydrate function with retry config in case of non fatal error",
@@ -75,8 +85,11 @@ func chaosHydrateTable() *plugin.Table {
 }
 
 func listHydrateErrors(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	item := map[string]interface{}{"id": 0}
-	d.StreamListItem(ctx, item)
+	for i := 0; i < 1000; i++ {
+		item := make(map[string]interface{})
+		item["id"] = i
+		d.StreamListItem(ctx, item)
+	}
 	return nil, nil
 
 }
@@ -90,6 +103,16 @@ func chaosHydrateErrorsRetryHydrate(ctx context.Context, d *plugin.QueryData, h 
 func chaosHydrateErrorsFatalHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	buildConfig := &hydrateBuildConfig{hydrateError: FailError}
 	return buildHydrate(buildConfig)(ctx, d, h)
+}
+
+func chaosHydrateErrorsFatalHydrateAfterStreamingRows(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	intVal, _ := strconv.ParseInt(fmt.Sprint(h.Item.(map[string]interface{})["id"]), 10, 64)
+	buildConfig := &hydrateBuildConfig{hydrateError: FailError}
+	if intVal == int64(5) {
+		time.Sleep(5 * time.Second)
+		return buildHydrate(buildConfig)(ctx, d, h)
+	}
+	return h.Item.(map[string]interface{})["id"], nil
 }
 
 func chaosHydrateErrorsIgnorableHydrate(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
