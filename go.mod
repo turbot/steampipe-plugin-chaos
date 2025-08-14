@@ -1,4 +1,4 @@
-module github.com/turbot/steampipe-plugin-chaos
+module github.com/turbot/steampipe-plugin-chaos/v2
 
 go 1.24
 
