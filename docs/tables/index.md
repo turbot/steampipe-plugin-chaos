@@ -10,7 +10,7 @@ description: "Steampipe plugin for testing Steampipe in weird and wonderful ways
 
 # Chaos
 
-The Chaos plugin is used internally to test Steampipe features and functionality in weird and wonderful ways.
+The Chaos plugin is used internally to test Steampipe features and functionality in weird and wonderful ways  .
 
 ## Installation
 
