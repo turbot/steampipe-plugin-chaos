@@ -2,6 +2,9 @@ name: Chaos acceptance tests
 on:
   pull_request:
 
+permissions:
+  contents: read
+
 env:
   STEAMPIPE_UPDATE_CHECK: false
 
@@ -24,7 +27,7 @@ jobs:
           - "009.cache_quals"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           submodules: true
 
@@ -32,12 +35,12 @@ jobs:
         run: git fetch
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@bfdd3570ce990073878bf10f6b2d79082de49492 # v2
         with:
           go-version: 1.21
 
       - name: Checkout Steampipe
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           repository: turbot/steampipe
           path: steampipe
@@ -57,7 +60,7 @@ jobs:
           steampipe plugin list    
 
       - name: Setup BATS
-        uses: mig4/setup-bats@v1
+        uses: mig4/setup-bats@af9a00deb21b5d795cabfeaa8d9060410377686d # v1
         with:
           bats-version: 1.2.1
 
@@ -71,7 +74,7 @@ jobs:
           steampipe service stop --force
 
       - name: Save Test Suite Logs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: test-logs-${{ matrix.test_block }}
           path: ~/.steampipe/logs
@@ -99,7 +102,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clean up test suite logs
-        uses: geekyeggo/delete-artifact@v1
+        uses: geekyeggo/delete-artifact@b73cb986740e466292a536d0e32e2666c56fdeb3 # v1
         with:
           name: test-logs
           failOnError: true
