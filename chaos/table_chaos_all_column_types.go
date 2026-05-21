@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin/transform"
 )
 
 const allColumnsRowCount = 100
@@ -246,7 +246,7 @@ func stringArrayToMapColumn(ctx context.Context, d *plugin.QueryData, h *plugin.
 func longStringColumnValue(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	stringLength := 100
 	key := h.Item.(map[string]interface{})
-	item := fmt.Sprintf(strings.Repeat(key["string_column"].(string), stringLength))
+	item := strings.Repeat(key["string_column"].(string), stringLength)
 
 	return item, nil
 
