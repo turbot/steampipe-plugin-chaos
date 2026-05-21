@@ -1,7 +1,7 @@
 package chaos
 
 import (
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
 )
 
 type chaosConfig struct {
@@ -14,9 +14,13 @@ func ConfigInstance() interface{} {
 
 // GetConfig :: retrieve and cast connection config from query data
 func GetConfig(connection *plugin.Connection) chaosConfig {
-	if connection == nil || connection.Config == nil {
+	if connection == nil {
 		return chaosConfig{}
 	}
-	config, _ := connection.Config.(chaosConfig)
+	raw := connection.GetConfig()
+	if raw == nil {
+		return chaosConfig{}
+	}
+	config, _ := raw.(chaosConfig)
 	return config
 }

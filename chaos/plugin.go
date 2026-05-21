@@ -3,7 +3,7 @@ package chaos
 import (
 	"context"
 
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
 )
 
 const pluginName = "steampipe-provider-chaos"
