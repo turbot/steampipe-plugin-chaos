@@ -2,7 +2,7 @@ module github.com/turbot/steampipe-plugin-chaos/v2
 
 go 1.26.0
 
-require github.com/turbot/steampipe-plugin-sdk/v6 v6.0.0
+require github.com/turbot/steampipe-plugin-sdk/v6 v6.1.0
 
 require (
 	cloud.google.com/go v0.112.1 // indirect
