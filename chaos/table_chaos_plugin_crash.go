@@ -23,11 +23,8 @@ func pluginCrashTable() *plugin.Table {
 }
 
 func listIdsFunction(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	for i := 0; i < 50; i++ {
-		item := map[string]interface{}{"id": i}
-		d.StreamListItem(ctx, item)
-		os.Exit(-1)
-	}
+	d.StreamListItem(ctx, map[string]interface{}{"id": 0})
+	os.Exit(-1)
 
 	return nil, nil
 }

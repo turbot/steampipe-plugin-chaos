@@ -17,7 +17,7 @@ func hydrateShouldIgnoreConfigTableLegacy() *plugin.Table {
 		HydrateConfig: []plugin.HydrateConfig{
 			{
 				Func:              ignorableErrorWithShouldIgnore,
-				ShouldIgnoreError: shouldIgnoreErrorLegacy,
+				ShouldIgnoreError: shouldIgnoreErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			},
 		},
 		Columns: []*plugin.Column{

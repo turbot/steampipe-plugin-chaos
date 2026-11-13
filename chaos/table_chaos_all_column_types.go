@@ -55,7 +55,7 @@ func allColumnsTable() *plugin.Table {
 			},
 			{
 				Name:      "date_time_column",
-				Type:      proto.ColumnType_DATETIME,
+				Type:      proto.ColumnType_DATETIME, //nolint:staticcheck // chaos keeps the deprecated DATETIME type covered
 				Hydrate:   dateTimeColumnValue,
 				Transform: transform.FromValue(),
 			},
@@ -97,13 +97,13 @@ func allColumnsTable() *plugin.Table {
 			},
 			{
 				Name:      "epoch_column_seconds",
-				Type:      proto.ColumnType_DATETIME,
+				Type:      proto.ColumnType_DATETIME, //nolint:staticcheck // chaos keeps the deprecated DATETIME type covered
 				Hydrate:   epochColumnSecValue,
 				Transform: transform.FromValue().Transform(transform.UnixToTimestamp),
 			},
 			{
 				Name:      "epoch_column_milliseconds",
-				Type:      proto.ColumnType_DATETIME,
+				Type:      proto.ColumnType_DATETIME, //nolint:staticcheck // chaos keeps the deprecated DATETIME type covered
 				Hydrate:   epochColumnMsValue,
 				Transform: transform.FromValue().Transform(transform.UnixMsToTimestamp),
 			},

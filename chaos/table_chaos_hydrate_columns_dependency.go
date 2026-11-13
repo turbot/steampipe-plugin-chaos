@@ -18,7 +18,7 @@ func hydrateColumnsDependencyTable() *plugin.Table {
 			Hydrate: hydrateList,
 		},
 
-		HydrateDependencies: []plugin.HydrateDependencies{
+		HydrateDependencies: []plugin.HydrateDependencies{ //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			{
 				Func:    hydrate2,
 				Depends: []plugin.HydrateFunc{hydrate1},
@@ -44,11 +44,6 @@ func hydrateColumnsDependencyTable() *plugin.Table {
 	}
 }
 
-func hydrateInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	item := d.EqualsQuals["id"].GetInt64Value()
-	return item, nil
-}
-
 func hydrateList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 
 	for i := 0; i < 2; i++ {
@@ -58,15 +53,6 @@ func hydrateList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData
 	}
 
 	return nil, nil
-}
-
-func hydrateGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	key := h.Item.(map[string]interface{})
-	id := key["id"].(int)
-
-	item := map[string]interface{}{"id": id}
-	return item, nil
-
 }
 
 func hydrate1(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {

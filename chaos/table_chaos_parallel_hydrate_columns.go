@@ -204,11 +204,6 @@ func parallelHydrateColumnsTable() *plugin.Table {
 	}
 }
 
-func hydInputKey(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	item := d.EqualsQuals["id"].GetInt64Value()
-	return item, nil
-}
-
 func hydList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 
 	for i := 0; i < 500; i++ {
@@ -217,15 +212,6 @@ func hydList(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (i
 	}
 
 	return nil, nil
-}
-
-func hydGet(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	key := h.Item.(map[string]interface{})
-	id := key["id"].(int)
-
-	item := map[string]interface{}{"id": id}
-	return item, nil
-
 }
 
 func parallelHydrate1(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {

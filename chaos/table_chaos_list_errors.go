@@ -26,11 +26,11 @@ func chaosListTable() *plugin.Table {
 		Description: "Chaos table to test the List calls with all the possible scenarios like errors, panics and delays",
 		List: &plugin.ListConfig{
 			Hydrate:           chaosListHydrate,
-			ShouldIgnoreError: shouldIgnoreErrorLegacy,
+			ShouldIgnoreError: shouldIgnoreErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			RetryConfig: &plugin.RetryConfig{
 				MaxAttempts:      2,
 				MaxDuration:      5000,
-				ShouldRetryError: shouldRetryErrorLegacy,
+				ShouldRetryError: shouldRetryErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			},
 		},
 		Columns: []*plugin.Column{

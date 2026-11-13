@@ -17,7 +17,7 @@ func hydrateRetryConfigLegacyTable() *plugin.Table {
 			{
 				Func: hydrateWithRetriableErrors1,
 				RetryConfig: &plugin.RetryConfig{
-					ShouldRetryError: shouldRetryErrorLegacy,
+					ShouldRetryError: shouldRetryErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 				},
 			},
 		},
