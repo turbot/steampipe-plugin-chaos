@@ -2,7 +2,6 @@ package chaos
 
 import (
 	"context"
-	"fmt"
 	"math/rand"
 	"time"
 
@@ -112,10 +111,4 @@ func longDelayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 	item := map[string]interface{}{"LongDelay": delay.String()}
 	time.Sleep(delay)
 	return item, nil
-}
-
-func errorAfterDelayHydrate(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
-	delay := 10 * time.Second
-	time.Sleep(delay)
-	return nil, fmt.Errorf("errorAfterDelayHydrate")
 }

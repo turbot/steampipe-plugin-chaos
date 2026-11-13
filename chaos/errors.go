@@ -11,11 +11,11 @@ const retriableErrorString = "retriableError"
 const notFoundErrorString = "resourceNotFound"
 
 func shouldRetryErrorLegacy(err error) bool {
-	return shouldRetryError(nil, nil, nil, err)
+	return shouldRetryError(context.TODO(), nil, nil, err)
 }
 
 func shouldIgnoreErrorLegacy(err error) bool {
-	return shouldIgnoreError(nil, nil, nil, err)
+	return shouldIgnoreError(context.TODO(), nil, nil, err)
 }
 
 func shouldRetryError(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData, err error) bool {

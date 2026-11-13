@@ -18,28 +18,20 @@ func populateItem(rowNumber int, table *plugin.Table) map[string]interface{} {
 		switch column.Type {
 		case proto.ColumnType_STRING:
 			columnVal = fmt.Sprintf("%s-%v", column.Name, rowNumber)
-			break
 		case proto.ColumnType_BOOL:
 			columnVal = rowNumber%2 == 0
-			break
-		case proto.ColumnType_DATETIME:
+		case proto.ColumnType_DATETIME: //nolint:staticcheck // chaos keeps the deprecated DATETIME type covered
 			columnVal = time.Now()
-			break
 		case proto.ColumnType_INT:
 			columnVal = rowNumber
-			break
 		case proto.ColumnType_DOUBLE:
 			columnVal = float64(rowNumber)
-			break
 		case proto.ColumnType_CIDR:
 			columnVal = "10.0.0.10/32"
-			break
 		case proto.ColumnType_IPADDR:
 			columnVal = "10.0.0.2"
-			break
 		case proto.ColumnType_JSON:
 			columnVal = `{"Version": "2012-10-17","Statement": [{"Action": ["iam:GetContextKeysForCustomPolicy","iam:GetContextKeysForPrincipalPolicy","iam:SimulateCustomPolicy","iam:SimulatePrincipalPolicy"],"Effect": "Allow","Resource": "*"}]}`
-			break
 		}
 		row[column.Name] = columnVal
 	}

@@ -16,7 +16,6 @@ import (
 type hydrateBuildConfig struct {
 	hydrateError FailType
 	hydrateDelay bool
-	errorType    FailType
 	failureCount int
 }
 
@@ -33,12 +32,12 @@ func chaosHydrateTable() *plugin.Table {
 			{
 				Func: chaosHydrateErrorsRetryHydrate,
 				RetryConfig: &plugin.RetryConfig{
-					ShouldRetryError: shouldRetryErrorLegacy,
+					ShouldRetryError: shouldRetryErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 				},
 			},
 			{
 				Func:              chaosHydrateErrorsIgnorableHydrate,
-				ShouldIgnoreError: shouldIgnoreErrorLegacy,
+				ShouldIgnoreError: shouldIgnoreErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			},
 		},
 		Columns: []*plugin.Column{

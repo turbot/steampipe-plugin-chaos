@@ -19,11 +19,11 @@ func hydrateShouldIgnoreConfigTableWithTableDefaultLegacy() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: hydrateShouldIgnoreConfigList,
 		},
-		DefaultIgnoreConfig: &plugin.IgnoreConfig{ShouldIgnoreError: shouldIgnoreErrorLegacy},
+		DefaultIgnoreConfig: &plugin.IgnoreConfig{ShouldIgnoreError: shouldIgnoreErrorLegacy}, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 		HydrateConfig: []plugin.HydrateConfig{
 			{
 				Func:              ignorableErrorWithShouldIgnore,
-				ShouldIgnoreError: shouldIgnoreErrorLegacy,
+				ShouldIgnoreError: shouldIgnoreErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			},
 		},
 		Columns: []*plugin.Column{
@@ -79,7 +79,7 @@ func isNil(i interface{}) bool {
 	}
 	v := reflect.ValueOf(i)
 	switch v.Kind() {
-	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice:
 		return v.IsNil()
 	}
 	return false

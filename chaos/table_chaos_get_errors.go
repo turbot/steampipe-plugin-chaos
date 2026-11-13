@@ -15,7 +15,6 @@ const getErrorsRowCount = 100
 type getBuildConfig struct {
 	getError     FailType
 	getDelay     bool
-	errorType    FailType
 	failureCount int
 }
 
@@ -31,9 +30,9 @@ func chaosGetTable() *plugin.Table {
 		Get: &plugin.GetConfig{
 			KeyColumns:        plugin.SingleColumn("id"),
 			Hydrate:           chaosGetHydrate,
-			ShouldIgnoreError: shouldIgnoreErrorLegacy,
+			ShouldIgnoreError: shouldIgnoreErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			RetryConfig: &plugin.RetryConfig{
-				ShouldRetryError: shouldRetryErrorLegacy,
+				ShouldRetryError: shouldRetryErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 			},
 		},
 

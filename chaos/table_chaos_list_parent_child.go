@@ -19,7 +19,7 @@ func chaosListParentChildTable() *plugin.Table {
 		List: &plugin.ListConfig{
 			ParentHydrate:     listParentRetryTable,
 			Hydrate:           getChildList(&listBuildConfig{}),
-			ShouldIgnoreError: shouldIgnoreErrorLegacy,
+			ShouldIgnoreError: shouldIgnoreErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 		},
 
 		Columns: []*plugin.Column{

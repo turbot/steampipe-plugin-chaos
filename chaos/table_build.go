@@ -15,23 +15,21 @@ import (
 type FailType string
 
 const (
-	FailNone       FailType = "None"
-	FailError               = "Error"
-	FailPanic               = "Panic"
-	FatalError              = "fatalError"
-	RetryableError          = "retriableError"
-	IgnorableError          = "resourceNotFound"
+	FailNone       = FailType("None")
+	FailError      = "Error"
+	FailPanic      = "Panic"
+	FatalError     = "fatalError"
+	RetryableError = "retriableError"
+	IgnorableError = "resourceNotFound"
 )
 
 type chaosTable struct {
-	listBuildConfig      *listBuildConfig
-	getBuildConfig       *getBuildConfig
-	hydrateBuildConfig   *hydrateBuildConfig
-	transformBuildConfig *transformBuildConfig
-	name                 string
-	description          string
-	columnCount          int
-	cache                *plugin.TableCacheOptions
+	listBuildConfig *listBuildConfig
+	getBuildConfig  *getBuildConfig
+	name            string
+	description     string
+	columnCount     int
+	cache           *plugin.TableCacheOptions
 }
 
 const defaultColumnCount = 10
@@ -56,7 +54,7 @@ func buildTable(tableDef *chaosTable) *plugin.Table {
 }
 
 func buildColumns(tableDef *chaosTable) []*plugin.Column {
-	var columns []*plugin.Column = []*plugin.Column{{
+	columns := []*plugin.Column{{
 		Name: "id",
 		Type: proto.ColumnType_INT,
 	}}

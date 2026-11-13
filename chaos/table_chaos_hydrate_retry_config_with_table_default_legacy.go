@@ -13,12 +13,12 @@ func hydrateRetryConfigWithTableDefaultLegacyTable() *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: hydrateRetryConfigList,
 		},
-		DefaultRetryConfig: &plugin.RetryConfig{ShouldRetryError: shouldRetryErrorLegacy},
+		DefaultRetryConfig: &plugin.RetryConfig{ShouldRetryError: shouldRetryErrorLegacy}, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 		HydrateConfig: []plugin.HydrateConfig{
 			{
 				Func: hydrateWithRetriableErrors1,
 				RetryConfig: &plugin.RetryConfig{
-					ShouldRetryError: shouldRetryErrorLegacy,
+					ShouldRetryError: shouldRetryErrorLegacy, //nolint:staticcheck // deprecated field kept so chaos covers the legacy SDK path
 				},
 			},
 		},
